@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
-
 import './login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -40,7 +39,7 @@ class LoginView extends GetView<LoginController> {
             Obx(() => controller.isUsingEmail.value
                 ? Text(
                     "Enter your registered Email address to log in",
-                    style: textTheme.displayLarge,
+                    style: BaseTextStyle.heading3(),
                   )
                 : Text(
                     "Enter your registered phone number to log in",
@@ -175,7 +174,7 @@ class LoginView extends GetView<LoginController> {
             Center(
               child: Text(
                 "Or",
-                style: textTheme.headlineLarge,
+                style: BaseTextStyle.heading1(),
               ),
             ),
             SizedBox(

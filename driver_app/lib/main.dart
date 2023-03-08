@@ -1,4 +1,5 @@
 import 'package:driver_app/routes/app_pages.dart';
+import 'package:driver_app/themes/base_style.dart';
 import 'package:driver_app/themes/references_resource_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -11,7 +12,7 @@ void main() async {
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      theme: theme ,
+      theme: baseTheme() ,
   ));
 }
 
