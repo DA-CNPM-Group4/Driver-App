@@ -2,7 +2,7 @@ abstract class Routes {
   Routes._();
   static const WELCOME = Paths.WELCOME;
   static const LOGIN = Paths.LOGIN;
-  static const PASSWORD_LOGIN = Paths.LOGIN;
+  static const PASSWORD_LOGIN = Paths.PASSWORD_LOGIN;
   static const REGISTER = Paths.REGISTER;
   static const PASSWORD_REGISTER = Paths.PASSWORD_REGISTER;
   static const SET_UP_PROFILE = Paths.SET_UP_PROFILE;

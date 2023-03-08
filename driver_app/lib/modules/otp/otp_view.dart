@@ -1,3 +1,4 @@
+import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -108,10 +109,11 @@ class OtpView extends GetView<OtpController> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: ElevatedButton(
               onPressed: () async {
-                // var check = controller.check();
-                // if(check){
-                //   controller.validateOTP();
-                // }
+                var check = controller.check();
+                if(check){
+                  await controller.validateOTP() ? Get.toNamed(Routes.PASSWORD_REGISTER) : null;
+
+                }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
               child: Obx(() => Padding(

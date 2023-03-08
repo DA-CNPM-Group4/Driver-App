@@ -169,6 +169,35 @@ class LoginView extends GetView<LoginController> {
                 }),
               ),
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Text(
+                "Or",
+                style: textTheme.headlineLarge,
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: BaseColor.blue),
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.network(
+                          'http://pngimg.com/uploads/google/google_PNG19635.png',
+                          fit: BoxFit.cover),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      const Text('Sign-in with Google')
+                    ],
+                  )),
+            ),
           ],
         ),
       ),
@@ -180,6 +209,7 @@ class LoginView extends GetView<LoginController> {
               if (await controller.validateAndSave()) {
                 Get.toNamed(Routes.PASSWORD_LOGIN);
               }
+              Get.toNamed(Routes.PASSWORD_LOGIN);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,

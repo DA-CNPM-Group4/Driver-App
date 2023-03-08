@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,8 +30,8 @@ class OtpController extends GetxController {
     return null;
   }
 
-  validateOTP() async{
-    
+  Future<bool> validateOTP() async{
+    return true;
   }
 
   bool check() {
