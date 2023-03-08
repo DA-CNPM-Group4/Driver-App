@@ -14,10 +14,10 @@ class OtpView extends GetView<OtpController> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
               icon: const Icon(
@@ -47,7 +47,7 @@ class OtpView extends GetView<OtpController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset(
-                  "assets/phone_icon.png",
+                  "assets/icons/phone_icon.png",
                   height: 80,
                 ),
                 h,
@@ -62,7 +62,7 @@ class OtpView extends GetView<OtpController> {
                 h,
                 Form(
                   key: controller.formKey,
-                  child:Pinput(
+                  child: Pinput(
                     length: 6,
                     controller: controller.otpController,
                     errorText: controller.error.value,
@@ -74,29 +74,30 @@ class OtpView extends GetView<OtpController> {
                   width: double.infinity,
                   height: 60,
                   child: Obx(
-                        () => ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    () => ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red),
                         onPressed: controller.isClicked.value
                             ? null
                             : () {
-                          // controller.startTimer();
-                        },
+                                controller.startTimer();
+                              },
                         child: controller.isClicked.value
                             ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "${controller.start.value}s",
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        )
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "${controller.start.value}s",
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                ],
+                              )
                             : const Text("Resend")),
                   ),
                 )
@@ -106,17 +107,23 @@ class OtpView extends GetView<OtpController> {
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: ElevatedButton(
-              onPressed: () async{
+              onPressed: () async {
                 // var check = controller.check();
                 // if(check){
                 //   controller.validateOTP();
                 // }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-              child:  Obx(()=> Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: controller.isLoading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text("Continue"),)),
+              child: Obx(() => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text("Continue"),
+                  )),
             ),
           ),
-    )
-    );
+        ));
   }
 }

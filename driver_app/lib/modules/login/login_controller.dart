@@ -2,35 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> emailFormKey = GlobalKey<FormState>();
   TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   RxString error = ''.obs;
   RxBool isLoading = false.obs;
+  RxBool isUsingEmail = false.obs;
 
-  TextEditingController emailController = TextEditingController();
-  
   String? phoneNumberValidator(String value) {
-    if(value.isEmpty){
+    if (value.isEmpty) {
       return "This field must be filled";
-    } else if(!value.isPhoneNumber){
+    } else if (!value.isPhoneNumber) {
       return "You must enter a right phone number";
     }
     return null;
   }
 
-  Future<bool> validateAndSave() async{
-    isLoading.value = true;
-    final isValid = formKey.currentState!.validate();
-    if (!isValid) {
-      isLoading.value = false;
-      return false;
+  String? emailValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
+    } else if (!value.isEmail) {
+      return "You must enter a email address";
     }
+    return null;
+  }
 
-    // call api to check if phone existed -  (very bad code from references resource)
+  Future<bool> validateAndSave() async {
+    isLoading.value = true;
+    if (!isUsingEmail.value) {
+      if (!phoneFormKey.currentState!.validate()) {
+        isLoading.value = false;
+        return false;
+      }
+    } else {
+      if (!emailFormKey.currentState!.validate()) {
+        isLoading.value = false;
+        return false;
+      }
+    }
+    // call api to check
 
-    formKey.currentState!.save();
+    isUsingEmail.value
+        ? emailFormKey.currentState!.save()
+        : phoneFormKey.currentState!.save();
     isLoading.value = false;
     return true;
   }
 
+  void changeLoginMethod() {
+    isUsingEmail.value = !isUsingEmail.value;
+  }
 }
