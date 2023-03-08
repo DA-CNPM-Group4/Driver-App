@@ -1,5 +1,9 @@
 import 'package:driver_app/modules/login/login_binding.dart';
 import 'package:driver_app/modules/login/login_view.dart';
+import 'package:driver_app/modules/password_login/password_login_view.dart';
+import 'package:driver_app/modules/password_login/password_login_binding.dart';
+import 'package:driver_app/modules/password_register/password_binding.dart';
+import 'package:driver_app/modules/password_register/password_view.dart';
 import 'package:driver_app/modules/register/register_view.dart';
 import 'package:driver_app/modules/register/register_binding.dart';
 import 'package:driver_app/modules/otp/otp_view.dart';
@@ -36,6 +40,16 @@ class AppPages {
       name: Paths.OTP,
       page: () => const OtpView(),
       binding: OtpBinding(),
+    ),
+    GetPage(
+      name: Paths.PASSWORD_LOGIN,
+      page: () => const PasswordLoginView(),
+      binding: PasswordLoginBinding(),
+    ),
+    GetPage(
+      name: Paths.PASSWORD_REGISTER,
+      page: () => const PasswordView(),
+      binding: PasswordBinding(),
     ),
     GetPage(
       name: Paths.SPLASH,
