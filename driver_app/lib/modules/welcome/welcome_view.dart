@@ -1,5 +1,6 @@
 import 'dart:math';
-
+import 'package:driver_app/routes/app_routes.dart';
+import 'package:get/get.dart';
 import 'package:driver_app/modules/login/login_view.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
@@ -72,8 +73,7 @@ class WelcomeView extends StatelessWidget {
                           style:
                               ElevatedButton.styleFrom(primary: Colors.green),
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const LoginView()));
+                            Get.toNamed(Routes.LOGIN);
                           },
                           child: const Text("Log in"))),
                   Container(
@@ -89,7 +89,9 @@ class WelcomeView extends StatelessWidget {
                               ),
                               primary: Colors.white,
                               elevation: 0),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(Routes.REGISTER);
+                          },
                           child: Text(
                             "REGISTER AS DRIVER-PARTNER",
                             style: BaseTextStyle.body1(

@@ -1,3 +1,4 @@
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -8,16 +9,12 @@ class PasswordLoginView extends GetView<PasswordLoginController> {
   const PasswordLoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    const h_20 = SizedBox(
-      height: 20,
-    );
-    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
-            color: Colors.grey,
+            color: Colors.black,
           ),
           onPressed: () {
             Get.back();
@@ -33,12 +30,12 @@ class PasswordLoginView extends GetView<PasswordLoginController> {
               "assets/icons/phone_icon.png",
               height: 80,
             ),
-            h_20,
+            const SizedBox(height: 20),
             Text(
               "Enter your password to access our system",
-              style: textTheme.displayLarge,
+              style: BaseTextStyle.heading2(fontSize: 20),
             ),
-            h_20,
+            const SizedBox(height: 20),
             Form(
               key: controller.formKey,
               child: TextFormField(

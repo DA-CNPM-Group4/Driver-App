@@ -12,9 +12,6 @@ class RegisterView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    var h_10 = const SizedBox(
-      height: 10,
-    );
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -43,16 +40,16 @@ class RegisterView extends GetView<RegisterController> {
                   "assets/icons/phone_icon.png",
                   height: 80,
                 ),
-                h_10,
+                const SizedBox(height: 32),
                 Text(
                   "Enter your primary phone number to register",
-                  style: textTheme.displayLarge,
+                  style: BaseTextStyle.heading2(fontSize: 18),
                 ),
-                h_10,
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     SizedBox(
-                      width: 85,
+                      width: 100,
                       height: 30,
                       child: ElevatedButton(
                           onPressed: () {},
@@ -71,7 +68,7 @@ class RegisterView extends GetView<RegisterController> {
                               ),
                               Text(
                                 "+84",
-                                style: textTheme.displaySmall,
+                                style: BaseTextStyle.body3(),
                               )
                             ],
                           )),
@@ -102,15 +99,15 @@ class RegisterView extends GetView<RegisterController> {
                     ),
                   ],
                 ),
-                h_10,
-                 Text(
+                const SizedBox(height: 10),
+                Text(
                   "Enter your Email to register",
-                  style: textTheme.displayLarge,
+                  style: BaseTextStyle.heading2(fontSize: 18),
                 ),
                 Row(
                   children: [
                     SizedBox(
-                      width: 85,
+                      width: 100,
                       height: 30,
                       child: ElevatedButton(
                           onPressed: () {},
@@ -129,7 +126,7 @@ class RegisterView extends GetView<RegisterController> {
                               ),
                               Text(
                                 "Email",
-                                style: textTheme.displaySmall,
+                                style: BaseTextStyle.body3(fontSize: 14),
                               )
                             ],
                           )),

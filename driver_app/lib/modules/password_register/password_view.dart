@@ -1,3 +1,4 @@
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:driver_app/routes/app_routes.dart';
@@ -8,10 +9,6 @@ class PasswordView extends GetView<PasswordController> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    var h_10 = const SizedBox(
-      height: 10,
-    );
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -40,25 +37,32 @@ class PasswordView extends GetView<PasswordController> {
                   "assets/icons/phone_icon.png",
                   height: 80,
                 ),
-                h_10,
+                const SizedBox(height: 12),
                 Text(
                   "Type your password!",
-                  style: textTheme.displayLarge,
+                  style: BaseTextStyle.heading2(),
                 ),
-                h_10,
+                const SizedBox(height: 18),
                 Text(
                   "In order to secure your account, we recommend you to input a strong password",
-                  style: textTheme.displayMedium,
+                  style: BaseTextStyle.body2(fontSize: 16),
                 ),
-                h_10,
+                const SizedBox(height: 24),
+                Text(
+                  "Password",
+                  style: BaseTextStyle.heading2(fontSize: 20),
+                ),
                 Form(
                   key: controller.formKey,
                   child: TextFormField(
                     obscureText: true,
                     validator: (value) => controller.passwordValidator(value!),
                     controller: controller.passwordController,
-                    decoration: const InputDecoration(
-                        hintText: 'type password right here'),
+                    decoration: InputDecoration(
+                      hintText: 'Type password right here...',
+                      hintStyle:
+                          BaseTextStyle.body3(fontSize: 14, color: Colors.grey),
+                    ),
                   ),
                 ),
               ],
@@ -67,7 +71,7 @@ class PasswordView extends GetView<PasswordController> {
         ),
         bottomNavigationBar: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: ElevatedButton(
               onPressed: () {
                 if (controller.validateAndSave()) {

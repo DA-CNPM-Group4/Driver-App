@@ -10,16 +10,13 @@ class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    const h_20 = SizedBox(
-      height: 20,
-    );
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
-            color: Colors.grey,
+            color: Colors.black,
           ),
           onPressed: () {
             Get.back();
@@ -35,23 +32,27 @@ class LoginView extends GetView<LoginController> {
               "assets/icons/login_icon.png",
               height: 80,
             ),
-            h_20,
+            const SizedBox(
+              height: 22,
+            ),
             Obx(() => controller.isUsingEmail.value
                 ? Text(
-                    "Enter your registered Email address to log in",
-                    style: BaseTextStyle.heading3(),
+                    "Enter your registered Email address to log in:",
+                    style: BaseTextStyle.heading2(fontSize: 20),
                   )
                 : Text(
-                    "Enter your registered phone number to log in",
-                    style: textTheme.displayLarge,
+                    "Enter your registered phone number to log in:",
+                    style: BaseTextStyle.heading2(fontSize: 20),
                   )),
-            h_20,
+            const SizedBox(
+              height: 22,
+            ),
             Obx(
               () => controller.isUsingEmail.value
                   ? Row(
                       children: [
                         SizedBox(
-                          width: 85,
+                          width: 100,
                           height: 30,
                           child: ElevatedButton(
                               onPressed: () {},
@@ -70,7 +71,7 @@ class LoginView extends GetView<LoginController> {
                                   ),
                                   Text(
                                     "Email",
-                                    style: textTheme.displaySmall,
+                                    style: BaseTextStyle.body1(fontSize: 14),
                                   )
                                 ],
                               )),
@@ -99,7 +100,7 @@ class LoginView extends GetView<LoginController> {
                   : Row(
                       children: [
                         SizedBox(
-                          width: 85,
+                          width: 100,
                           height: 30,
                           child: ElevatedButton(
                               onPressed: () {},
@@ -118,14 +119,12 @@ class LoginView extends GetView<LoginController> {
                                   ),
                                   Text(
                                     "+84",
-                                    style: textTheme.displayMedium,
+                                    style: BaseTextStyle.body2(fontSize: 14),
                                   )
                                 ],
                               )),
                         ),
-                        const SizedBox(
-                          width: 5,
-                        ),
+                        const SizedBox(width: 8),
                         Form(
                           key: controller.phoneFormKey,
                           child: Flexible(
@@ -149,7 +148,9 @@ class LoginView extends GetView<LoginController> {
                       ],
                     ),
             ),
-            h_20,
+            const SizedBox(
+              height: 22,
+            ),
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -168,15 +169,14 @@ class LoginView extends GetView<LoginController> {
                 }),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 12),
             Center(
               child: Text(
                 "Or",
-                style: BaseTextStyle.heading1(),
+                style: BaseTextStyle.heading2(fontSize: 16, color: Colors.grey),
               ),
             ),
+            const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
               height: 50,

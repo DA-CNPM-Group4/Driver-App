@@ -1,4 +1,5 @@
 import 'package:driver_app/routes/app_routes.dart';
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,11 +10,6 @@ class OtpView extends GetView<OtpController> {
   const OtpView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    const h = SizedBox(
-      height: 10,
-    );
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -51,26 +47,28 @@ class OtpView extends GetView<OtpController> {
                   "assets/icons/phone_icon.png",
                   height: 80,
                 ),
-                h,
+                const SizedBox(height: 12),
                 Text(
                   "You're almost there!",
-                  style: textTheme.displayLarge,
+                  style: BaseTextStyle.heading2(),
                 ),
-                h,
-                const Text(
+                const SizedBox(height: 12),
+                Text(
                   "You must enter OTP which we sent you earlier",
+                  style: BaseTextStyle.heading1(fontSize: 16),
                 ),
-                h,
-                Form(
-                  key: controller.formKey,
-                  child: Pinput(
-                    length: 6,
-                    controller: controller.otpController,
-                    errorText: controller.error.value,
+                const SizedBox(height: 12),
+                Center(
+                  child: Form(
+                    key: controller.formKey,
+                    child: Pinput(
+                      length: 6,
+                      controller: controller.otpController,
+                      errorText: controller.error.value,
+                    ),
                   ),
                 ),
-                h,
-                h,
+                const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   height: 60,
@@ -110,9 +108,10 @@ class OtpView extends GetView<OtpController> {
             child: ElevatedButton(
               onPressed: () async {
                 var check = controller.check();
-                if(check){
-                  await controller.validateOTP() ? Get.toNamed(Routes.PASSWORD_REGISTER) : null;
-
+                if (check) {
+                  await controller.validateOTP()
+                      ? Get.toNamed(Routes.PASSWORD_REGISTER)
+                      : null;
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
