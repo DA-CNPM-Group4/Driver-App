@@ -1,84 +1,127 @@
-import 'package:driver_app/routes/app_routes.dart';
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-import 'package:get/get.dart';
+import 'package:driver_app/modules/login/login_view.dart';
+import 'package:driver_app/themes/base_style.dart';
+import 'package:flutter/material.dart';
 
 class WelcomeView extends StatelessWidget {
   const WelcomeView({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    const h_40 = SizedBox(
-      height: 40,
-    );
-    const h_20 = SizedBox(
-      height: 20,
-    );
+    Size size = MediaQuery.of(context).size;
+    double heightSafeArea = size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+    double safeWidth = min(size.width, 500);
+    double keyboardHeight = EdgeInsets.fromWindowPadding(
+            WidgetsBinding.instance.window.viewInsets,
+            WidgetsBinding.instance.window.devicePixelRatio)
+        .bottom;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          "assets/images/logo_gojek.png",
-          height: 100,
-          width: 100,
+        appBar: AppBar(
+          actions: [
+            Container(
+              margin: const EdgeInsets.only(right: 10),
+              width: 30,
+              height: 30,
+              decoration: const BoxDecoration(
+                  color: Colors.grey, shape: BoxShape.circle),
+              child: const Center(
+                  child: Text(
+                "EN",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              )),
+            )
+          ],
         ),
-        elevation: 1,
-      ),
-      body: SafeArea(
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  "assets/images/banner.png",
-                ),
-                SizedBox(height: Get.height * 0.1),
-                Text(
-                  "Hi, Driver-partner! Ready to hit the road?",
-                  style: textTheme.titleLarge,
-                ),
-                h_20,
-                Text(
-                  "Let's login to start receiving orders!",
-                  style: textTheme.titleLarge,
-                ),
-                h_40,
-                SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green),
-                        onPressed: () {
-                          Get.toNamed(Routes.LOGIN);
-                        },
-                        child: const Text("Log in"))),
-                h_20,
-                SizedBox(
-                    height: 50,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white),
-                        onPressed: () {
-                          Get.toNamed(Routes.REGISTER);
-                        },
-                        child: Text(
-                          "REGISTER AS DRIVER-PARTNER",
-                          style: textTheme.bodyLarge!
-                              .copyWith(color: Colors.green),
-                        ))),
-                h_40,
-                const Text(
-                    "Click on Register to start or continue signing up, and view your registration status"),
-              ],
-            ),
+        backgroundColor: Colors.white,
+        body: Align(
+          alignment: Alignment.center,
+          child: SafeArea(
+            child: SingleChildScrollView(
+                child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: heightSafeArea * 0.3,
+                    child: Image.asset('assets/images/banner.png'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: Text("Hi, Driver-partner! Ready to hit the road?",
+                        style: BaseTextStyle.heading2(fontSize: 20)),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: Text("Let's login to start receiving orders!",
+                        style: BaseTextStyle.heading2(fontSize: 20)),
+                  ),
+                  Container(
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 32),
+                      width: double.infinity,
+                      height: 72,
+                      child: ElevatedButton(
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.green),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const LoginView()));
+                          },
+                          child: const Text("Log in"))),
+                  Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(
+                                side: BorderSide(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              primary: Colors.white,
+                              elevation: 0),
+                          onPressed: () {},
+                          child: Text(
+                            "REGISTER AS DRIVER-PARTNER",
+                            style: BaseTextStyle.body1(
+                                color: BaseColor.green, fontSize: 16),
+                          ))),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 16),
+                    child: RichText(
+                        text: TextSpan(children: [
+                      TextSpan(
+                        text: "By logging in or registering, you agree to our ",
+                        style: BaseTextStyle.body1(color: BaseColor.black),
+                      ),
+                      TextSpan(
+                        text: "Terms of service ",
+                        style: BaseTextStyle.body1(color: Colors.blue),
+                      ),
+                      TextSpan(
+                        text: "and ",
+                        style: BaseTextStyle.body1(color: BaseColor.black),
+                      ),
+                      TextSpan(
+                        text: "Privacy policy",
+                        style: BaseTextStyle.body1(color: Colors.blue),
+                      ),
+                    ])),
+                  )
+                ],
+              ),
+            )),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
