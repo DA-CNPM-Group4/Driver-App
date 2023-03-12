@@ -13,7 +13,7 @@ import 'package:driver_app/data/api_handler.dart';
 import 'package:driver_app/data/model/driver_entity.dart';
 import 'package:driver_app/data/user_response.dart';
 import 'package:driver_app/modules/home/controllers/confirm_order.dart';
-import 'package:driver_app/modules/income/controllers/income_controller.dart';
+import 'package:driver_app/modules/income/income_controller.dart';
 
 import '../../../data/Maps.dart';
 import '../../../data/network_handler.dart';

@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:driver_app/modules/income/views/income_view.dart';
+import 'package:driver_app/modules/income/income_view.dart';
 
-import '../../home/views/home_view.dart';
-import '../controllers/dashboard_page_controller.dart';
+import '../home/home_view.dart';
+import 'dashboard_page_controller.dart';
 
 class DashboardPageView extends GetView<DashboardPageController> {
   const DashboardPageView({Key? key}) : super(key: key);

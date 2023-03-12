@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/bank_registration_controller.dart';
+import 'bank_registration_controller.dart';
 
 class BankRegistrationView extends GetView<BankRegistrationController> {
   const BankRegistrationView({Key? key}) : super(key: key);

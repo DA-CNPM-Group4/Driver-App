@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/request_controller.dart';
+import 'request_controller.dart';
 
 class RequestView extends GetView<RequestController> {
   const RequestView({Key? key}) : super(key: key);

@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
-import '../../../routes/app_pages.dart';
-import '../../../routes/app_routes.dart';
-import '../controllers/password_controller.dart';
+import '../../routes/app_pages.dart';
+import '../../routes/app_routes.dart';
+import 'password_controller.dart';
 
 class PasswordView extends GetView<PasswordController> {
   const PasswordView({Key? key}) : super(key: key);

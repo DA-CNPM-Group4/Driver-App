@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
-import '../controllers/income_controller.dart';
+import 'income_controller.dart';
 
 class IncomeView extends GetView<IncomeController> {
   const IncomeView({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../controllers/vehicle_registration_controller.dart';
+import 'vehicle_registration_controller.dart';
 
 class VehicleRegistrationBinding extends Bindings {
   @override

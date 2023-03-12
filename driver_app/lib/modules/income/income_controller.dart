@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:driver_app/data/api_handler.dart';
 
-import '../../../data/model/driver_entity.dart';
-import '../../../data/model/wallet.dart';
+import '../../data/model/driver_entity.dart';
+import '../../data/model/wallet.dart';
 
 class IncomeController extends GetxController {
   //TODO: Implement IncomeController

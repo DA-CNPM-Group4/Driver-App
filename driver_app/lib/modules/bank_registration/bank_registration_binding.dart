@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../controllers/bank_registration_controller.dart';
+import 'bank_registration_controller.dart';
 
 class BankRegistrationBinding extends Bindings {
   @override
