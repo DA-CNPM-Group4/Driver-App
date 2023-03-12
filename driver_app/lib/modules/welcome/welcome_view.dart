@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:get/get.dart';
-import 'package:driver_app/modules/login/login_view.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +11,6 @@ class WelcomeView extends StatelessWidget {
     double heightSafeArea = size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
-    double safeWidth = min(size.width, 500);
-    double keyboardHeight = EdgeInsets.fromWindowPadding(
-            WidgetsBinding.instance.window.viewInsets,
-            WidgetsBinding.instance.window.devicePixelRatio)
-        .bottom;
 
     return Scaffold(
         appBar: AppBar(
@@ -70,8 +63,8 @@ class WelcomeView extends StatelessWidget {
                       width: double.infinity,
                       height: 72,
                       child: ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.green),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green),
                           onPressed: () {
                             Get.toNamed(Routes.LOGIN);
                           },
@@ -82,13 +75,14 @@ class WelcomeView extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              shape: const StadiumBorder(
-                                side: BorderSide(
-                                  color: Colors.green,
-                                ),
+                            shape: const StadiumBorder(
+                              side: BorderSide(
+                                color: Colors.green,
                               ),
-                              primary: Colors.white,
-                              elevation: 0),
+                            ),
+                            backgroundColor: Colors.white,
+                            elevation: 0,
+                          ),
                           onPressed: () {
                             Get.toNamed(Routes.REGISTER);
                           },

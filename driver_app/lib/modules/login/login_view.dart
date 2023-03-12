@@ -10,7 +10,6 @@ class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

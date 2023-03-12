@@ -11,7 +11,6 @@ class RegisterView extends GetView<RegisterController> {
   const RegisterView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

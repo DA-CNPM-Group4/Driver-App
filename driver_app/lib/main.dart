@@ -1,26 +1,37 @@
+import 'package:driver_app/modules/location_test.dart';
 import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
-import 'package:driver_app/themes/references_resource_style.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   await setup();
 
-  runApp( GetMaterialApp(
-      title: "Application",
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-      theme: baseTheme() ,
+  // runApp(GetMaterialApp(
+  //   title: "Application",
+  //   initialRoute: AppPages.INITIAL,
+  //   getPages: AppPages.routes,
+  //   theme: baseTheme(),
+  // ));
+
+  runApp(const MaterialApp(
+    home: TestUpdateLocation(),
   ));
 }
 
 Future<void> setup() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Hive.initFlutter();
   await Hive.openBox("box");
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {
