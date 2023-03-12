@@ -12,6 +12,10 @@ import 'package:driver_app/modules/splash/splash_view.dart';
 import 'package:driver_app/modules/splash/splash_binding.dart';
 
 import 'package:get/get.dart';
+import '../modules/request/bindings/request_binding.dart';
+import '../modules/request/views/request_view.dart';
+import '../modules/user/user_binding.dart';
+import '../modules/user/user_view.dart';
 import 'app_routes.dart';
 
 import 'package:driver_app/modules/welcome/welcome_view.dart';
@@ -55,6 +59,16 @@ class AppPages {
       name: Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: Paths.REQUEST,
+      page: () => const RequestView(),
+      binding: RequestBinding(),
+    ),
+    GetPage(
+      name: Paths.USER,
+      page: () => const UserView(),
+      binding: UserBinding(),
     ),
   ];
 }

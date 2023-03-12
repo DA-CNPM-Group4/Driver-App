@@ -9,6 +9,10 @@ abstract class Routes {
   static const VEHICLE_REGISTRATION = Paths.VEHICLE_REGISTRATION;
   static const OTP = Paths.OTP;
   static const SPLASH = Paths.SPLASH;
+  static const REQUEST = Paths.REQUEST;
+  static const USER = Paths.USER;
+
+
 }
 
 abstract class Paths {
@@ -22,4 +26,7 @@ abstract class Paths {
   static const VEHICLE_REGISTRATION = '/vehicle-registration';
   static const OTP = '/otp';
   static const SPLASH = '/splash';
+  static const REQUEST = '/request';
+  static const USER = '/user';
+
 }
