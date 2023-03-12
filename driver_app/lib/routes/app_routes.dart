@@ -1,5 +1,6 @@
 abstract class Routes {
   Routes._();
+  static const HOME = Paths.HOME;
   static const WELCOME = Paths.WELCOME;
   static const LOGIN = Paths.LOGIN;
   static const PASSWORD_LOGIN = Paths.PASSWORD_LOGIN;
@@ -11,12 +12,15 @@ abstract class Routes {
   static const SPLASH = Paths.SPLASH;
   static const REQUEST = Paths.REQUEST;
   static const USER = Paths.USER;
+  static const DASHBOARD_PAGE = Paths.DASHBOARD_PAGE;
+
 
 
 }
 
 abstract class Paths {
   Paths._();
+  static const HOME = '/home';
   static const WELCOME = '/welcome';
   static const LOGIN = '/login';
   static const PASSWORD_LOGIN = '/password-login';
@@ -28,5 +32,6 @@ abstract class Paths {
   static const SPLASH = '/splash';
   static const REQUEST = '/request';
   static const USER = '/user';
+  static const DASHBOARD_PAGE = '/dashboard-page';
 
 }
