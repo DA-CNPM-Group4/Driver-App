@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationTestController extends GetxController {
-  late final StreamSubscription<Position> gpsStreamSubscription;
+  late StreamSubscription<Position> gpsStreamSubscription;
   final RxBool isActive = false.obs;
   final RxDouble lat = 0.0.obs;
   final RxDouble long = 0.0.obs;
@@ -13,25 +13,28 @@ class LocationTestController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    // gpsStreamSubscription =
-    //     Geolocator.getPositionStream().listen((Position position) {
+    await enableRealtimeLocator();
+    if (isActive.value) {
+    } else {
+      gpsStreamSubscription.cancel();
+    }
+  }
+
+  Future<void> enableRealtimeLocator() async {
+    var stream = await DeviceLocationService.instance.getLocationStream();
+    // gpsStreamSubscription = Geolocator.getPositionStream(
+    //   locationSettings: DeviceLocationService.instance.currentSetting,
+    // ).listen((Position position) {
     //   lat.value = position.latitude;
     //   long.value = position.longitude;
     //   print(position);
     // });
 
-    var stream = await DeviceLocationService.instance.getLocationStream();
     gpsStreamSubscription = stream.listen((Position position) {
       lat.value = position.latitude;
       long.value = position.longitude;
       print(position);
     });
-
-    if (isActive.value) {
-      gpsStreamSubscription.resume();
-    } else {
-      gpsStreamSubscription.pause();
-    }
   }
 
   @override
@@ -40,9 +43,9 @@ class LocationTestController extends GetxController {
   }
 
   @override
-  void onClose() {
-    super.onClose();
+  void onClose() async {
     gpsStreamSubscription.cancel();
+    super.onClose();
   }
 
   Future<void> getCurrentLocation() async {
@@ -53,16 +56,15 @@ class LocationTestController extends GetxController {
 
   void toggleActive() async {
     isActive.value = !isActive.value;
-
     if (isActive.value) {
       try {
-        gpsStreamSubscription.resume();
+        await enableRealtimeLocator();
         print("resume");
       } catch (e) {
         print(e);
       }
     } else {
-      gpsStreamSubscription.pause();
+      await gpsStreamSubscription.cancel();
       print("Pause");
     }
   }

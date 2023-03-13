@@ -110,35 +110,34 @@ class DeviceLocationService {
   }
 
   LocationSettings _getDeviceSetting() {
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return AndroidSettings(
-          accuracy: LocationAccuracy.bestForNavigation,
-          distanceFilter: 5,
-          forceLocationManager: true,
-          intervalDuration: const Duration(seconds: 5),
-          //(Optional) Set foreground notification config to keep the app alive
-          //when going to the background
-          foregroundNotificationConfig: const ForegroundNotificationConfig(
-            notificationText:
-                "Example app will continue to receive your location even when you aren't using it",
-            notificationTitle: "Running in Background",
-            enableWakeLock: true,
-          ));
-    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.macOS) {
-      return AppleSettings(
-        accuracy: LocationAccuracy.bestForNavigation,
-        activityType: ActivityType.fitness,
-        distanceFilter: 5,
-        pauseLocationUpdatesAutomatically: true,
-        // Only set to true if our app will be started up in the background.
-        showBackgroundLocationIndicator: false,
-      );
-    } else {
-      return const LocationSettings(
-        accuracy: LocationAccuracy.bestForNavigation,
-        distanceFilter: 5,
-      );
-    }
+    // if (defaultTargetPlatform == TargetPlatform.android) {
+    //   return AndroidSettings(
+    //       accuracy: LocationAccuracy.bestForNavigation,
+    //       distanceFilter: 5,
+    //       forceLocationManager: true,
+    //       intervalDuration: const Duration(seconds: 5),
+    //       //(Optional) Set foreground notification config to keep the app alive
+    //       //when going to the background
+    //       foregroundNotificationConfig: const ForegroundNotificationConfig(
+    //         notificationText:
+    //             "Example app will continue to receive your location even when you aren't using it",
+    //         notificationTitle: "Running in Background",
+    //         enableWakeLock: true,
+    //       ));
+    // } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+    //     defaultTargetPlatform == TargetPlatform.macOS) {
+    //   return AppleSettings(
+    //     accuracy: LocationAccuracy.bestForNavigation,
+    //     activityType: ActivityType.fitness,
+    //     distanceFilter: 5,
+    //     pauseLocationUpdatesAutomatically: true,
+    //     // Only set to true if our app will be started up in the background.
+    //     showBackgroundLocationIndicator: false,
+    //   );
+    // } else {
+    return const LocationSettings(
+      accuracy: LocationAccuracy.bestForNavigation,
+      distanceFilter: 5,
+    );
   }
 }
