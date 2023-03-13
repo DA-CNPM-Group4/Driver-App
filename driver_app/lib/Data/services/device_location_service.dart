@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -43,7 +42,7 @@ class DeviceLocationService {
     List<Placemark> placemark =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = placemark[0];
-    return 'Address : ${place.locality},${place.country}';
+    return '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}';
   }
 
   Future<bool> requestPermission() async {

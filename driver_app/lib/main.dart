@@ -1,4 +1,4 @@
-import 'package:driver_app/modules/location_test/location_test.dart';
+import 'package:driver_app/modules/location_test/location_test_view.dart';
 import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,7 +15,7 @@ void main() async {
     title: "Application",
     home: const TestUpdateLocation(),
     // initialRoute: AppPages.INITIAL,
-    // getPages: AppPages.routes,
+    getPages: AppPages.routes,
     theme: baseTheme(),
   ));
 }

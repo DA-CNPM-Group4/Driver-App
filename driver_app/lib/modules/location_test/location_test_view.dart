@@ -32,7 +32,7 @@ class TestUpdateLocation extends GetView<LocationTestController> {
             ),
             TextButton(
               onPressed: () async {
-                await controller.getCurrentLocation();
+                await controller.setDriverInfo();
               },
               child: const Text("Get Location"),
             ),
@@ -41,8 +41,14 @@ class TestUpdateLocation extends GetView<LocationTestController> {
                 controller.toggleActive();
               },
               child: Obx(() => controller.isActive.value
-                  ? Text("Inactive")
-                  : Text("Active")),
+                  ? const Text("Inactive")
+                  : const Text("Active")),
+            ),
+            TextButton(
+              onPressed: () async {
+                await controller.setDriverInfo();
+              },
+              child: const Text("Init"),
             ),
           ],
         ),

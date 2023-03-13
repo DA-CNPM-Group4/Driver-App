@@ -25,6 +25,7 @@ dependencies:
   firebase_database: ^10.0.15
   geolocator: ^9.0.2
   geocoding: ^2.0.5
+  json_annotation: ^4.8.0
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +37,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  json_serializable: ^6.6.1
+  build_runner: ^2.3.3
 
 # The following section is specific to Flutter packages.
 flutter:

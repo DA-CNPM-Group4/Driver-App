@@ -8,27 +8,32 @@ class FirestoreRealtimeProvider {
     return _instance ??= FirestoreRealtimeProvider._();
   }
 
+  factory FirestoreRealtimeProvider() {
+    _instance ??= FirestoreRealtimeProvider._();
+    // since you are sure you will return non-null value, add '!' operator
+    return _instance!;
+  }
+
   late FirebaseDatabase database;
   late DatabaseReference onlDriversRef;
   late DatabaseReference requestsRef;
 
   FirestoreRealtimeProvider._() {
     database = FirebaseDatabase.instance;
-    onlDriversRef = database.ref(FirebaseRealtimePaths.ONLINE_DRIVERS);
+    onlDriversRef = database.ref(FirebaseRealtimePaths.DRIVERS);
     requestsRef = database.ref(FirebaseRealtimePaths.REQUESTS);
     // initialization and stuff
   }
 
-  factory FirestoreRealtimeProvider() {
-    _instance ??= FirestoreRealtimeProvider._();
-    // since you are sure you will return non-null value, add '!' operator
-    return _instance!;
+  DatabaseReference driverNodeReferences(String driverId) {
+    return database.ref('${FirebaseRealtimePaths.DRIVERS}/$driverId');
   }
 }
 
 abstract class FirebaseRealtimePaths {
   FirebaseRealtimePaths._();
-  static const ONLINE_DRIVERS = 'requests';
+  static const DRIVERS = 'onlDrivers';
   static const TRIPS = 'trips';
-  static const REQUESTS = 'onlDrivers';
+  static const REQUESTS = 'request';
+  static const PASSENGERS = 'onlPassengers';
 }
