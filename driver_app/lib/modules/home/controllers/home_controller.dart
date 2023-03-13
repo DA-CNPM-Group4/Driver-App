@@ -48,7 +48,9 @@ class HomeController extends GetxController {
   // var q = StreamQueue<>();
 
   void insertOverlay(
-      {required BuildContext context, required UserResponse? userResponse, required String path}) {
+      {required BuildContext context,
+      required UserResponse? userResponse,
+      required String path}) {
     overlayState = Overlay.of(context);
     isAccepted.value = true;
     late Timer timer;
@@ -64,37 +66,32 @@ class HomeController extends GetxController {
             }, "driver/updatePosition/$id");
           });
         },
-        onTrip: (RxBool isLoading) async{
+        onTrip: (RxBool isLoading) async {
           if (position["latitude"].toStringAsFixed(3) ==
-              userResponse.destination!.latitude!.toStringAsFixed(3) &&
-             position["longitude"].toStringAsFixed(3) ==
-                 userResponse.destination!.longitude!.toStringAsFixed(3)) {
+                  userResponse.destination!.latitude!.toStringAsFixed(3) &&
+              position["longitude"].toStringAsFixed(3) ==
+                  userResponse.destination!.longitude!.toStringAsFixed(3)) {
             isLoading.value = true;
-            if(timer.isActive){
+            if (timer.isActive) {
               Get.log("Cancel");
               timer.cancel();
             }
             var response = await apiHandlerImp.put({
               "requestId": int.parse(id!),
-              "completeTime" : DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now())
-            },"driver/completeTrip");
+              "completeTime":
+                  DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now())
+            }, "driver/completeTrip");
             overlayEntry!.remove();
             reset();
-            Get.snackbar(
-              "Success","The trip was completed"
-            );
-            if(!timer.isActive){
-              var response_1 = await apiHandlerImp.post(
-                  {
-                    "longitude": position["longitude"],
-                    "latitude": position["latitude"]
-                  },
-                  "driver/online");
+            Get.snackbar("Success", "The trip was completed");
+            if (!timer.isActive) {
+              var response_1 = await apiHandlerImp.post({
+                "longitude": position["longitude"],
+                "latitude": position["latitude"]
+              }, "driver/online");
             }
             await incomeController.getWallet();
             isLoading.value = false;
-
-
           }
         },
       );
@@ -107,24 +104,22 @@ class HomeController extends GetxController {
     isLoading.value = true;
     position.value = await map.getCurrentPosition();
     try {
-      var response = await apiHandlerImp.post(
-          {
-            "longitude": position["longitude"],
-            "latitude": position["latitude"]
-          },
-          "driver/online");
+      var response = await apiHandlerImp.post({
+        "longitude": position["longitude"],
+        "latitude": position["latitude"]
+      }, "driver/online");
 
       listener = FirebaseDatabase.instance
           .ref(response.data["data"]
-          .toString()
-          .replaceFirst("DriverList", "Booking"))
+              .toString()
+              .replaceFirst("DriverList", "Booking"))
           .onChildAdded
           .listen((event) async {
         if (event.snapshot.exists) {
           var data = event.snapshot.value as Map;
           if (data["driver"] == null) {
-            var result = await Get.toNamed(
-                Routes.REQUEST, arguments: {"key": data});
+            var result =
+                await Get.toNamed(Routes.REQUEST, arguments: {"key": data});
             if (result["answer"] == true) {
               id = result["id"];
               userResponse = UserResponse.fromJson(data);
@@ -144,25 +139,27 @@ class HomeController extends GetxController {
               await route(
                   userResponse!.startAddress, userResponse!.destination);
               listener?.pause();
-              insertOverlay(context: context, userResponse: userResponse, path: result["path"]);
+              insertOverlay(
+                  context: context,
+                  userResponse: userResponse,
+                  path: result["path"]);
             }
           }
         }
       });
-    }catch (e) {
+    } catch (e) {
       Get.log(e.toString());
       isLoading.value = false;
     }
     isLoading.value = false;
   }
 
-
   route(Destination? from, Destination? to) async {
     polylinePoints.clear();
     var start = "${from?.latitude},${from?.longitude}";
     var end = "${to?.latitude},${to?.longitude}";
     Map<String, String> query = {
-      "key": "d2c643ad1e2975f1fa0d1719903704e8",
+      "key": "007f1251dd7ab0b676d064a314b46fa4",
       "origin": start,
       "destination": end,
       "mode": "motorcycle"
@@ -176,7 +173,7 @@ class HomeController extends GetxController {
     polyline.refresh();
   }
 
-  void reset(){
+  void reset() {
     polylinePoints.clear();
     polyline.refresh();
     markers.clear();

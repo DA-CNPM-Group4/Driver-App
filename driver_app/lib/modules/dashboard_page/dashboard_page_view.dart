@@ -12,13 +12,12 @@ class DashboardPageView extends GetView<DashboardPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() => IndexedStack(
+      body: Obx(
+        () => IndexedStack(
           index: controller.tabIndex.value,
-
           children: const [
             HomeView(),
             IncomeView(),
-
           ],
         ),
       ),
@@ -28,11 +27,17 @@ class DashboardPageView extends GetView<DashboardPageController> {
           currentIndex: controller.tabIndex.value,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.home, color: Colors.green,),
+              icon: Icon(
+                CupertinoIcons.home,
+                color: Colors.green,
+              ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.wallet, color: Colors.green,),
+              icon: Icon(
+                Icons.wallet,
+                color: Colors.green,
+              ),
               label: 'Income',
             ),
           ],

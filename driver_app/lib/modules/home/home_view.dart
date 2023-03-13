@@ -1,3 +1,4 @@
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -100,13 +101,12 @@ class HomeView extends GetView<HomeController> {
                           child: Center(
                             child: controller.isLoading.value
                                 ? JumpingText('Loading...',
-                                    // style: textTheme.headline1)
-                                    style: const TextStyle(fontSize: 16))
+                                    style: BaseTextStyle.body2(fontSize: 14))
                                 : Text(
                                     controller.isActive.value
                                         ? "Active"
                                         : "Inactive",
-                                    style: textTheme.headline1,
+                                    style: BaseTextStyle.heading4(fontSize: 18),
                                   ),
                           ),
                         ),

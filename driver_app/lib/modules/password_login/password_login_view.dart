@@ -57,7 +57,9 @@ class PasswordLoginView extends GetView<PasswordLoginController> {
               onPressed: () async {
                 // if (controller.validateAndSave()) {
                 //   await controller.login();
-                Get.toNamed(Routes.DASHBOARD_PAGE);
+                Get.offNamedUntil(
+                    Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
+
                 // }
               },
               style: ElevatedButton.styleFrom(

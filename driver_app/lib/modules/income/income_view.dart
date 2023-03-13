@@ -1,3 +1,4 @@
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,18 +23,17 @@ class IncomeView extends GetView<IncomeController> {
         appBar: AppBar(
           title: Text(
             'Income',
-            style: textTheme.headline1!.copyWith(fontSize: 25),
+            style: BaseTextStyle.heading2(fontSize: 22),
           ),
-          centerTitle: false,
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Summary of revenue",
-                style: textTheme.headline1,
+                style: BaseTextStyle.heading2(fontSize: 18),
               ),
               h_20,
               //first card
@@ -41,9 +41,9 @@ class IncomeView extends GetView<IncomeController> {
                 width: Get.width,
                 child: Card(
                   color: Colors.grey[100],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 15),
@@ -52,7 +52,7 @@ class IncomeView extends GetView<IncomeController> {
                       children: [
                         Text(
                           "Today revenue",
-                          style: textTheme.headline1!.copyWith(fontSize: 15),
+                          style: BaseTextStyle.heading2(fontSize: 16),
                         ),
                         h_20,
                         Row(
@@ -61,11 +61,14 @@ class IncomeView extends GetView<IncomeController> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("0 đ", style: textTheme.headline1),
+                                Text("0 đ",
+                                    style:
+                                        BaseTextStyle.heading2(fontSize: 16)),
                                 h_20,
                                 Text(
-                                  "O complete order today",
-                                  style: textTheme.headline2,
+                                  "0 complete order today",
+                                  style: BaseTextStyle.heading2(
+                                      fontSize: 16, color: Colors.grey),
                                 )
                               ],
                             ),
@@ -87,11 +90,11 @@ class IncomeView extends GetView<IncomeController> {
               SizedBox(
                 width: Get.width,
                 child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   elevation: 3,
-                  child:  Padding(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 15),
                     child: Column(
@@ -101,8 +104,16 @@ class IncomeView extends GetView<IncomeController> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Balance",style: textTheme.headline2!.copyWith(fontSize: 15),),
-                            Obx(()=> controller.isLoading.value ?  const CircularProgressIndicator() : Text(controller.wallet!.balance!.toString(),style: textTheme.headline1!,)),
+                            Text(
+                              "Balance",
+                              style: BaseTextStyle.heading2(fontSize: 16),
+                            ),
+                            Obx(() => controller.isLoading.value
+                                ? const CircularProgressIndicator()
+                                : Text(
+                                    controller.wallet!.balance!.toString(),
+                                    style: BaseTextStyle.heading4(fontSize: 16),
+                                  )),
                           ],
                         ),
                         h_20,
@@ -110,32 +121,38 @@ class IncomeView extends GetView<IncomeController> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 method(type: false, textTheme: textTheme);
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children:  [
+                                children: [
                                   const Icon(
                                     Icons.arrow_circle_down_sharp,
                                     color: Colors.green,
                                   ),
                                   h_10,
-                                  Text("Withdraw to bank",style: textTheme.headline2!.copyWith(fontSize: 15, color: Colors.green),),
-
+                                  Text(
+                                    "Withdraw to bank",
+                                    style: BaseTextStyle.heading1(
+                                        fontSize: 14, color: Colors.green),
+                                  ),
                                 ],
                               ),
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children:  [
+                              children: [
                                 const Icon(
-                                    Icons.schedule_rounded,
+                                  Icons.schedule_rounded,
                                   color: Colors.green,
                                 ),
                                 h_10,
-                                Text("Transaction history",style: textTheme.headline2!.copyWith(fontSize: 15,  color: Colors.green),),
-
+                                Text(
+                                  "Transaction history",
+                                  style: BaseTextStyle.heading1(
+                                      fontSize: 14, color: Colors.green),
+                                ),
                               ],
                             )
                           ],
@@ -145,13 +162,9 @@ class IncomeView extends GetView<IncomeController> {
                   ),
                 ),
               )
-
             ],
           ),
-        )
-    );
-
-
+        ));
   }
 
   void method({required bool type, required TextTheme textTheme}) async {
@@ -182,7 +195,7 @@ class IncomeView extends GetView<IncomeController> {
         isScrollControlled: true,
         Container(
           padding: const EdgeInsets.all(10),
-          height: Get.height * 0.45,
+          height: Get.height * 0.55,
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -191,6 +204,8 @@ class IncomeView extends GetView<IncomeController> {
               )),
           child: Scaffold(
               appBar: AppBar(
+                elevation: 0,
+                backgroundColor: Colors.white,
                 leading: IconButton(
                   icon: const Icon(
                     Icons.close,
@@ -203,20 +218,21 @@ class IncomeView extends GetView<IncomeController> {
                 centerTitle: true,
                 title: Text(
                   type ? "Recharge" : "Withdraw",
-                  style: textTheme.headline1,
+                  style: BaseTextStyle.heading2(fontSize: 18),
                 ),
               ),
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    h,
+                    const SizedBox(height: 22),
                     Text(
                       "Money",
-                      style: textTheme.headline1!.copyWith(fontSize: 16),
+                      style: BaseTextStyle.body2(fontSize: 16),
                     ),
                     TextFormField(
                         controller: moneyController,
+                        keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -226,7 +242,7 @@ class IncomeView extends GetView<IncomeController> {
                     h,
                     Text(
                       "OTP",
-                      style: textTheme.headline1!.copyWith(fontSize: 16),
+                      style: BaseTextStyle.body2(fontSize: 16),
                     ),
                     h,
                     Pinput(
@@ -236,17 +252,17 @@ class IncomeView extends GetView<IncomeController> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Obx(
-                            () => ElevatedButton(
+                        () => ElevatedButton(
                             onPressed: controller.isClicked.value
                                 ? null
                                 : () async {
-                              await controller.startTimer();
-                            },
+                                    await controller.startTimer();
+                                  },
                             child: controller.isClicked.value
                                 ? Text(
-                              "${controller.start.value}s",
-                              style: const TextStyle(fontSize: 20),
-                            )
+                                    "${controller.start.value}s",
+                                    style: const TextStyle(fontSize: 20),
+                                  )
                                 : const Text("Resend")),
                       ),
                     ),
@@ -258,21 +274,20 @@ class IncomeView extends GetView<IncomeController> {
                   width: double.infinity,
                   height: 60,
                   child: Obx(
-                        () => ElevatedButton(
+                    () => ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.green),
                         onPressed: check1.value && check2.value
                             ? () async {
-                          await controller.validateOTP(
-                              otpController, moneyController, type);
-                        }
+                                await controller.validateOTP(
+                                    otpController, moneyController, type);
+                              }
                             : null,
                         child: controller.buttonLoading.value
                             ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
+                                color: Colors.white,
+                              )
                             : const Text("Confirm")),
                   ))),
         ));
   }
-
 }

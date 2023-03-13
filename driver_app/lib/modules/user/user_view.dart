@@ -1,3 +1,4 @@
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
@@ -27,14 +28,14 @@ class UserView extends GetView<UserController> {
           ),
           title: Text(
             "Account",
-            style: textTheme.headline1!.copyWith(color: Colors.white),
+            style: BaseTextStyle.heading2(fontSize: 18, color: Colors.white),
           ),
         ),
         extendBodyBehindAppBar: true,
         body: Stack(
           children: [
             Image.asset(
-              "assets/background.jpg",
+              "assets/images/background.jpg",
               height: Get.height,
               fit: BoxFit.fitHeight,
             ),
@@ -56,23 +57,24 @@ class UserView extends GetView<UserController> {
                           Get.bottomSheet(choice(textTheme: textTheme));
                         },
                         child: Obx(
-                              () => controller.isLoading.value
+                          () => controller.isLoading.value
                               ? const Center(child: CircularProgressIndicator())
                               : CreditCardWidget(
-                            isSwipeGestureEnabled: false,
-                            cardNumber: "123456789123456789",
-                            expiryDate: "",
-                            cvvCode: "",
-                            cardHolderName: "Balance ${controller.wallet!.balance!}",
-                            bankName: controller.driverEntity!.fullname!,
-                            isHolderNameVisible: true,
-                            showBackView: false,
-                            onCreditCardWidgetChange:
-                                (CreditCardBrand) {}, //true when you want to show cvv(back) view
-                          ),
+                                  isSwipeGestureEnabled: false,
+                                  cardNumber: "123456789123456789",
+                                  expiryDate: "",
+                                  cvvCode: "",
+                                  cardHolderName:
+                                      "Balance ${controller.wallet!.balance!}",
+                                  bankName: controller.driverEntity!.fullname!,
+                                  isHolderNameVisible: true,
+                                  showBackView: false,
+                                  onCreditCardWidgetChange:
+                                      (CreditCardBrand) {}, //true when you want to show cvv(back) view
+                                ),
                         ),
                       ),
-
+                      const SizedBox(height: 24),
                       ListTile(
                         leading: const Icon(
                           Icons.star,
@@ -80,11 +82,10 @@ class UserView extends GetView<UserController> {
                         ),
                         title: Text(
                           "Assessment",
-                          style: textTheme.headline1,
+                          style: BaseTextStyle.heading2(fontSize: 18),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
-                      const Spacer(),
                       ListTile(
                         onTap: () async {
                           await controller.logout();
@@ -95,7 +96,7 @@ class UserView extends GetView<UserController> {
                         ),
                         title: Text(
                           "Log out",
-                          style: textTheme.headline1,
+                          style: BaseTextStyle.heading2(fontSize: 18),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
@@ -113,33 +114,39 @@ class UserView extends GetView<UserController> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
-                    child: Obx(() => controller.isLoading.value ? const Center(child: CircularProgressIndicator(),) : ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 15),
-                        leading: Image.asset("assets/Flexibility.png"),
-                        title: Text(
-                          controller.driverEntity!.fullname!,
-                          style: textTheme.headline1,
-                        ),
-                        subtitle: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              controller.driverEntity!.phone!,
-                              style: textTheme.headline2,
-                            ),
-                            Text(
-                              controller.driverEntity!.address!,
-                              style: textTheme.headline2,
-                            ),
-                            Text(
-                              controller.driverEntity!.vehicleList!.first.brand!,
-                              style: textTheme.headline2,
+                    child: Obx(
+                      () => controller.isLoading.value
+                          ? const Center(
+                              child: CircularProgressIndicator(),
                             )
-                          ],
-                        ),
-                      ),
+                          : ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 15),
+                              leading: Image.asset("assets/Flexibility.png"),
+                              title: Text(
+                                controller.driverEntity!.fullname!,
+                                style: BaseTextStyle.heading4(fontSize: 18),
+                              ),
+                              subtitle: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    controller.driverEntity!.phone!,
+                                    style: BaseTextStyle.body2(fontSize: 14),
+                                  ),
+                                  Text(
+                                    controller.driverEntity!.address!,
+                                    style: BaseTextStyle.body2(fontSize: 14),
+                                  ),
+                                  Text(
+                                    controller.driverEntity!.vehicleList!.first
+                                        .brand!,
+                                    style: BaseTextStyle.body2(fontSize: 14),
+                                  )
+                                ],
+                              ),
+                            ),
                     ),
                   ),
                 ))
@@ -171,7 +178,7 @@ class UserView extends GetView<UserController> {
           ),
           Text(
             "Which choice do you want to choose?",
-            style: textTheme.headline1,
+            style: BaseTextStyle.heading2(fontSize: 16),
           ),
           const SizedBox(
             height: 10,
@@ -245,7 +252,7 @@ class UserView extends GetView<UserController> {
         isScrollControlled: true,
         Container(
           padding: const EdgeInsets.all(10),
-          height: Get.height * 0.45,
+          height: Get.height * 0.52,
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -266,7 +273,7 @@ class UserView extends GetView<UserController> {
                 centerTitle: true,
                 title: Text(
                   type ? "Recharge" : "Withdraw",
-                  style: textTheme.headline1,
+                  style: BaseTextStyle.heading2(fontSize: 16),
                 ),
               ),
               body: SingleChildScrollView(
@@ -276,7 +283,7 @@ class UserView extends GetView<UserController> {
                     h,
                     Text(
                       "Money",
-                      style: textTheme.headline1!.copyWith(fontSize: 16),
+                      style: BaseTextStyle.body2(fontSize: 16),
                     ),
                     TextFormField(
                         controller: moneyController,
@@ -289,7 +296,7 @@ class UserView extends GetView<UserController> {
                     h,
                     Text(
                       "OTP",
-                      style: textTheme.headline1!.copyWith(fontSize: 16),
+                      style: BaseTextStyle.body2(fontSize: 16),
                     ),
                     h,
                     Pinput(
@@ -299,17 +306,17 @@ class UserView extends GetView<UserController> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Obx(
-                            () => ElevatedButton(
+                        () => ElevatedButton(
                             onPressed: controller.isClicked.value
                                 ? null
                                 : () async {
-                              await controller.startTimer();
-                            },
+                                    await controller.startTimer();
+                                  },
                             child: controller.isClicked.value
                                 ? Text(
-                              "${controller.start.value}s",
-                              style: const TextStyle(fontSize: 20),
-                            )
+                                    "${controller.start.value}s",
+                                    style: const TextStyle(fontSize: 20),
+                                  )
                                 : const Text("Resend")),
                       ),
                     ),
@@ -321,18 +328,18 @@ class UserView extends GetView<UserController> {
                   width: double.infinity,
                   height: 60,
                   child: Obx(
-                        () => ElevatedButton(
+                    () => ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.green),
                         onPressed: check1.value && check2.value
                             ? () async {
-                          await controller.validateOTP(
-                              otpController, moneyController, type);
-                        }
+                                await controller.validateOTP(
+                                    otpController, moneyController, type);
+                              }
                             : null,
                         child: controller.buttonLoading.value
                             ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
+                                color: Colors.white,
+                              )
                             : const Text("Confirm")),
                   ))),
         ));
