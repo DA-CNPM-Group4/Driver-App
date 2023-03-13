@@ -1,7 +1,7 @@
+import 'package:driver_app/modules/password_register/password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:driver_app/data/api_handler.dart';
-import 'package:driver_app/modules/password/password_controller.dart';
 import 'package:driver_app/modules/register/register_controller.dart';
 import 'package:driver_app/modules/set_up_profile/set_up_profile_controller.dart';
 
@@ -185,8 +185,10 @@ class VehicleRegistrationController extends GetxController {
         ]
       }
     }, "driver/signup");
-    if(response.data["status"]){
-      Get.snackbar("Success", "You can use your account to experience our app from now on",backgroundColor: Colors.grey[100]!);
+    if (response.data["status"]) {
+      Get.snackbar("Success",
+          "You can use your account to experience our app from now on",
+          backgroundColor: Colors.grey[100]!);
       Get.offAllNamed(Routes.WELCOME);
     }
     isLoading.value = false;

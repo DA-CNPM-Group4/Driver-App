@@ -9,13 +9,14 @@ class SplashView extends GetView<SplashController> {
   const SplashView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      body:  AnimatedSplashScreen(
+      body: AnimatedSplashScreen(
         duration: 3000,
-        splash: Image.asset("assets/icons/splash_logo.jpg"),
-        splashIconSize: 150,
-        nextScreen: controller.isFirstTimeOpenApp ? const WelcomeView() : const WelcomeView(),
+        splash: Image.asset("assets/images/taxihub_logo.png"),
+        splashIconSize: 50,
+        nextScreen: controller.isFirstTimeOpenApp
+            ? const WelcomeView()
+            : const WelcomeView(),
         splashTransition: SplashTransition.fadeTransition,
       ),
     );

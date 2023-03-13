@@ -1,3 +1,5 @@
+import 'package:driver_app/routes/app_routes.dart';
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,16 +25,15 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
         appBar: AppBar(
           title: Text(
             'Vehicle Registration',
-            style: textTheme.headline1,
+            style: BaseTextStyle.heading4(fontSize: 18),
           ),
-          centerTitle: false,
           leading: IconButton(
             onPressed: () {
               Get.back();
             },
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.grey,
+              color: Colors.black,
             ),
           ),
         ),
@@ -71,7 +72,8 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                         );
                       },
                       controller: controller.vehicleBrandController,
-                      validator: (value) =>  controller.vehicleBrandValidator(value!),
+                      validator: (value) =>
+                          controller.vehicleBrandValidator(value!),
                       disable: true,
                       icon: Icons.arrow_drop_down),
                   h_20,
@@ -79,7 +81,8 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                     title: "Vehicle type",
                     hint: "Input vehicle type",
                     controller: controller.vehicleType,
-                    validator: (value) => controller.vehicleTypeValidator(value!),
+                    validator: (value) =>
+                        controller.vehicleTypeValidator(value!),
                     textTheme: textTheme,
                   ),
                 ],
@@ -92,20 +95,28 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: ElevatedButton(
               onPressed: () async {
-                var check = await controller.validateAndSave();
-                await controller.register();
+                // var check = await controller.validateAndSave();
+                // await controller.register();
 
-                if(check){
-                  await controller.register();
-                  Get.snackbar("Register successfully", "You can access our system from now on",colorText: Colors.black,backgroundColor: Colors.grey[200] );
-                }
-                // Get.toNamed(Routes.HOME);
+                // if (check) {
+                //   await controller.register();
+                Get.snackbar("Register successfully",
+                    "You can access our system from now on",
+                    colorText: Colors.black, backgroundColor: Colors.grey[200]);
+                // }
+                Get.offAllNamed(Routes.WELCOME);
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.green,
               ),
-              child:  Obx(()=> Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: controller.isLoading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text("Continue"),)),
-
+              child: Obx(() => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text("Continue"),
+                  )),
             ),
           ),
         ),
@@ -128,7 +139,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
       children: [
         Text(
           title,
-          style: textTheme.headline2,
+          style: BaseTextStyle.heading2(fontSize: 14),
         ),
         const SizedBox(
           height: 10,
@@ -158,9 +169,9 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                 child: FloatingActionButton(
                     backgroundColor: Colors.white,
                     child: Image.asset(
-                      "assets/x-icon.png",
-                      height: 50,
-                      width: 50,
+                      "assets/icons/x_icon.png",
+                      height: 30,
+                      width: 30,
                     ),
                     onPressed: () {
                       Get.back();
@@ -182,7 +193,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                 children: [
                   Text(
                     "What do you want to register for?",
-                    style: textTheme.headline1!.copyWith(fontSize: 23),
+                    style: BaseTextStyle.heading2(fontSize: 18),
                   ),
                   const SizedBox(
                     height: 20,
@@ -203,7 +214,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                           },
                           title: Text(
                             value,
-                            style: textTheme.headline1!.copyWith(fontSize: 18),
+                            style: BaseTextStyle.heading2(fontSize: 18),
                           ),
                         );
                       },

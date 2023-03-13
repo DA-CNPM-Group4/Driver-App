@@ -1,3 +1,4 @@
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -28,7 +29,7 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.grey,
+              color: Colors.black,
             ),
             onPressed: () {
               Get.back();
@@ -36,11 +37,11 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
           ),
           title: Text(
             "Set up your profile",
-            style: textTheme.headline1,
+            style: BaseTextStyle.heading2(fontSize: 20),
           ),
           elevation: 1,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(120),
+            preferredSize: const Size.fromHeight(130),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Column(
@@ -48,8 +49,7 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                 children: [
                   Text(
                     "You'll register as a:",
-                    style: textTheme.headline2!
-                        .copyWith(fontWeight: FontWeight.bold),
+                    style: BaseTextStyle.heading1(fontSize: 18),
                   ),
                   h_20,
                   Obx(
@@ -59,11 +59,9 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                         height: 50,
                       ),
                       title: Text(
-                        controller
-                            .vehicles[controller.selectedIndex.value].name,
-                        style: textTheme.headline2!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
+                          controller
+                              .vehicles[controller.selectedIndex.value].name,
+                          style: BaseTextStyle.heading4(fontSize: 20)),
                       trailing: SizedBox(
                           height: 50,
                           child: ElevatedButton(
@@ -77,12 +75,9 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                                   isDismissible: true,
                                 );
                               },
-                              child: Text(
-                                "Change",
-                                style: textTheme.headline2!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green),
-                              ))),
+                              child: Text("Change",
+                                  style: BaseTextStyle.heading4(
+                                      fontSize: 16, color: Colors.green)))),
                     ),
                   )
                 ],
@@ -100,12 +95,12 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                 children: [
                   Text(
                     "Please fill required fields below",
-                    style: textTheme.headline1,
+                    style: BaseTextStyle.heading2(fontSize: 16),
                   ),
                   h_20,
                   Text(
                     "Gender",
-                    style: textTheme.headline1,
+                    style: BaseTextStyle.body1(fontSize: 14),
                   ),
                   Obx(
                     () => ListTile(
@@ -145,13 +140,13 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                   h_20,
                   Text(
                     "Contact",
-                    style: textTheme.headline2,
+                    style: BaseTextStyle.body1(fontSize: 14),
                   ),
                   h_10,
                   Row(
                     children: [
                       SizedBox(
-                        width: 85,
+                        width: 100,
                         height: 30,
                         child: ElevatedButton(
                             onPressed: () {},
@@ -161,16 +156,13 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                             child: Row(
                               children: [
                                 Image.asset(
-                                  "assets/flag.png",
+                                  "assets/icons/flag.png",
                                   height: 20,
                                   width: 20,
                                 ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
                                 Text(
                                   "+84",
-                                  style: textTheme.headline3,
+                                  style: BaseTextStyle.heading2(fontSize: 16),
                                 )
                               ],
                             )),
@@ -181,7 +173,8 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                       Flexible(
                         child: TextFormField(
                           controller: controller.phoneNumberController,
-                          validator: (value) => controller.phoneNumberValidator(value!),
+                          validator: (value) =>
+                              controller.phoneNumberValidator(value!),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
@@ -217,7 +210,8 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                       title: "Driver license ID",
                       hint: "Enter your driver license ID",
                       controller: controller.driverLicenseController,
-                      validator: (value) => controller.driverLicenseValidator(value!),
+                      validator: (value) =>
+                          controller.driverLicenseValidator(value!),
                       textTheme: textTheme),
                 ],
               ),
@@ -227,17 +221,23 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
-            onPressed: () async{
-              var check = await controller.validateAndSave();
-              if(check){
-                Get.toNamed(Routes.VEHICLE_REGISTRATION);
-              }
+            onPressed: () async {
+              // var check = await controller.validateAndSave();
+              // if (check) {
+              Get.toNamed(Routes.VEHICLE_REGISTRATION);
+              // }
             },
             style: ElevatedButton.styleFrom(
               primary: Colors.green,
             ),
-            child:  Obx(()=> Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: controller.isLoading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text("Continue"),)),
-
+            child: Obx(() => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: controller.isLoading.value
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Text("Continue"),
+                )),
           ),
         ),
       ),
@@ -256,9 +256,9 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                 child: FloatingActionButton(
                     backgroundColor: Colors.white,
                     child: Image.asset(
-                      "assets/x-icon.png",
-                      height: 50,
-                      width: 50,
+                      "assets/icons/x_icon.png",
+                      height: 30,
+                      width: 30,
                     ),
                     onPressed: () {
                       Get.back();
@@ -280,7 +280,7 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                 children: [
                   Text(
                     "What do you want to register for?",
-                    style: textTheme.headline1!.copyWith(fontSize: 23),
+                    style: BaseTextStyle.heading2(fontSize: 18),
                   ),
                   const SizedBox(
                     height: 20,
@@ -299,11 +299,11 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                           ),
                           title: Text(
                             controller.vehicles[itemBuilder].name,
-                            style: textTheme.headline1!.copyWith(fontSize: 18),
+                            style: BaseTextStyle.heading2(fontSize: 18),
                           ),
                           subtitle: Text(
                             controller.vehicles[itemBuilder].description,
-                            style: textTheme.headline2,
+                            style: BaseTextStyle.body1(fontSize: 14),
                           ),
                           trailing: const Icon(
                             Icons.arrow_forward_ios,
@@ -335,13 +335,13 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
       required String hint,
       required TextTheme textTheme,
       TextEditingController? controller,
-        String? Function(String?)? validator}) {
+      String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: textTheme.headline2,
+          style: BaseTextStyle.heading1(fontSize: 14),
         ),
         const SizedBox(
           height: 10,
