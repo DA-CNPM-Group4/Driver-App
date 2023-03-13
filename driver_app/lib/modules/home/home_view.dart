@@ -57,7 +57,7 @@ class HomeView extends GetView<HomeController> {
                           Get.toNamed(Routes.USER);
                         },
                         child: Image.asset(
-                          "assets/Flexibility.png",
+                          "assets/images/Flexibility.png",
                           height: 50,
                         ),
                       ),
@@ -100,7 +100,8 @@ class HomeView extends GetView<HomeController> {
                           child: Center(
                             child: controller.isLoading.value
                                 ? JumpingText('Loading...',
-                                    style: textTheme.headline1)
+                                    // style: textTheme.headline1)
+                                    style: const TextStyle(fontSize: 16))
                                 : Text(
                                     controller.isActive.value
                                         ? "Active"
@@ -122,7 +123,7 @@ class HomeView extends GetView<HomeController> {
                                     color: Colors.white,
                                   )
                                 : Image.asset(
-                                    "assets/on_icon.jpg",
+                                    "assets/icons/on_icon.jpg",
                                     color: Colors.white,
                                     height: 20,
                                   ),
@@ -246,7 +247,7 @@ class HomeView extends GetView<HomeController> {
         FloatingActionButton(
             backgroundColor: Colors.white,
             child: Image.asset(
-              "assets/x-icon.png",
+              "assets/icons/x-icon.png",
               height: 50,
               width: 50,
             ),

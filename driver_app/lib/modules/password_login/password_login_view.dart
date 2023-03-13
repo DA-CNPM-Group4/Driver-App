@@ -1,3 +1,4 @@
+import 'package:driver_app/routes/app_routes.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
@@ -56,6 +57,7 @@ class PasswordLoginView extends GetView<PasswordLoginController> {
               onPressed: () async {
                 if (controller.validateAndSave()) {
                   await controller.login();
+                  Get.toNamed(Routes.DASHBOARD_PAGE);
                 }
               },
               style: ElevatedButton.styleFrom(
