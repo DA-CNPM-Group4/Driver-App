@@ -1,4 +1,4 @@
-import 'package:driver_app/modules/location_test.dart';
+import 'package:driver_app/modules/location_test/location_test.dart';
 import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,15 +11,12 @@ import 'firebase_options.dart';
 void main() async {
   await setup();
 
-  // runApp(GetMaterialApp(
-  //   title: "Application",
-  //   initialRoute: AppPages.INITIAL,
-  //   getPages: AppPages.routes,
-  //   theme: baseTheme(),
-  // ));
-
-  runApp(const MaterialApp(
-    home: TestUpdateLocation(),
+  runApp(GetMaterialApp(
+    title: "Application",
+    home: const TestUpdateLocation(),
+    // initialRoute: AppPages.INITIAL,
+    // getPages: AppPages.routes,
+    theme: baseTheme(),
   ));
 }
 
