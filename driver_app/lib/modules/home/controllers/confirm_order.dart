@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
+import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
@@ -10,11 +12,19 @@ import '../../../data/user_response.dart';
 class OrderInformation extends StatelessWidget {
   void Function()? onStart;
   void Function(RxBool)? onTrip;
-  final UserResponse userResponse;
+  final RealtimeTripRequest tripRequest;
+  final RealtimePassenger passenger;
   RxBool? isLoading = false.obs;
   Timer? timer;
 
-  OrderInformation({Key? key, this.onStart, this.onTrip, required this.userResponse,  this.timer}) : super(key: key);
+  OrderInformation(
+      {Key? key,
+      this.onStart,
+      this.onTrip,
+      required this.tripRequest,
+      this.timer,
+      required this.passenger})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +32,6 @@ class OrderInformation extends StatelessWidget {
     var h = (size.height * 0.55).obs;
     var text = "bắt đầu".obs;
     final formatBalance = NumberFormat("#,##0", "vi_VN");
-
 
     return Obx(
       () => AnimatedPositioned(
@@ -66,7 +75,7 @@ class OrderInformation extends StatelessWidget {
                           "Order by",
                           style: TextStyle(fontWeight: FontWeight.w700),
                         ),
-                        subtitle: Text(userResponse.user?.fullName ?? ""),
+                        subtitle: Text(passenger.info.name),
                         trailing: IconButton(
                             icon: const Icon(
                               Icons.call,
@@ -74,7 +83,7 @@ class OrderInformation extends StatelessWidget {
                             ),
                             onPressed: () async {
                               await FlutterPhoneDirectCaller.callNumber(
-                                  userResponse.user!.phoneNumber!);
+                                  passenger.info.phone);
                             }),
                       ),
                       const Divider(
@@ -89,11 +98,10 @@ class OrderInformation extends StatelessWidget {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         title: Text(
-                          userResponse.startAddress?.address ?? "",
-                          style: TextStyle(fontWeight: FontWeight.w700),
+                          tripRequest.StartAddress,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
-                        subtitle: Text(
-                            userResponse.startAddress!.address!),
+                        subtitle: Text(tripRequest.StartAddress),
                       ),
                       ListTile(
                         leading: Image.asset(
@@ -103,11 +111,10 @@ class OrderInformation extends StatelessWidget {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 15),
                         title: Text(
-                          userResponse.destination?.address ?? "",
-                          style: TextStyle(fontWeight: FontWeight.w700),
+                          tripRequest.Destination,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
-                        subtitle: Text(
-                            userResponse.destination?.address ?? ""),
+                        subtitle: Text(tripRequest.Destination),
                       ),
                       Visibility(
                         visible: h.value == 0 ? true : false,
@@ -121,11 +128,12 @@ class OrderInformation extends StatelessWidget {
                               color: Colors.black,
                             ),
                             ListTile(
-                              title: Text(
+                              title: const Text(
                                 "Tiền mặt",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              trailing: Text( "${formatBalance.format(userResponse.vehicleAndPrice?.price ?? 0)}đ"),
+                              trailing: Text(
+                                  "${formatBalance.format(tripRequest.Price)}đ"),
                             ),
                             const SizedBox(
                               height: 20,
@@ -155,7 +163,9 @@ class OrderInformation extends StatelessWidget {
                             break;
                         }
                       },
-                      child: Obx(() => isLoading!.value ? const CircularProgressIndicator() : Text(text.value))),
+                      child: Obx(() => isLoading!.value
+                          ? const CircularProgressIndicator()
+                          : Text(text.value))),
                 ),
               ),
             ),

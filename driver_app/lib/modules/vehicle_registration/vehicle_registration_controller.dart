@@ -146,17 +146,6 @@ class VehicleRegistrationController extends GetxController {
       return false;
     }
 
-    var response = await apiHandlerImp.post({
-      "vehiclePlateNum": numberPlateController.text,
-      "ownername": vehicleNameController.text
-    }, "driver/checkVehiclePlateNum");
-
-    if (!response.data["status"]) {
-      print(response.data["data"]);
-      isLoading.value = false;
-      return false;
-    }
-
     formKey.currentState!.save();
     isLoading.value = false;
     return true;

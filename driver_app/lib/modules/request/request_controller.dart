@@ -1,35 +1,39 @@
 import 'dart:async';
 
+import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
+import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
+import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:get/get.dart';
 import 'package:driver_app/data/api_handler.dart';
-import 'package:driver_app/modules/home/controllers/home_controller.dart';
 
 class RequestController extends GetxController {
-  //TODO: Implement RequestController
-
-  var homeController = Get.find<HomeController>();
   final count = 10.obs;
-  var data = {};
   var isLoading = false.obs;
   APIHandlerImp apiHandlerImp = APIHandlerImp();
+  late String requestId = "";
+  late RealtimeTripRequest trip;
 
   Future<void> handleAccept() async {
-    var id = data["requestId"].toString();
-    Get.log(id);
-    var response = await apiHandlerImp.get("driver/acceptBooking/$id", {});
-    if(response.data["status"]){
-      Get.back(result: {"answer": true, "path": response.data["data"], "id": data["requestId"].toString()});
-    } else {
+    try {
+      var params = AcceptTripRequestParams(
+          requestId: requestId, driverId: Get.arguments['testDriverId']);
+      var tripId = await DriverAPIService.acceptTripRequest(params);
+      Get.back(result: {
+        "accept": true,
+        "tripId": tripId,
+      });
+    } catch (e) {
       Get.snackbar("Failed", "Failed");
       Get.back();
     }
   }
 
   @override
-  void onInit() async{
+  void onInit() {
     super.onInit();
     isLoading.value = true;
-    data = await Get.arguments["key"];
+    requestId = Get.arguments['requestId'] as String;
+    trip = Get.arguments["trip"];
     isLoading.value = false;
   }
 
@@ -45,7 +49,6 @@ class RequestController extends GetxController {
         count.value -= 1;
       });
     }
-
   }
 
   @override

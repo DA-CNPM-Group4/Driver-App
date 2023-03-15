@@ -1,5 +1,6 @@
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
+import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
 import 'package:driver_app/Data/providers/firestore_realtime_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -22,6 +23,23 @@ class FirestoreRealtimeService {
       try {
         final data = Map<String, dynamic>.from(snapshot.value as Map);
         return RealtimeDriver.fromMap(data);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  Future<RealtimePassenger?> readPassengerNode(
+    String passengerId,
+  ) async {
+    var ref = database.ref(FirebaseRealtimePaths.PASSENGERS);
+    var snapshot = await ref.child(passengerId).get();
+
+    if (snapshot.exists) {
+      try {
+        final data = Map<String, dynamic>.from(snapshot.value as Map);
+        return RealtimePassenger.fromMap(data);
       } catch (e) {
         return null;
       }
@@ -57,6 +75,17 @@ class FirestoreRealtimeService {
     var ref = database.ref(FirebaseRealtimePaths.DRIVERS).child(driverId);
 
     ref.onValue.listen((e) {
+      callback(e);
+    });
+  }
+
+  Future<void> listenTripNode(
+    String driverId,
+    Function(DatabaseEvent) callback,
+  ) async {
+    var ref = database.ref(FirebaseRealtimePaths.TRIPS);
+
+    ref.onChildAdded.listen((e) {
       callback(e);
     });
   }

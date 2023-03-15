@@ -35,7 +35,7 @@ import 'package:driver_app/modules/welcome/welcome_view.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPLASH;
+  static const INITIAL = Routes.DASHBOARD_PAGE;
 
   static final routes = [
     GetPage(
@@ -83,11 +83,10 @@ class AppPages {
       binding: UserBinding(),
     ),
     GetPage(
-      name: Paths.DASHBOARD_PAGE,
-      page: () => const DashboardPageView(),
-      binding: DashboardPageBinding(),
-      bindings:[HomeBinding(), IncomeBinding()]
-    ),
+        name: Paths.DASHBOARD_PAGE,
+        page: () => const DashboardPageView(),
+        binding: DashboardPageBinding(),
+        bindings: [HomeBinding(), IncomeBinding()]),
     GetPage(
       name: Paths.INCOME,
       page: () => const IncomeView(),
@@ -117,6 +116,5 @@ class AppPages {
       page: () => const BankRegistrationView(),
       binding: BankRegistrationBinding(),
     ),
-
   ];
 }

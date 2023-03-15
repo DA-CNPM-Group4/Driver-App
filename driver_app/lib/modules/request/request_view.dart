@@ -1,3 +1,4 @@
+import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,84 +10,91 @@ class RequestView extends GetView<RequestController> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    const h_20 = SizedBox(height: 20,);
+    const h_20 = SizedBox(
+      height: 20,
+    );
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Image.asset(
-          "assets/logo_gojek.png",
+          "assets/icons/taxihub_icon.png",
           height: 30,
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Obx(() => controller.isLoading.value ? CircularProgressIndicator() : Column(
-              children: [
-                customCard(textTheme: textTheme),
-                h_20,
-                Card(
-                  color: Colors.grey[100],
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment
-                          .spaceBetween,
-                      children: [
-                        Text(
-                          "Income: ",
-                          style: textTheme.headline2!
-                              .copyWith(fontSize: 20),
+          child: Obx(
+            () => controller.isLoading.value
+                ? const CircularProgressIndicator()
+                : Column(
+                    children: [
+                      customCard(textTheme: textTheme),
+                      h_20,
+                      Card(
+                        color: Colors.grey[100],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Income: ",
+                                style: BaseTextStyle.heading2()
+                                    .copyWith(fontSize: 20),
+                              ),
+                              Text(
+                                "đ ${controller.trip.Price.toString()}",
+                                style: BaseTextStyle.heading2().copyWith(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              )
+                            ],
+                          ),
                         ),
-                        Text(
-                          "đ ${controller.data["vehicleAndPrice"]["price"].toString()}",
-                          style: textTheme.headline2!
-                              .copyWith(
-                              fontWeight:
-                              FontWeight.bold,
-                              fontSize: 20),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
           ),
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child:Padding(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: Row(
             children: [
               Expanded(
                 flex: 1,
                 child: ElevatedButton(
-                  onPressed: (){
+                  onPressed: () {
                     Get.back();
                   },
-                  style: ElevatedButton.styleFrom(primary: Colors.white),
-                  child:  Padding(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                  child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      child:  Image.asset("assets/x-icon.png",color: Colors.red,height: 18,)
-                  ),
+                      child: Image.asset(
+                        "assets/icons/x_icon.png",
+                        color: Colors.red,
+                        height: 18,
+                      )),
                 ),
               ),
-              const SizedBox(width: 5,),
+              const SizedBox(
+                width: 5,
+              ),
               Expanded(
                 flex: 3,
                 child: ElevatedButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     await controller.handleAccept();
                   },
-                  style: ElevatedButton.styleFrom(primary: Colors.green),
-                  child:   Padding(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      child:  Obx(() => Text("Accept ${controller.count.value}"))
-                  ),
+                      child:
+                          Obx(() => Text("Accept ${controller.count.value}"))),
                 ),
               ),
             ],
@@ -96,12 +104,11 @@ class RequestView extends GetView<RequestController> {
     );
   }
 
-
   Widget address(
       {required TextTheme textTheme,
-        required String title,
-        required String subtitle,
-        required bool isDes}) {
+      required String title,
+      required String subtitle,
+      required bool isDes}) {
     return Row(
       children: [
         Icon(
@@ -118,11 +125,11 @@ class RequestView extends GetView<RequestController> {
             children: [
               Text(
                 title,
-                style: textTheme.headline1!.copyWith(fontSize: 15),
+                style: BaseTextStyle.heading2().copyWith(fontSize: 15),
               ),
               Text(
                 subtitle,
-                style: textTheme.headline3,
+                style: BaseTextStyle.heading3(),
                 overflow: TextOverflow.visible,
                 textAlign: TextAlign.start,
               ),
@@ -144,9 +151,8 @@ class RequestView extends GetView<RequestController> {
           children: [
             address(
                 textTheme: textTheme,
-                title: controller.data["startAddress"]["address"].toString().split(",")[0],
-                subtitle:
-                controller.data["startAddress"]["address"],
+                title: controller.trip.StartAddress.toString().split(",")[0],
+                subtitle: controller.trip.StartAddress,
                 isDes: false),
             Padding(
               padding: const EdgeInsets.only(left: 11),
@@ -156,9 +162,8 @@ class RequestView extends GetView<RequestController> {
             ),
             address(
                 textTheme: textTheme,
-                title: controller.data["destination"]["address"].toString().split(",")[0],
-                subtitle:
-                controller.data["destination"]["address"],
+                title: controller.trip.Destination.toString().split(",")[0],
+                subtitle: controller.trip.Destination,
                 isDes: true),
             const SizedBox(
               height: 10,
@@ -170,10 +175,11 @@ class RequestView extends GetView<RequestController> {
               ),
               child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: Text(
-                    "Distance * ${double.parse(controller.data["distanceAndTime"]["distance"].toString()).toStringAsFixed(2)}km",
-                    style: textTheme.headline2!.copyWith(color: Colors.white),
+                    "Distance * ${double.parse(controller.trip.Distance.toString()).toStringAsFixed(2)}km",
+                    style:
+                        BaseTextStyle.heading4().copyWith(color: Colors.white),
                   )),
             ),
           ],
@@ -181,7 +187,6 @@ class RequestView extends GetView<RequestController> {
       ),
     );
   }
-
 }
 
 class DashedLineVerticalPainter extends CustomPainter {
@@ -200,4 +205,3 @@ class DashedLineVerticalPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
-

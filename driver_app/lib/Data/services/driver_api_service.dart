@@ -1,17 +1,19 @@
+import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
+import 'package:driver_app/Data/models/requests/login_driver_request.dart';
 import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/models/requests/update_driver_request.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
-import 'package:driver_app/data/models/requests/login_request.dart';
 
 class DriverAPIService {
-  static Future<void> login({required LoginRequestBody body}) async {
+  static Future<void> login({required LoginDriverRequestBody body}) async {
     var response = await APIHandlerImp.instance
         .post(body.toJson(), '/Authentication/Login');
 
     if (response.data["status"]) {
       var identity = response.data["data"]['accountId'];
+      print(identity);
       await APIHandlerImp.instance.storeIdentity(identity);
     } else {
       return Future.error(response.data['message']);
@@ -35,7 +37,6 @@ class DriverAPIService {
     var identity = await APIHandlerImp.instance.getIdentity();
     body.AccountId = identity;
 
-    print(body.toJson());
     var response = await APIHandlerImp.instance
         .post(body.toJson(), '/Info/Driver/AddInfo');
     if (response.data["status"]) {
@@ -83,6 +84,31 @@ class DriverAPIService {
         .post(body, '/Info/Vehicle/GetDriverVehicle');
     if (response.data["status"]) {
       return CreateVehicleRequestBody.fromJson(response.data['data']);
+    } else {
+      return Future.error(response.data['message']);
+    }
+  }
+
+  static Future<String> acceptTripRequest(
+      AcceptTripRequestParams params) async {
+    var identity = await APIHandlerImp.instance.getIdentity();
+    var AccountId = identity;
+    params.driverId = identity ?? params.driverId;
+    var response = await APIHandlerImp.instance
+        .post(null, '/Trip/Trip/AcceptRequest', query: params.toJson());
+    if (response.data["status"]) {
+      return response.data['data'];
+    } else {
+      return Future.error(response.data['message']);
+    }
+  }
+
+  static Future<String> completeTrip(String tripId) async {
+    var query = {'tripId': tripId};
+    var response = await APIHandlerImp.instance
+        .post(null, '/Trip/Trip/FinishTrip', query: query);
+    if (response.data["status"]) {
+      return response.data['data'];
     } else {
       return Future.error(response.data['message']);
     }

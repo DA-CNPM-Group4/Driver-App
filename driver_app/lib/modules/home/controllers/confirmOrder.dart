@@ -9,7 +9,9 @@ class ConfirmOrder extends StatelessWidget {
   final void Function(Timer timer)? onStart;
   final void Function(Timer timer)? onTrip;
 
-  const ConfirmOrder({Key? key, required this.userResponse, this.onStart, this.onTrip}) : super(key: key);
+  const ConfirmOrder(
+      {Key? key, required this.userResponse, this.onStart, this.onTrip})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class ConfirmOrder extends StatelessWidget {
     var text = "bắt đầu".obs;
     Timer? timer;
 
-    return  AnimatedPositioned(
+    return AnimatedPositioned(
       width: size.width,
       height: size.height - size.height * 0.65,
       top: size.height * 0.65,
@@ -101,11 +103,11 @@ class ConfirmOrder extends StatelessWidget {
                     onPressed: () {
                       switch (text.value) {
                         case "bắt đầu":
-                          if(onStart != null) onStart!(timer!);
+                          if (onStart != null) onStart!(timer!);
                           text.value = "đã hoàn thành";
                           break;
                         case "đã hoàn thành":
-                          if(onTrip != null) onTrip!(timer!);
+                          if (onTrip != null) onTrip!(timer!);
                           break;
                       }
                     },

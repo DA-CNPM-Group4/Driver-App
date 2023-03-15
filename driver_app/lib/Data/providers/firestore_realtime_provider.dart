@@ -32,8 +32,8 @@ class FirestoreRealtimeProvider {
 
 abstract class FirebaseRealtimePaths {
   FirebaseRealtimePaths._();
-  static const DRIVERS = 'onlDrivers';
+  static const DRIVERS = 'drivers';
   static const TRIPS = 'trips';
-  static const REQUESTS = 'request';
-  static const PASSENGERS = 'onlPassengers';
+  static const REQUESTS = 'requests';
+  static const PASSENGERS = 'passengers';
 }

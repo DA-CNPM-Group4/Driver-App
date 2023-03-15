@@ -129,7 +129,7 @@ class HomeView extends GetView<HomeController> {
                                   ),
                             onPressed: () async {
                               if (controller.isActive.value) {
-                                await controller.cancelStatus();
+                                // await controller.cancelStatus();
                               } else {
                                 await controller.changeStatus(context);
                               }

@@ -1,20 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_request.dart';
+part of 'login_driver_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoginRequestBody _$LoginRequestBodyFromJson(Map<String, dynamic> json) =>
-    LoginRequestBody(
+LoginDriverRequestBody _$LoginDriverRequestBodyFromJson(
+        Map<String, dynamic> json) =>
+    LoginDriverRequestBody(
       email: json['email'] as String,
       phone: json['phone'] as String,
       password: json['password'] as String,
-      role: json['role'] as String,
-    );
+    )..role = json['role'] as String?;
 
-Map<String, dynamic> _$LoginRequestBodyToJson(LoginRequestBody instance) =>
+Map<String, dynamic> _$LoginDriverRequestBodyToJson(
+        LoginDriverRequestBody instance) =>
     <String, dynamic>{
       'email': instance.email,
       'phone': instance.phone,

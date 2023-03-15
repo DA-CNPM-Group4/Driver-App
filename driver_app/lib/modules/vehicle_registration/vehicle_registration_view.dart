@@ -103,8 +103,8 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                       "You can access our system from now on",
                       colorText: Colors.black,
                       backgroundColor: Colors.grey[200]);
+                  Get.offAllNamed(Routes.WELCOME);
                 }
-                Get.offAllNamed(Routes.WELCOME);
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.green,
