@@ -54,10 +54,10 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                           controller.numberPlateValidator(value!)),
                   h_20,
                   titleAndText(
-                      title: "Owner",
-                      hint: "e.g Adit Bruhman",
+                      title: "Vehicle Name",
+                      hint: "e.g Samsung Galaxy",
                       textTheme: textTheme,
-                      controller: controller.ownerName,
+                      controller: controller.vehicleNameController,
                       validator: (value) =>
                           controller.ownerNameValidator(value!)),
                   h_20,
@@ -95,15 +95,15 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: ElevatedButton(
               onPressed: () async {
-                // var check = await controller.validateAndSave();
-                // await controller.register();
+                var check = await controller.validateAndSave();
 
-                // if (check) {
-                //   await controller.register();
-                Get.snackbar("Register successfully",
-                    "You can access our system from now on",
-                    colorText: Colors.black, backgroundColor: Colors.grey[200]);
-                // }
+                if (check) {
+                  await controller.register();
+                  Get.snackbar("Register successfully",
+                      "You can access our system from now on",
+                      colorText: Colors.black,
+                      backgroundColor: Colors.grey[200]);
+                }
                 Get.offAllNamed(Routes.WELCOME);
               },
               style: ElevatedButton.styleFrom(

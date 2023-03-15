@@ -3,14 +3,14 @@ part 'create_vehicle_request.g.dart';
 
 @JsonSerializable()
 class CreateVehicleRequestBody {
-  String VehicleId;
+  String? VehicleId;
   String? DriverId;
   String VehicleType;
   String VehicleName;
   String Brand;
 
   CreateVehicleRequestBody({
-    required this.VehicleId,
+    this.VehicleId,
     this.DriverId,
     required this.VehicleType,
     required this.Brand,

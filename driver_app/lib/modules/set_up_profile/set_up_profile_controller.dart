@@ -1,3 +1,8 @@
+import 'package:driver_app/Data/models/requests/create_driver_request.dart';
+import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/utils/widgets.dart';
+import 'package:driver_app/modules/register/register_controller.dart';
+import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,27 +14,23 @@ class SetUpProfileController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   APIHandlerImp apiHandlerImp = APIHandlerImp();
   var isLoading = false.obs;
+  var registerController = Get.find<RegisterController>();
 
   List<Vehicle> vehicles = [
     Vehicle(
         name: "Bike driver",
-        type: "MOTORBIKE",
+        type: "Motorbike",
         description: "Get orders for ride, food, and send.",
         img: "assets/icons/bike.png"),
     Vehicle(
         name: "Car4S",
-        type: "CAR4S",
+        type: "Car4S",
         description: "Get orders for Cars4S",
         img: "assets/icons/car.png"),
     Vehicle(
         name: "Car7S",
-        type: "CAR7S",
+        type: "Car7S",
         description: "Get orders for Cars7S",
-        img: "assets/icons/car.png"),
-    Vehicle(
-        name: "Car16S",
-        type: "CAR16S",
-        description: "Get orders for Cars16S",
         img: "assets/icons/car.png"),
   ];
 
@@ -98,24 +99,44 @@ class SetUpProfileController extends GetxController {
       return false;
     }
 
-    var response = await apiHandlerImp.post({
-      "phoneNumber": phoneNumberController.text,
-      "email": emailController.text,
-      "driverName": nameController.text,
-      "gender": defaultGender.value ? "Male" : "Female",
-      "driverAddress": addressController.text,
-      "citizenId": idController.text,
-      "driverLicenseId": driverLicenseController.text
-    }, "driver/checkDriverInfo");
+    // var response = await apiHandlerImp.post({
+    //   "phoneNumber": phoneNumberController.text,
+    //   "email": emailController.text,
+    //   "driverName": nameController.text,
+    //   "gender": defaultGender.value ? "Male" : "Female",
+    //   "driverAddress": addressController.text,
+    //   "citizenId": idController.text,
+    //   "driverLicenseId": driverLicenseController.text
+    // }, "driver/checkDriverInfo");
 
-    if (!response.data["status"]) {
-      print(response.data["data"]);
+    // if (!response.data["status"]) {
+    //   print(response.data["data"]);
+    //   isLoading.value = false;
+    //   return false;
+    // }
+
+    var body = CreateDriverRequestBody(
+      Address: addressController.text,
+      AverageRate: 0,
+      NumberOfRate: 0,
+      NumberOfTrip: 0,
+      Email: registerController.emailController.text,
+      Gender: defaultGender.value,
+      IdentityNumber: idController.text,
+      Name: nameController.text,
+      Phone: registerController.phoneNumberController.text,
+    );
+
+    try {
+      await DriverAPIService.createDriver(body: body);
       isLoading.value = false;
-      return false;
+      Get.toNamed(Routes.VEHICLE_REGISTRATION);
+    } catch (e) {
+      showSnackBar("Oh no", e.toString());
     }
 
     isLoading.value = false;
-    return true;
+    return false;
   }
 
   @override

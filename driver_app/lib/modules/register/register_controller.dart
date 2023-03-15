@@ -34,7 +34,7 @@ class RegisterController extends GetxController {
   Future<bool> validateAndSave() async {
     isLoading.value = true;
     final isPhoneValid = phoneFormKey.currentState!.validate();
-    final isEmailValid =  emailFormKey.currentState!.validate();
+    final isEmailValid = emailFormKey.currentState!.validate();
     if (!isPhoneValid || !isEmailValid) {
       isLoading.value = false;
       return false;

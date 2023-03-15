@@ -164,7 +164,7 @@ class RegisterView extends GetView<RegisterController> {
               var check = await controller.validateAndSave();
 
               if (check) {
-                Get.toNamed(Routes.OTP);
+                Get.toNamed(Routes.PASSWORD_REGISTER);
               }
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),

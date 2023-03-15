@@ -73,9 +73,9 @@ class PasswordView extends GetView<PasswordController> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (controller.validateAndSave()) {
-                  Get.toNamed(Routes.SET_UP_PROFILE);
+                  await controller.registerDriver();
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),

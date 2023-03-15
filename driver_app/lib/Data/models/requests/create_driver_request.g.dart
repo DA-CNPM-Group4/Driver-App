@@ -12,7 +12,7 @@ CreateDriverRequestBody _$CreateDriverRequestBodyFromJson(
       IdentityNumber: json['IdentityNumber'] as String,
       AverageRate: (json['AverageRate'] as num).toDouble(),
       NumberOfTrip: json['NumberOfTrip'] as int,
-      NumberOfRate: (json['NumberOfRate'] as num).toDouble(),
+      NumberOfRate: json['NumberOfRate'] as int,
       Address: json['Address'] as String,
       Email: json['Email'] as String,
       Phone: json['Phone'] as String,

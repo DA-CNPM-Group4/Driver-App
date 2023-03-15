@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:driver_app/Data/model/driver_entity.dart';
 import 'package:intl/intl.dart';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -10,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:driver_app/data/api_handler.dart';
-import 'package:driver_app/data/model/driver_entity.dart';
 import 'package:driver_app/data/user_response.dart';
 import 'package:driver_app/modules/home/controllers/confirm_order.dart';
 import 'package:driver_app/modules/income/income_controller.dart';

@@ -1,3 +1,6 @@
+import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
+import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/utils/widgets.dart';
 import 'package:driver_app/modules/password_register/password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +12,6 @@ import '../../routes/app_pages.dart';
 import '../../routes/app_routes.dart';
 
 class VehicleRegistrationController extends GetxController {
-  //TODO: Implement VehicleRegistrationController
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
   APIHandlerImp apiHandlerImp = APIHandlerImp();
@@ -105,7 +107,7 @@ class VehicleRegistrationController extends GetxController {
   TextEditingController vehicleBrandController = TextEditingController();
   TextEditingController numberPlateController = TextEditingController();
   TextEditingController vehicleType = TextEditingController();
-  TextEditingController ownerName = TextEditingController();
+  TextEditingController vehicleNameController = TextEditingController();
 
   String? ownerNameValidator(String value) {
     if (value.isEmpty) {
@@ -146,7 +148,7 @@ class VehicleRegistrationController extends GetxController {
 
     var response = await apiHandlerImp.post({
       "vehiclePlateNum": numberPlateController.text,
-      "ownername": ownerName.text
+      "ownername": vehicleNameController.text
     }, "driver/checkVehiclePlateNum");
 
     if (!response.data["status"]) {
@@ -162,35 +164,49 @@ class VehicleRegistrationController extends GetxController {
 
   Future<void> register() async {
     isLoading.value = true;
-    var response = await apiHandlerImp.post({
-      "username": "0${registerController.phoneNumberController.text}",
-      "password": passwordController.passwordController.text,
-      "driverInfor": {
-        "phoneNumber": setUpProfileController.phoneNumberController.text,
-        "email": setUpProfileController.emailController.text,
-        "driverName": setUpProfileController.nameController.text,
-        "gender":
-            setUpProfileController.defaultGender.value ? "Male" : "Female",
-        "driverAddress": setUpProfileController.addressController.text,
-        "citizenId": setUpProfileController.idController.text,
-        "driverLicenseId": setUpProfileController.driverLicenseController.text,
-        "vehicleList": [
-          {
-            "ownername": ownerName.text,
-            "licensePlateNum": numberPlateController.text,
-            "typeOfVehicle": setUpProfileController
-                .vehicles[setUpProfileController.selectedIndex.value].type,
-            "brand": "${vehicleBrandController.text} ${vehicleType.text}"
-          }
-        ]
-      }
-    }, "driver/signup");
-    if (response.data["status"]) {
-      Get.snackbar("Success",
-          "You can use your account to experience our app from now on",
-          backgroundColor: Colors.grey[100]!);
-      Get.offAllNamed(Routes.WELCOME);
+    // var response = await apiHandlerImp.post({
+    //   "username": "0${registerController.phoneNumberController.text}",
+    //   "password": passwordController.passwordController.text,
+    //   "driverInfor": {
+    //     "phoneNumber": setUpProfileController.phoneNumberController.text,
+    //     "email": setUpProfileController.emailController.text,
+    //     "driverName": setUpProfileController.nameController.text,
+    //     "gender":
+    //         setUpProfileController.defaultGender.value ? "Male" : "Female",
+    //     "driverAddress": setUpProfileController.addressController.text,
+    //     "citizenId": setUpProfileController.idController.text,
+    //     "driverLicenseId": setUpProfileController.driverLicenseController.text,
+    //     "vehicleList": [
+    //       {
+    //         "ownername": ownerName.text,
+    //         "licensePlateNum": numberPlateController.text,
+    //         "typeOfVehicle": setUpProfileController
+    //             .vehicles[setUpProfileController.selectedIndex.value].type,
+    //         "brand": "${vehicleBrandController.text} ${vehicleType.text}"
+    //       }
+    //     ]
+    //   }
+    // }, "driver/signup");
+    // if (response.data["status"]) {
+    //   Get.snackbar("Success",
+    //       "You can use your account to experience our app from now on",
+    //       backgroundColor: Colors.grey[100]!);
+    //   Get.offAllNamed(Routes.WELCOME);
+    // }
+
+    try {
+      var body = CreateVehicleRequestBody(
+        Brand: vehicleBrandController.text,
+        VehicleName: vehicleNameController.text,
+        VehicleType: vehicleType.text,
+      );
+      await DriverAPIService.registerVehicle(body: body);
+      isLoading.value = false;
+    } catch (e) {
+      print(e.toString());
+      showSnackBar("Error", "Something went wrong");
     }
+
     isLoading.value = false;
   }
 

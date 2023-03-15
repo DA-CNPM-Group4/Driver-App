@@ -11,7 +11,6 @@ abstract class APIHandlerInterface {
   Future<Response> post(var body, String endpoint);
   Future<Response> put(var body, String endpoint);
 
-
   Future<void> storeToken(String token);
 
   Future<String?> getToken();
@@ -69,7 +68,8 @@ class APIHandlerImp implements APIHandlerInterface {
   @override
   Future<Response> post(var body, String endpoint) async {
     Response response = await client.post(host + endpoint,
-        data: json.encode(body), options: Options(headers: await _buildHeader()));
+        data: json.encode(body),
+        options: Options(headers: await _buildHeader()));
     print(body);
     print(endpoint);
     print(response);
@@ -84,25 +84,22 @@ class APIHandlerImp implements APIHandlerInterface {
   }
 
   @override
-  Future<Response> get(
-      String endpoint, Map<String, dynamic> query) async {
+  Future<Response> get(String endpoint, Map<String, dynamic> query) async {
     Response response = await client.get(host + endpoint,
         queryParameters: query,
         options: Options(headers: await _buildHeader()));
-    print("\n\n"+endpoint);
+    print("\n\n" + endpoint);
     print(response);
     return response;
   }
 
   @override
-  Future<Response> put(body, String endpoint) async{
+  Future<Response> put(body, String endpoint) async {
     Response response = await client.put(host + endpoint,
-        data: json.encode(body), options: Options(headers: await _buildHeader()));
-    print("\n\n"+endpoint);
+        data: json.encode(body),
+        options: Options(headers: await _buildHeader()));
+    print("\n\n" + endpoint);
     print(response);
     return response;
   }
-
-
-
 }

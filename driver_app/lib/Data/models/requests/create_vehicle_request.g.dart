@@ -9,7 +9,7 @@ part of 'create_vehicle_request.dart';
 CreateVehicleRequestBody _$CreateVehicleRequestBodyFromJson(
         Map<String, dynamic> json) =>
     CreateVehicleRequestBody(
-      VehicleId: json['VehicleId'] as String,
+      VehicleId: json['VehicleId'] as String?,
       DriverId: json['DriverId'] as String?,
       VehicleType: json['VehicleType'] as String,
       Brand: json['Brand'] as String,

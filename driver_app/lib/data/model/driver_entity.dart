@@ -3,16 +3,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'driver_entity.g.dart';
+
 @HiveType(typeId: 0)
-@JsonSerializable()
-class DriverEntity extends HiveObject{
+@JsonSerializable(explicitToJson: true)
+class DriverEntity extends HiveObject {
   @HiveField(0)
   int? driverId;
 
   @HiveField(10)
   String? username;
-
-
 
   @HiveField(1)
   String? fullname;
@@ -43,20 +42,19 @@ class DriverEntity extends HiveObject{
 
   DriverEntity(
       {required this.driverId,
-        required this.username,
-        required this.fullname,
-        required this.phone,
-        required this.address,
-        required this.email,
-        required this.gender,
-        required this.driverLicenseId,
-        required this.driverCitizenId,
-        required this.status,
-        required this.vehicleList});
+      required this.username,
+      required this.fullname,
+      required this.phone,
+      required this.address,
+      required this.email,
+      required this.gender,
+      required this.driverLicenseId,
+      required this.driverCitizenId,
+      required this.status,
+      required this.vehicleList});
 
-
-  factory DriverEntity.fromJson(Map<String, dynamic> json) => _$DriverEntityFromJson(json);
+  factory DriverEntity.fromJson(Map<String, dynamic> json) =>
+      _$DriverEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$DriverEntityToJson(this);
 }
-

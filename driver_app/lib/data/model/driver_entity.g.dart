@@ -85,9 +85,7 @@ DriverEntity _$DriverEntityFromJson(Map<String, dynamic> json) => DriverEntity(
       driverLicenseId: json['driverLicenseId'] as String?,
       driverCitizenId: json['driverCitizenId'] as String?,
       status: json['status'] as String?,
-      vehicleList: (json['vehicleList'] as List<dynamic>?)
-          ?.map((e) => VehicleListEntity.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      vehicleList: json['vehicleList'] as List<VehicleListEntity>?,
     );
 
 Map<String, dynamic> _$DriverEntityToJson(DriverEntity instance) =>

@@ -1,5 +1,5 @@
+import 'package:driver_app/Data/model/driver_entity.dart';
 import 'package:driver_app/modules/location_test/location_test_view.dart';
-import 'package:driver_app/data/model/driver_entity.dart';
 import 'package:driver_app/data/model/vehicle_list_entity.dart';
 import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
@@ -35,8 +35,8 @@ Future<void> setup() async {
 
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(0)) {
-    Hive.registerAdapter(DriverEntityAdapter());
     Hive.registerAdapter(VehicleListEntityAdapter());
+    Hive.registerAdapter(DriverEntityAdapter());
   }
   // await Firebase.initializeApp();
 }

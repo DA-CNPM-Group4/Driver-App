@@ -1,9 +1,9 @@
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
+import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/models/requests/update_driver_request.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/data/models/requests/login_request.dart';
-import 'package:driver_app/data/models/requests/register_request.dart';
 
 class DriverAPIService {
   static Future<void> login({required LoginRequestBody body}) async {
@@ -18,7 +18,7 @@ class DriverAPIService {
     }
   }
 
-  static Future<void> register({required RegisterRequestBody body}) async {
+  static Future<void> register(RegisterDriverRequestBody body) async {
     var response = await APIHandlerImp.instance
         .post(body.toJson(), '/Authentication/Register');
     if (response.data["status"]) {
@@ -35,6 +35,7 @@ class DriverAPIService {
     var identity = await APIHandlerImp.instance.getIdentity();
     body.AccountId = identity;
 
+    print(body.toJson());
     var response = await APIHandlerImp.instance
         .post(body.toJson(), '/Info/Driver/AddInfo');
     if (response.data["status"]) {
@@ -62,6 +63,7 @@ class DriverAPIService {
       {required CreateVehicleRequestBody body}) async {
     var identity = await APIHandlerImp.instance.getIdentity();
     body.DriverId = identity;
+    body.VehicleId = identity;
 
     var response = await APIHandlerImp.instance
         .post(body.toJson(), '/Info/Vehicle/RegisterVehicle');

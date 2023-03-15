@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'register_request.dart';
+part of 'register_driver_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterRequestBody _$RegisterRequestBodyFromJson(Map<String, dynamic> json) =>
-    RegisterRequestBody(
+RegisterDriverRequestBody _$RegisterDriverRequestBodyFromJson(
+        Map<String, dynamic> json) =>
+    RegisterDriverRequestBody(
       email: json['email'] as String,
       phone: json['phone'] as String,
       password: json['password'] as String,
-      role: json['role'] as String,
       name: json['name'] as String,
-    );
+    )..role = json['role'] as String?;
 
-Map<String, dynamic> _$RegisterRequestBodyToJson(
-        RegisterRequestBody instance) =>
+Map<String, dynamic> _$RegisterDriverRequestBodyToJson(
+        RegisterDriverRequestBody instance) =>
     <String, dynamic>{
       'email': instance.email,
       'phone': instance.phone,

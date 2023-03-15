@@ -10,7 +10,7 @@ class CreateDriverRequestBody {
   bool Gender;
   String Address;
   double AverageRate;
-  double NumberOfRate;
+  int NumberOfRate;
   int NumberOfTrip;
   String? AccountId;
 

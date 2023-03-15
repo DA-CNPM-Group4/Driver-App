@@ -186,13 +186,6 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                   ),
                   h_20,
                   titleAndText(
-                      title: "Email Address",
-                      hint: "Only gmail Ids are accepted",
-                      controller: controller.emailController,
-                      validator: (value) => controller.emailValidator(value!),
-                      textTheme: textTheme),
-                  h_20,
-                  titleAndText(
                       title: "Current Address",
                       hint: "Enter your current address",
                       controller: controller.addressController,
@@ -222,10 +215,7 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
             onPressed: () async {
-              // var check = await controller.validateAndSave();
-              // if (check) {
-              Get.toNamed(Routes.VEHICLE_REGISTRATION);
-              // }
+              var check = await controller.validateAndSave();
             },
             style: ElevatedButton.styleFrom(
               primary: Colors.green,

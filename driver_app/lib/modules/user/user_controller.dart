@@ -1,10 +1,9 @@
 import 'dart:async';
 
+import 'package:driver_app/Data/model/driver_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:driver_app/data/model/driver_entity.dart';
-
 import '../../data/api_handler.dart';
 import '../../data/model/wallet.dart';
 import '../../routes/app_routes.dart';
