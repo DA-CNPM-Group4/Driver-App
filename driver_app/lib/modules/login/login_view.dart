@@ -109,9 +109,9 @@ class LoginView extends GetView<LoginController> {
                               child: Row(
                                 children: [
                                   Image.asset(
-                                    "assets/images/flag.png",
-                                    height: 20,
-                                    width: 20,
+                                    "assets/icons/flag.png",
+                                    height: 25,
+                                    width: 25,
                                   ),
                                   const SizedBox(
                                     width: 5,
@@ -204,9 +204,9 @@ class LoginView extends GetView<LoginController> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
             onPressed: () async {
-              if (await controller.validateAndSave()) {
-                Get.toNamed(Routes.PASSWORD_LOGIN);
-              }
+              // if (await controller.validateAndSave()) {
+              //   Get.toNamed(Routes.PASSWORD_LOGIN);
+              // }
               Get.toNamed(Routes.PASSWORD_LOGIN);
             },
             style: ElevatedButton.styleFrom(

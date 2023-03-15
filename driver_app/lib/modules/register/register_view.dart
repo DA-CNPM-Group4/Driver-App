@@ -58,7 +58,7 @@ class RegisterView extends GetView<RegisterController> {
                           child: Row(
                             children: [
                               Image.asset(
-                                "assets/images/flag.png",
+                                "assets/icons/flag.png",
                                 height: 20,
                                 width: 20,
                               ),

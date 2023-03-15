@@ -1,3 +1,4 @@
+import 'package:driver_app/routes/app_routes.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
@@ -54,9 +55,12 @@ class PasswordLoginView extends GetView<PasswordLoginController> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
               onPressed: () async {
-                if (controller.validateAndSave()) {
-                  await controller.login();
-                }
+                // if (controller.validateAndSave()) {
+                //   await controller.login();
+                Get.offNamedUntil(
+                    Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
+
+                // }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
