@@ -1,18 +1,18 @@
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
 import 'package:driver_app/Data/models/requests/update_driver_request.dart';
-import 'package:driver_app/Data/providers/api_handler.dart';
+import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/data/models/requests/login_request.dart';
 import 'package:driver_app/data/models/requests/register_request.dart';
 
-class DriverAPIProvider {
+class DriverAPIService {
   static Future<void> login({required LoginRequestBody body}) async {
     var response = await APIHandlerImp.instance
         .post(body.toJson(), '/Authentication/Login');
 
     if (response.data["status"]) {
-      await APIHandlerImp.instance
-          .storeIdentity(response.data["data"]['accountId']);
+      var identity = response.data["data"]['accountId'];
+      await APIHandlerImp.instance.storeIdentity(identity);
     } else {
       return Future.error(response.data['message']);
     }
@@ -22,7 +22,9 @@ class DriverAPIProvider {
     var response = await APIHandlerImp.instance
         .post(body.toJson(), '/Authentication/Register');
     if (response.data["status"]) {
-      return;
+      var identity = response.data["data"]['accountId'];
+
+      await APIHandlerImp.instance.storeIdentity(identity);
     } else {
       return Future.error(response.data['message']);
     }
