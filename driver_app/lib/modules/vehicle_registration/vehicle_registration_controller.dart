@@ -185,7 +185,8 @@ class VehicleRegistrationController extends GetxController {
       var body = CreateVehicleRequestBody(
         Brand: vehicleBrandController.text,
         VehicleName: vehicleNameController.text,
-        VehicleType: vehicleType.text,
+        VehicleType: setupProfileController
+            .vehicles[setupProfileController.selectedIndex.value].type,
       );
       await DriverAPIService.registerVehicle(body: body);
       isLoading.value = false;
