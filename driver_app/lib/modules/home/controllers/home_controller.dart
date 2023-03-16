@@ -196,7 +196,7 @@ class HomeController extends GetxController {
   void assignPassengerListener(RealtimeTripRequest request) {
     passengerLisenterAgent = FirestoreRealtimeService.instance
         .getDatabaseReference(
-          nodeId: 'fake-passenger-id',
+          nodeId: request.PassengerId ?? "fake-passenger-id",
           rootPath: FirebaseRealtimePaths.PASSENGERS,
         )
         .onValue

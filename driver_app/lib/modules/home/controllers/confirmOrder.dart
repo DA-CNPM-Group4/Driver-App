@@ -108,6 +108,7 @@ class ConfirmOrder extends StatelessWidget {
                           break;
                         case "Hoàn thành chuyến":
                           if (onTrip != null) onTrip!(timer!);
+
                           break;
                       }
                     },
