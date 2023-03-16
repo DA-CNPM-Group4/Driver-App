@@ -41,13 +41,11 @@ class RequestView extends GetView<RequestController> {
                             children: [
                               Text(
                                 "Income: ",
-                                style: BaseTextStyle.heading2()
-                                    .copyWith(fontSize: 20),
+                                style: BaseTextStyle.heading2(fontSize: 20),
                               ),
                               Text(
                                 "đ ${controller.trip.Price.toString()}",
-                                style: BaseTextStyle.heading2().copyWith(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                style: BaseTextStyle.heading2(fontSize: 20),
                               )
                             ],
                           ),
@@ -125,11 +123,11 @@ class RequestView extends GetView<RequestController> {
             children: [
               Text(
                 title,
-                style: BaseTextStyle.heading2().copyWith(fontSize: 15),
+                style: BaseTextStyle.heading2(fontSize: 18),
               ),
               Text(
                 subtitle,
-                style: BaseTextStyle.heading3(),
+                style: BaseTextStyle.heading1(fontSize: 16),
                 overflow: TextOverflow.visible,
                 textAlign: TextAlign.start,
               ),
