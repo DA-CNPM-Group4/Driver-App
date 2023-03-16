@@ -207,7 +207,7 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Text(
                         "Automatically accept",
-                        style: textTheme.headline1!.copyWith(fontSize: 16),
+                        style: BaseTextStyle.heading2(fontSize: 16),
                       ),
                       CupertinoSwitch(
                         value: true,
@@ -226,10 +226,10 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Text(
                         "Credit",
-                        style: textTheme.headline1!.copyWith(fontSize: 16),
+                        style: BaseTextStyle.heading2(fontSize: 16),
                       ),
                       Text("thanhson232",
-                          style: textTheme.headline1!.copyWith(fontSize: 16))
+                          style: BaseTextStyle.heading2(fontSize: 16))
                     ],
                   ),
                 ),
