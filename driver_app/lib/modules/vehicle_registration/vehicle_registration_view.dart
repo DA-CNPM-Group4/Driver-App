@@ -118,7 +118,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                       textTheme: textTheme,
                       onTap: () {
                         Get.bottomSheet(
-                          bottomSheet(textTheme: textTheme),
+                          vehicleBrandBottomSheet(textTheme: textTheme),
                           isDismissible: true,
                         );
                       },
@@ -273,6 +273,90 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                       },
                       itemCount:
                           controller.setupProfileController.vehicles.length,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Divider(
+                            height: 1,
+                            color: Colors.black,
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ))
+          ],
+        ));
+  }
+
+  Widget vehicleBrandBottomSheet({required TextTheme textTheme}) {
+    return Container(
+        height: Get.height * 0.7,
+        color: Colors.transparent,
+        child: Column(
+          children: [
+            Container(
+                padding: const EdgeInsets.only(right: 20),
+                alignment: Alignment.topRight,
+                child: FloatingActionButton(
+                    backgroundColor: Colors.white,
+                    child: Image.asset(
+                      "assets/icons/x_icon.png",
+                      height: 30,
+                      width: 30,
+                    ),
+                    onPressed: () {
+                      Get.back();
+                    })),
+            const SizedBox(
+              height: 30,
+            ),
+            Expanded(
+                child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 25),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16)),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    "Which brand do you want to regist?",
+                    style: BaseTextStyle.heading2(fontSize: 18),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      itemBuilder: (_, itemBuilder) {
+                        var value = controller.setupProfileController
+                                    .selectedIndex.value ==
+                                0
+                            ? controller.motorcycleBrand[itemBuilder]
+                            : controller.carBrand[itemBuilder];
+                        return ListTile(
+                          onTap: () {
+                            controller.selectedItem.value = itemBuilder;
+                            controller.vehicleBrandController.text = value;
+                            Get.back();
+                          },
+                          title: Text(
+                            value,
+                            style: BaseTextStyle.heading2(fontSize: 18),
+                          ),
+                        );
+                      },
+                      itemCount: controller
+                                  .setUpProfileController.selectedIndex.value ==
+                              0
+                          ? controller.motorcycleBrand.length
+                          : controller.carBrand.length,
                       separatorBuilder: (BuildContext context, int index) {
                         return const Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.0),
