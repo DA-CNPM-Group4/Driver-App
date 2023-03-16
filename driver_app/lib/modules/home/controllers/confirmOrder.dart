@@ -16,7 +16,7 @@ class ConfirmOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var text = "bắt đầu".obs;
+    var text = "Đã đón khách".obs;
     Timer? timer;
 
     return AnimatedPositioned(
@@ -36,7 +36,7 @@ class ConfirmOrder extends StatelessWidget {
                   children: [
                     ListTile(
                       leading: CircleAvatar(
-                        child: Image.asset("assets/face.png"),
+                        child: Image.asset("assets/images/face.png"),
                       ),
                       minVerticalPadding: 0,
                       title: Text(
@@ -71,7 +71,7 @@ class ConfirmOrder extends StatelessWidget {
                     ),
                     ListTile(
                       leading: CircleAvatar(
-                        child: Image.asset("assets/face.png"),
+                        child: Image.asset("assets/images/face.png"),
                       ),
                       minVerticalPadding: 0,
                       title: Text(
@@ -102,11 +102,11 @@ class ConfirmOrder extends StatelessWidget {
                 child: ElevatedButton(
                     onPressed: () {
                       switch (text.value) {
-                        case "bắt đầu":
+                        case "Đã đón khách":
                           if (onStart != null) onStart!(timer!);
-                          text.value = "đã hoàn thành";
+                          text.value = "Hoàn thành chuyến";
                           break;
-                        case "đã hoàn thành":
+                        case "Hoàn thành chuyến":
                           if (onTrip != null) onTrip!(timer!);
                           break;
                       }

@@ -4,17 +4,12 @@ import 'package:driver_app/core/utils/widgets.dart';
 import 'package:driver_app/modules/password_register/password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:driver_app/data/api_handler.dart';
 import 'package:driver_app/modules/register/register_controller.dart';
 import 'package:driver_app/modules/set_up_profile/set_up_profile_controller.dart';
-
-import '../../routes/app_pages.dart';
-import '../../routes/app_routes.dart';
 
 class VehicleRegistrationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
-  APIHandlerImp apiHandlerImp = APIHandlerImp();
   List<String> motorcycleBrand = [
     "Honda",
     "Triumph",

@@ -6,13 +6,10 @@ import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../data/api_handler.dart';
 import '../../data/vehicle.dart';
 
 class SetUpProfileController extends GetxController {
-  //TODO: Implement SetUpProfileController
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  APIHandlerImp apiHandlerImp = APIHandlerImp();
   var isLoading = false.obs;
   var registerController = Get.find<RegisterController>();
 

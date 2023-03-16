@@ -128,13 +128,7 @@ class HomeView extends GetView<HomeController> {
                                     height: 20,
                                   ),
                             onPressed: () async {
-                              if (controller.isActive.value) {
-                                // await controller.cancelStatus();
-                              } else {
-                                await controller.changeStatus(context);
-                              }
-                              controller.isActive.value =
-                                  !controller.isActive.value;
+                              await controller.toggleActive(context);
                             },
                           ),
                         ),
@@ -201,7 +195,7 @@ class HomeView extends GetView<HomeController> {
               children: [
                 Text(
                   "Active",
-                  style: textTheme.headline1,
+                  style: BaseTextStyle.heading1(),
                 ),
                 h_20,
                 divider,

@@ -9,6 +9,7 @@ import 'package:driver_app/Data/providers/firestore_realtime_provider.dart';
 import 'package:driver_app/Data/services/device_location_service.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/Data/services/firestore_realtime_service.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -18,7 +19,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
-import 'package:driver_app/data/api_handler.dart';
 import 'package:driver_app/data/user_response.dart';
 import 'package:driver_app/modules/home/controllers/confirm_order.dart';
 import 'package:driver_app/modules/income/income_controller.dart';
@@ -28,11 +28,12 @@ import '../../../data/network_handler.dart';
 import '../../../routes/app_pages.dart';
 import '../../../routes/app_routes.dart';
 
+// TODO: OPTIMIZE DRAW ROUTE
 class HomeController extends GetxController {
   StreamSubscription<Position>? gpsStreamSubscription;
   String address = "";
 
-  var driverId = "driverId";
+  var driverId = "testDriverId";
   var driverInfo = RealtimeDriverInfo(phone: '09080812032', name: 'Rabit');
   var vehicleInfo = RealtimeDriverVehicle(
       brand: 'Yamaha', name: 'Samsung Galaxy', vehicleId: '12325');
@@ -42,7 +43,7 @@ class HomeController extends GetxController {
       info: driverInfo, vehicle: vehicleInfo, location: driverLocation);
 
   StreamSubscription? listenTripAgent;
-  RealtimeTripRequest? tripRequest;
+  StreamSubscription? passengerLisenterAgent;
 
 ////////////////////////////////////////////////////////////
 
@@ -51,8 +52,9 @@ class HomeController extends GetxController {
   var isMapLoaded = false.obs;
   var isAccepted = false.obs;
   var position = {}.obs;
-  var text = "bắt đầu".obs;
-  APIHandlerImp apiHandlerImp = APIHandlerImp();
+  var currentDestinationPostion = {}.obs;
+
+  var text = "Đã đón khách".obs;
   String? id;
   var incomeController = Get.find<IncomeController>();
 
@@ -79,7 +81,23 @@ class HomeController extends GetxController {
       return OrderInformation(
         passenger: passenger!,
         tripRequest: trip!,
-        onStart: () {},
+        onStart: () async {
+          await passengerLisenterAgent?.cancel();
+
+          await drawRoute(
+              from: Destination(
+                  address: address,
+                  latitude: position['latitude'],
+                  longitude: position['longitude']),
+              to: Destination(
+                  address: trip.Destination,
+                  latitude: trip.LatDesAddr,
+                  longitude: trip.LongDesAddr));
+
+          currentDestinationPostion['address'] = trip.Destination;
+          currentDestinationPostion['latitude'] = trip.LatDesAddr;
+          currentDestinationPostion['longitude'] = trip.LongDesAddr;
+        },
         onTrip: (RxBool isLoading) async {
           if (position["latitude"].toStringAsFixed(3) ==
                   trip.LatDesAddr.toStringAsFixed(3) &&
@@ -87,14 +105,23 @@ class HomeController extends GetxController {
                   trip.LongDesAddr.toStringAsFixed(3)) {
             isLoading.value = true;
             try {
-              DriverAPIService.completeTrip(id);
+              await DriverAPIService.completeTrip(id);
               overlayEntry!.remove();
             } catch (e) {}
             overlayEntry!.remove();
             reset();
             Get.snackbar("Success", "The trip was completed");
-            await incomeController.getWallet();
+            // await incomeController.getWallet();
             isLoading.value = false;
+          } else {
+            isLoading.value = true;
+            try {
+              await DriverAPIService.completeTrip(id);
+              overlayEntry!.remove();
+            } catch (e) {}
+            overlayEntry!.remove();
+            reset();
+            Get.snackbar("Success", "The trip was completed");
           }
         },
       );
@@ -112,45 +139,38 @@ class HomeController extends GetxController {
       listenTripAgent = ref.onChildAdded.listen((event) async {
         if (event.snapshot.exists) {
           final data = Map<String, dynamic>.from(event.snapshot.value as Map);
-          var trip = RealtimeTripRequest.fromJson(data);
-
+          var request = RealtimeTripRequest.fromJson(data);
           var result = await Get.toNamed(Routes.REQUEST,
-              arguments: {'requestId': event.snapshot.key, "trip": trip});
+              arguments: {'requestId': event.snapshot.key, "trip": request});
+
           if (result["accept"] == true) {
             id = result["tripId"];
 
-            var passenger = await FirestoreRealtimeService.instance
+            var passengerInfo = await FirestoreRealtimeService.instance
                 .readPassengerNode("fake-passenger-id");
 
-            markers[const MarkerId("1")] = Marker(
-                markerId: const MarkerId("1"),
-                infoWindow: const InfoWindow(title: "Start address"),
-                position: LatLng(trip.LatStartAddr, trip.LongStartAddr));
+            assignPassengerListener(request);
 
-            markers[const MarkerId("2")] = Marker(
-                markerId: const MarkerId("2"),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueBlue),
-                infoWindow: const InfoWindow(title: "Destination"),
-                position: LatLng(
-                  trip.LatDesAddr,
-                  trip.LongDesAddr,
-                ));
-            await route(
-                Destination(
-                    address: trip.StartAddress,
-                    latitude: trip.LatDesAddr,
-                    longitude: trip.LongDesAddr),
-                Destination(
-                    address: trip.StartAddress,
-                    latitude: trip.LatDesAddr,
-                    longitude: trip.LongDesAddr));
-            listenTripAgent?.pause();
+            drawMarker(request);
+
+            if (listenTripAgent?.isPaused ?? true) {
+              listenTripAgent?.pause();
+            }
+
+            await drawRoute(
+                from: Destination(
+                    address: address,
+                    latitude: position['latitude'],
+                    longitude: position['longitude']),
+                to: Destination(
+                    address: request.StartAddress,
+                    latitude: request.LatStartAddr,
+                    longitude: request.LongStartAddr));
 
             insertOverlay(
               context: context,
-              trip: tripRequest,
-              passenger: passenger,
+              trip: request,
+              passenger: passengerInfo,
               id: id!,
             );
           }
@@ -163,7 +183,42 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
-  route(Destination? from, Destination? to) async {
+  void drawMarker(RealtimeTripRequest request) {
+    markers[const MarkerId("2")] = Marker(
+        markerId: const MarkerId("2"),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        infoWindow: const InfoWindow(title: "Destination"),
+        position: LatLng(
+          request.LatDesAddr,
+          request.LongDesAddr,
+        ));
+  }
+
+  void assignPassengerListener(RealtimeTripRequest request) {
+    passengerLisenterAgent = FirestoreRealtimeService.instance
+        .getDatabaseReference(
+          nodeId: 'fake-passenger-id',
+          rootPath: FirebaseRealtimePaths.PASSENGERS,
+        )
+        .onValue
+        .listen((event) {
+      final data = Map<String, dynamic>.from(event.snapshot.value as Map);
+      var passengerNode = RealtimePassenger.fromMap(data);
+
+      final location = passengerNode.location;
+
+      currentDestinationPostion['latitude'] = location.lat;
+      currentDestinationPostion['longitude'] = location.long;
+      currentDestinationPostion['address'] = location.address;
+
+      markers[const MarkerId("1")] = Marker(
+          markerId: const MarkerId("1"),
+          infoWindow: const InfoWindow(title: "Passenger Location"),
+          position: LatLng(location.lat, location.long));
+    });
+  }
+
+  drawRoute({Destination? from, Destination? to}) async {
     polylinePoints.clear();
     var start = "${from?.latitude},${from?.longitude}";
     var end = "${to?.latitude},${to?.longitude}";
@@ -173,23 +228,17 @@ class HomeController extends GetxController {
       "destination": end,
       "mode": "motorcycle"
     };
-    var response = await NetworkHandler.getWithQuery('route', query);
-    searchResult = PolylinePoints()
-        .decodePolyline(response["result"]["routes"][0]["overviewPolyline"]);
-    for (var point in searchResult) {
-      polylinePoints.add(LatLng(point.latitude, point.longitude));
+    try {
+      var response = await NetworkHandler.getWithQuery('route', query);
+      searchResult = PolylinePoints()
+          .decodePolyline(response["result"]["routes"][0]["overviewPolyline"]);
+      for (var point in searchResult) {
+        polylinePoints.add(LatLng(point.latitude, point.longitude));
+      }
+      polyline.refresh();
+    } catch (e) {
+      Future.error(e.toString());
     }
-    polyline.refresh();
-  }
-
-  Future<void> completeTrip() async {}
-
-  Future<void> cancelStatus() async {
-    isLoading.value = true;
-
-    listener!.cancel();
-    // listener1!.cancel();
-    isLoading.value = false;
   }
 
   void reset() {
@@ -197,7 +246,9 @@ class HomeController extends GetxController {
     polyline.refresh();
     markers.clear();
     markers.refresh();
-    listener!.resume();
+    if (listener?.isPaused ?? true) {
+      listener?.resume();
+    }
 
     isAccepted.value = false;
   }
@@ -234,21 +285,23 @@ class HomeController extends GetxController {
 
   @override
   void onClose() async {
-    disableRealtimeLocator();
+    // disableRealtimeLocator();
     super.onClose();
   }
 
-  void toggleActive() async {
+  Future<void> toggleActive(BuildContext context) async {
+    isLoading.value = true;
+
     isActive.value = !isActive.value;
     if (isActive.value) {
       try {
-        await enableRealtimeLocator();
-      } catch (e) {
-        // do nothing
-      }
+        await changeStatus(context);
+      } catch (e) {}
     } else {
+      listener?.pause();
       await disableRealtimeLocator();
     }
+    isLoading.value = false;
   }
 
 ///////////////////////////////////////////////////
@@ -265,10 +318,23 @@ class HomeController extends GetxController {
         driverId,
         RealtimeLocation(
           lat: location.latitude,
-          long: location.latitude,
+          long: location.longitude,
           address: address,
         ),
       );
+
+      if (isAccepted.value) {
+        drawRoute(
+          from: Destination(
+              address: address,
+              latitude: location.latitude,
+              longitude: location.longitude),
+          to: Destination(
+              address: currentDestinationPostion['address'],
+              latitude: currentDestinationPostion['latitude'],
+              longitude: currentDestinationPostion['longitude']),
+        );
+      }
     });
   }
 

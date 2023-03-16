@@ -92,8 +92,7 @@ class DriverAPIService {
   static Future<String> acceptTripRequest(
       AcceptTripRequestParams params) async {
     var identity = await APIHandlerImp.instance.getIdentity();
-    var AccountId = identity;
-    params.driverId = identity ?? params.driverId;
+    params.driverId = params.driverId ?? identity;
     var response = await APIHandlerImp.instance
         .post(null, '/Trip/Trip/AcceptRequest', query: params.toJson());
     if (response.data["status"]) {

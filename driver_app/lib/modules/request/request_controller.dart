@@ -4,12 +4,10 @@ import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:get/get.dart';
-import 'package:driver_app/data/api_handler.dart';
 
 class RequestController extends GetxController {
-  final count = 10.obs;
+  final count = 20.obs;
   var isLoading = false.obs;
-  APIHandlerImp apiHandlerImp = APIHandlerImp();
   late String requestId = "";
   late RealtimeTripRequest trip;
 

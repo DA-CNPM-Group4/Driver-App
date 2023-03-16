@@ -111,7 +111,8 @@ class IncomeView extends GetView<IncomeController> {
                             Obx(() => controller.isLoading.value
                                 ? const CircularProgressIndicator()
                                 : Text(
-                                    controller.wallet!.balance!.toString(),
+                                    "chetah",
+                                    // controller.wallet!.balance!.toString(),
                                     style: BaseTextStyle.heading4(fontSize: 16),
                                   )),
                           ],
@@ -253,11 +254,12 @@ class IncomeView extends GetView<IncomeController> {
                       alignment: Alignment.centerRight,
                       child: Obx(
                         () => ElevatedButton(
-                            onPressed: controller.isClicked.value
-                                ? null
-                                : () async {
-                                    await controller.startTimer();
-                                  },
+                            // onPressed: controller.isClicked.value
+                            //     ? null
+                            //     : () async {
+                            //         await controller.startTimer();
+                            //       },
+                            onPressed: () {},
                             child: controller.isClicked.value
                                 ? Text(
                                     "${controller.start.value}s",
@@ -276,12 +278,13 @@ class IncomeView extends GetView<IncomeController> {
                   child: Obx(
                     () => ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.green),
-                        onPressed: check1.value && check2.value
-                            ? () async {
-                                await controller.validateOTP(
-                                    otpController, moneyController, type);
-                              }
-                            : null,
+                        // onPressed: check1.value && check2.value
+                        //     ? () async {
+                        //         await controller.validateOTP(
+                        //             otpController, moneyController, type);
+                        //       }
+                        //     : null,
+                        onPressed: () {},
                         child: controller.buttonLoading.value
                             ? const CircularProgressIndicator(
                                 color: Colors.white,

@@ -30,7 +30,7 @@ class OrderInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     var h = (size.height * 0.55).obs;
-    var text = "bắt đầu".obs;
+    var text = "Đã đón khách".obs;
     final formatBalance = NumberFormat("#,##0", "vi_VN");
 
     return Obx(
@@ -66,7 +66,7 @@ class OrderInformation extends StatelessWidget {
                       ),
                       ListTile(
                         leading: Image.asset(
-                          "assets/simpson.png",
+                          "assets/icons/cat_icon.png",
                           height: 40,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -92,7 +92,7 @@ class OrderInformation extends StatelessWidget {
                       ),
                       ListTile(
                         leading: Image.asset(
-                          "assets/profile.png",
+                          "assets/icons/profile_icon.png",
                           height: 40,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -105,7 +105,7 @@ class OrderInformation extends StatelessWidget {
                       ),
                       ListTile(
                         leading: Image.asset(
-                          "assets/address.png",
+                          "assets/icons/address_icon.png",
                           height: 40,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -154,11 +154,11 @@ class OrderInformation extends StatelessWidget {
                   child: ElevatedButton(
                       onPressed: () {
                         switch (text.value) {
-                          case "bắt đầu":
+                          case "Đã đón khách":
                             if (onStart != null) onStart!();
-                            text.value = "đã hoàn thành";
+                            text.value = "Hoàn thành chuyến";
                             break;
-                          case "đã hoàn thành":
+                          case "Hoàn thành chuyến":
                             if (onTrip != null) onTrip!(isLoading!);
                             break;
                         }
