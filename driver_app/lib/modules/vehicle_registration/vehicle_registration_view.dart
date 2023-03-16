@@ -128,14 +128,6 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                       disable: true,
                       icon: Icons.arrow_drop_down),
                   h_20,
-                  titleAndText(
-                    title: "Vehicle type",
-                    hint: "Input vehicle type",
-                    controller: controller.vehicleType,
-                    validator: (value) =>
-                        controller.vehicleTypeValidator(value!),
-                    textTheme: textTheme,
-                  ),
                 ],
               ),
             ),

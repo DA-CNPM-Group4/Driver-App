@@ -94,54 +94,6 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                       controller: controller.nameController,
                       validator: (value) => controller.nameValidator(value!)),
                   h_20,
-                  Text(
-                    "Contact",
-                    style: BaseTextStyle.body1(fontSize: 14),
-                  ),
-                  h_10,
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 100,
-                        height: 30,
-                        child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                            ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  "assets/icons/flag.png",
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                Text(
-                                  "+84",
-                                  style: BaseTextStyle.heading2(fontSize: 16),
-                                )
-                              ],
-                            )),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Flexible(
-                        child: TextFormField(
-                          controller: controller.phoneNumberController,
-                          keyboardType: TextInputType.phone,
-                          validator: (value) =>
-                              controller.phoneNumberValidator(value!),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration:
-                              const InputDecoration(hintText: '123xxxxxxx'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  h_20,
                   titleAndText(
                       title: "Current Address",
                       hint: "Enter your current address",

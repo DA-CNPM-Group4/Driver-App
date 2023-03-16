@@ -131,9 +131,10 @@ class HomeController extends GetxController {
   }
 
   Future<void> changeStatus(BuildContext context) async {
+    await enableRealtimeLocator();
+
     isLoading.value = true;
     position.value = await map.getCurrentPosition();
-    enableRealtimeLocator();
     try {
       var ref = FirebaseDatabase.instance.ref(FirebaseRealtimePaths.REQUESTS);
       listenTripAgent = ref.onChildAdded.listen((event) async {
@@ -153,9 +154,7 @@ class HomeController extends GetxController {
 
             drawMarker(request);
 
-            if (listenTripAgent?.isPaused ?? true) {
-              listenTripAgent?.pause();
-            }
+            listenTripAgent?.pause();
 
             await drawRoute(
                 from: Destination(
@@ -163,9 +162,9 @@ class HomeController extends GetxController {
                     latitude: position['latitude'],
                     longitude: position['longitude']),
                 to: Destination(
-                    address: request.StartAddress,
-                    latitude: request.LatStartAddr,
-                    longitude: request.LongStartAddr));
+                    address: currentDestinationPostion['address'],
+                    latitude: currentDestinationPostion['latitude'],
+                    longitude: currentDestinationPostion['longitude']));
 
             insertOverlay(
               context: context,
@@ -246,9 +245,8 @@ class HomeController extends GetxController {
     polyline.refresh();
     markers.clear();
     markers.refresh();
-    if (listener?.isPaused ?? true) {
-      listener?.resume();
-    }
+
+    listenTripAgent?.resume();
 
     isAccepted.value = false;
   }
@@ -298,7 +296,7 @@ class HomeController extends GetxController {
         await changeStatus(context);
       } catch (e) {}
     } else {
-      listener?.pause();
+      listenTripAgent?.pause();
       await disableRealtimeLocator();
     }
     isLoading.value = false;
@@ -307,7 +305,9 @@ class HomeController extends GetxController {
 ///////////////////////////////////////////////////
   Future<void> enableRealtimeLocator() async {
     await setDriverInfo();
+
     var stream = await DeviceLocationService.instance.getLocationStream();
+
     gpsStreamSubscription = stream.listen((Position location) async {
       position['latitude'] = location.latitude;
       position['longitude'] = location.longitude;
