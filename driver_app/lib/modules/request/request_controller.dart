@@ -16,6 +16,8 @@ class RequestController extends GetxController {
       var params = AcceptTripRequestParams(
           requestId: requestId, driverId: Get.arguments['testDriverId']);
       var tripId = await DriverAPIService.acceptTripRequest(params);
+      print("handleAccept");
+
       Get.back(result: {
         "accept": true,
         "tripId": tripId,

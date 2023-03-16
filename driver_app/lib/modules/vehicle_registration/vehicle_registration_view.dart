@@ -36,6 +36,57 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
               color: Colors.black,
             ),
           ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(130),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "You'll register as a:",
+                    style: BaseTextStyle.heading1(fontSize: 18),
+                  ),
+                  h_20,
+                  Obx(
+                    () => ListTile(
+                      leading: Image.asset(
+                        controller
+                            .setupProfileController
+                            .vehicles[controller
+                                .setupProfileController.selectedIndex.value]
+                            .img,
+                        height: 50,
+                      ),
+                      title: Text(
+                          controller
+                              .setupProfileController
+                              .vehicles[controller
+                                  .setupProfileController.selectedIndex.value]
+                              .name,
+                          style: BaseTextStyle.heading4(fontSize: 20)),
+                      trailing: SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.white,
+                                  shape: const StadiumBorder(
+                                      side: BorderSide(color: Colors.green))),
+                              onPressed: () {
+                                Get.bottomSheet(
+                                  bottomSheet(textTheme: textTheme),
+                                  isDismissible: true,
+                                );
+                              },
+                              child: Text("Change",
+                                  style: BaseTextStyle.heading4(
+                                      fontSize: 16, color: Colors.green)))),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -159,7 +210,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
 
   Widget bottomSheet({required TextTheme textTheme}) {
     return Container(
-        height: Get.height * 0.7,
+        height: Get.height * 0.5,
         color: Colors.transparent,
         child: Column(
           children: [
@@ -201,28 +252,35 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                   Expanded(
                     child: ListView.separated(
                       itemBuilder: (_, itemBuilder) {
-                        var value = controller.setUpProfileController
-                                    .selectedIndex.value ==
-                                0
-                            ? controller.motorcycleBrand[itemBuilder]
-                            : controller.carBrand[itemBuilder];
                         return ListTile(
                           onTap: () {
-                            controller.selectedItem.value = itemBuilder;
-                            controller.vehicleBrandController.text = value;
+                            controller.setupProfileController.selectedIndex
+                                .value = itemBuilder;
                             Get.back();
                           },
+                          leading: Image.asset(
+                            controller.setupProfileController
+                                .vehicles[itemBuilder].img,
+                            height: 40,
+                          ),
                           title: Text(
-                            value,
+                            controller.setupProfileController
+                                .vehicles[itemBuilder].name,
                             style: BaseTextStyle.heading2(fontSize: 18),
+                          ),
+                          subtitle: Text(
+                            controller.setupProfileController
+                                .vehicles[itemBuilder].description,
+                            style: BaseTextStyle.body1(fontSize: 14),
+                          ),
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
                           ),
                         );
                       },
-                      itemCount: controller
-                                  .setUpProfileController.selectedIndex.value ==
-                              0
-                          ? controller.motorcycleBrand.length
-                          : controller.carBrand.length,
+                      itemCount:
+                          controller.setupProfileController.vehicles.length,
                       separatorBuilder: (BuildContext context, int index) {
                         return const Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.0),

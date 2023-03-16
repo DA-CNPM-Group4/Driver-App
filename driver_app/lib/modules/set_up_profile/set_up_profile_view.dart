@@ -40,50 +40,6 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
             style: BaseTextStyle.heading2(fontSize: 20),
           ),
           elevation: 1,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(130),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "You'll register as a:",
-                    style: BaseTextStyle.heading1(fontSize: 18),
-                  ),
-                  h_20,
-                  Obx(
-                    () => ListTile(
-                      leading: Image.asset(
-                        controller.vehicles[controller.selectedIndex.value].img,
-                        height: 50,
-                      ),
-                      title: Text(
-                          controller
-                              .vehicles[controller.selectedIndex.value].name,
-                          style: BaseTextStyle.heading4(fontSize: 20)),
-                      trailing: SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.white,
-                                  shape: const StadiumBorder(
-                                      side: BorderSide(color: Colors.green))),
-                              onPressed: () {
-                                Get.bottomSheet(
-                                  bottomSheet(textTheme: textTheme),
-                                  isDismissible: true,
-                                );
-                              },
-                              child: Text("Change",
-                                  style: BaseTextStyle.heading4(
-                                      fontSize: 16, color: Colors.green)))),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -173,6 +129,7 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                       Flexible(
                         child: TextFormField(
                           controller: controller.phoneNumberController,
+                          keyboardType: TextInputType.phone,
                           validator: (value) =>
                               controller.phoneNumberValidator(value!),
                           inputFormatters: [

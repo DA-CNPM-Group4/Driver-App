@@ -35,7 +35,7 @@ import 'package:driver_app/modules/welcome/welcome_view.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.DASHBOARD_PAGE;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     GetPage(

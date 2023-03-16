@@ -1,5 +1,6 @@
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/Data/vehicle.dart';
 import 'package:driver_app/core/utils/widgets.dart';
 import 'package:driver_app/modules/password_register/password_controller.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:driver_app/modules/set_up_profile/set_up_profile_controller.dart
 class VehicleRegistrationController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
+  var setupProfileController = Get.find<SetUpProfileController>();
+
   List<String> motorcycleBrand = [
     "Honda",
     "Triumph",
