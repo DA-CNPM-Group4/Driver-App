@@ -82,7 +82,13 @@ class HomeController extends GetxController {
         passenger: passenger!,
         tripRequest: trip!,
         onStart: () async {
+          await DriverAPIService.pickPassenger(id);
           await passengerLisenterAgent?.cancel();
+
+          currentDestinationPostion['address'] = trip.Destination;
+          currentDestinationPostion['latitude'] = trip.LatDesAddr;
+          currentDestinationPostion['longitude'] = trip.LongDesAddr;
+          drawMarker(trip);
 
           await drawRoute(
               from: Destination(
@@ -93,11 +99,6 @@ class HomeController extends GetxController {
                   address: trip.Destination,
                   latitude: trip.LatDesAddr,
                   longitude: trip.LongDesAddr));
-          currentDestinationPostion['address'] = trip.Destination;
-          currentDestinationPostion['latitude'] = trip.LatDesAddr;
-          currentDestinationPostion['longitude'] = trip.LongDesAddr;
-
-          await DriverAPIService.pickPassenger(id);
         },
         onTrip: (RxBool isLoading) async {
           if (position["latitude"].toStringAsFixed(3) ==
@@ -152,9 +153,6 @@ class HomeController extends GetxController {
                 .readPassengerNode(request.PassengerId ?? 'fake-passenger-id');
 
             assignPassengerListener(request);
-
-            drawMarker(request);
-
             listenTripAgent?.pause();
 
             await drawRoute(
@@ -183,14 +181,14 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
-  void drawMarker(RealtimeTripRequest request) {
-    markers[const MarkerId("2")] = Marker(
-        markerId: const MarkerId("2"),
+  void drawMarker(RealtimeTripRequest tripRequest) {
+    markers[const MarkerId("1")] = Marker(
+        markerId: const MarkerId("1"),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         infoWindow: const InfoWindow(title: "Destination"),
         position: LatLng(
-          request.LatDesAddr,
-          request.LongDesAddr,
+          tripRequest.LatDesAddr,
+          tripRequest.LongDesAddr,
         ));
   }
 
