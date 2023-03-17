@@ -79,7 +79,11 @@ class PasswordView extends GetView<PasswordController> {
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-              child: const Text("Confirm"),
+              child: Obx(() => controller.isLoading.value
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : Text("Confirm")),
             ),
           ),
         ),

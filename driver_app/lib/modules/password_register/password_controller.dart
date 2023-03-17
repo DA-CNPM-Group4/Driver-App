@@ -11,6 +11,7 @@ class PasswordController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController passwordController = TextEditingController();
   var registerController = Get.find<RegisterController>();
+  var isLoading = false.obs;
 
   String? passwordValidator(String value) {
     if (value.isEmpty) {
@@ -37,10 +38,12 @@ class PasswordController extends GetxController {
         name: registerController.emailController.text);
 
     try {
+      isLoading.value = true;
       await DriverAPIService.register(body);
       Get.toNamed(Routes.SET_UP_PROFILE);
     } catch (e) {
       showSnackBar("Oh no", e.toString());
     }
+    isLoading.value = false;
   }
 }
