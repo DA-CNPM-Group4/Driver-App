@@ -102,6 +102,17 @@ class DriverAPIService {
     }
   }
 
+  static Future<String> pickPassenger(String tripId) async {
+    var query = {'tripId': tripId};
+    var response = await APIHandlerImp.instance
+        .post(null, '/Trip/Trip/PickedPassenger', query: query);
+    if (response.data["status"]) {
+      return response.data['data'];
+    } else {
+      return Future.error(response.data['message']);
+    }
+  }
+
   static Future<String> completeTrip(String tripId) async {
     var query = {'tripId': tripId};
     var response = await APIHandlerImp.instance

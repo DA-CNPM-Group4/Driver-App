@@ -93,10 +93,11 @@ class HomeController extends GetxController {
                   address: trip.Destination,
                   latitude: trip.LatDesAddr,
                   longitude: trip.LongDesAddr));
-
           currentDestinationPostion['address'] = trip.Destination;
           currentDestinationPostion['latitude'] = trip.LatDesAddr;
           currentDestinationPostion['longitude'] = trip.LongDesAddr;
+
+          await DriverAPIService.pickPassenger(id);
         },
         onTrip: (RxBool isLoading) async {
           if (position["latitude"].toStringAsFixed(3) ==
@@ -148,7 +149,7 @@ class HomeController extends GetxController {
             id = result["tripId"];
 
             var passengerInfo = await FirestoreRealtimeService.instance
-                .readPassengerNode("fake-passenger-id");
+                .readPassengerNode(request.PassengerId ?? 'fake-passenger-id');
 
             assignPassengerListener(request);
 
