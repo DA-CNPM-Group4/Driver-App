@@ -125,7 +125,7 @@ class SetUpProfileController extends GetxController {
     );
 
     try {
-      await DriverAPIService.createDriver(body: body);
+      await DriverAPIService.createDriverInfo(body: body);
       isLoading.value = false;
       Get.toNamed(Routes.VEHICLE_REGISTRATION);
     } catch (e) {
