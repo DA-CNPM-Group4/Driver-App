@@ -1,4 +1,4 @@
-import 'package:driver_app/Data/model/driver_entity.dart';
+import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/modules/location_test/location_test_view.dart';
 import 'package:driver_app/data/model/vehicle_list_entity.dart';
 import 'package:driver_app/routes/app_pages.dart';

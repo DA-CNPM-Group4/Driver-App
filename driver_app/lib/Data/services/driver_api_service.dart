@@ -1,5 +1,5 @@
-import 'package:driver_app/Data/exceptions/bussiness_exception.dart';
-import 'package:driver_app/Data/exceptions/unexpected_exception.dart';
+import 'package:driver_app/core/exceptions/bussiness_exception.dart';
+import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
@@ -8,6 +8,25 @@ import 'package:driver_app/Data/models/requests/login_response.dart';
 import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/models/requests/update_driver_request.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
+
+class GeneralAPIService {
+  static Future<void> login({required LoginDriverRequestBody body}) async {
+    try {
+      var response = await APIHandlerImp.instance
+          .post(body.toJson(), '/Authentication/Login');
+
+      if (response.data["status"]) {
+        var body = LoginResponseBody.fromJson(response.data['data']);
+        await _storeAllIdentity(body);
+      } else {
+        return Future.error(IBussinessException(response.data['message']));
+      }
+    } catch (e) {
+      return Future.error(
+          UnexpectedException(context: "login", debugMessage: e.toString()));
+    }
+  }
+}
 
 class DriverAPIService {
   static Future<void> login({required LoginDriverRequestBody body}) async {
@@ -166,10 +185,10 @@ class DriverAPIService {
           context: "complete-trip", debugMessage: e.toString()));
     }
   }
+}
 
-  static Future<void> _storeAllIdentity(LoginResponseBody body) async {
-    await APIHandlerImp.instance.storeIdentity(body.accountId);
-    await APIHandlerImp.instance.storeRefreshToken(body.refreshToken);
-    await APIHandlerImp.instance.storeAccessToken(body.accessToken);
-  }
+Future<void> _storeAllIdentity(LoginResponseBody body) async {
+  await APIHandlerImp.instance.storeIdentity(body.accountId);
+  await APIHandlerImp.instance.storeRefreshToken(body.refreshToken);
+  await APIHandlerImp.instance.storeAccessToken(body.accessToken);
 }

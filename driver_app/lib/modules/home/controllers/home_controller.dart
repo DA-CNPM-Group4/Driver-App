@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:collection';
-import 'package:driver_app/Data/model/driver_entity.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
