@@ -6,7 +6,6 @@ class LoginDriverRequestBody {
   String email;
   String phone;
   String password;
-  String? role = "Driver";
 
   LoginDriverRequestBody({
     required this.email,
