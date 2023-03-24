@@ -1,3 +1,5 @@
+import 'package:driver_app/Data/services/general_api_service.dart';
+import 'package:driver_app/Data/services/trip_api_service.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
@@ -9,26 +11,10 @@ import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/models/requests/update_driver_request.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 
-class GeneralAPIService {
-  static Future<void> login({required LoginDriverRequestBody body}) async {
-    try {
-      var response = await APIHandlerImp.instance
-          .post(body.toJson(), '/Authentication/Login');
-
-      if (response.data["status"]) {
-        var body = LoginResponseBody.fromJson(response.data['data']);
-        await _storeAllIdentity(body);
-      } else {
-        return Future.error(IBussinessException(response.data['message']));
-      }
-    } catch (e) {
-      return Future.error(
-          UnexpectedException(context: "login", debugMessage: e.toString()));
-    }
-  }
-}
-
 class DriverAPIService {
+  static GeneralAPIService authApi = GeneralAPIService();
+  static TripApiService tripApi = TripApiService();
+
   static Future<void> login({required LoginDriverRequestBody body}) async {
     try {
       var response = await APIHandlerImp.instance
