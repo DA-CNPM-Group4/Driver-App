@@ -13,6 +13,7 @@ import 'firebase_options.dart';
 void main() async {
   BackendEnviroment.checkDevelopmentMode();
   await setup();
+
   runApp(GetMaterialApp(
     title: "Application",
     // home: const TestUpdateLocation(),
@@ -26,18 +27,16 @@ void main() async {
 Future<void> setup() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  if (!Hive.isAdapterRegistered(0)) {
+    Hive.registerAdapter(VehicleEntityAdapter());
+    Hive.registerAdapter(DriverEntityAdapter());
+  }
   await Hive.initFlutter();
   await Hive.openBox("box");
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  await Hive.initFlutter();
-  if (!Hive.isAdapterRegistered(0)) {
-    Hive.registerAdapter(VehicleEntityAdapter());
-    Hive.registerAdapter(DriverEntityAdapter());
-  }
 }
 
 class MyApp extends StatelessWidget {
