@@ -126,56 +126,6 @@ class DriverAPIService {
           context: "get-vehicle", debugMessage: e.toString()));
     }
   }
-
-  static Future<String> acceptTripRequest(
-      AcceptTripRequestParams params) async {
-    try {
-      var identity = await APIHandlerImp.instance.getIdentity();
-      params.driverId = params.driverId ?? identity;
-      var response = await APIHandlerImp.instance
-          .post(null, '/Trip/Trip/AcceptRequest', query: params.toJson());
-      if (response.data["status"]) {
-        return response.data['data'];
-      } else {
-        return Future.error(response.data['message']);
-      }
-    } catch (e) {
-      return Future.error(UnexpectedException(
-          context: "accept-trip", debugMessage: e.toString()));
-    }
-  }
-
-  static Future<void> pickPassenger(String tripId) async {
-    try {
-      var query = {'tripId': tripId};
-      var response = await APIHandlerImp.instance
-          .get('/Trip/Trip/PickedPassenger', query: query);
-      if (response.data["status"]) {
-        return response.data['data'];
-      } else {
-        return Future.error(response.data['message']);
-      }
-    } catch (e) {
-      return Future.error(UnexpectedException(
-          context: "pick-passenger", debugMessage: e.toString()));
-    }
-  }
-
-  static Future<String> completeTrip(String tripId) async {
-    try {
-      var query = {'tripId': tripId};
-      var response = await APIHandlerImp.instance
-          .post(null, '/Trip/Trip/FinishTrip', query: query);
-      if (response.data["status"]) {
-        return response.data['data'];
-      } else {
-        return Future.error(response.data['message']);
-      }
-    } catch (e) {
-      return Future.error(UnexpectedException(
-          context: "complete-trip", debugMessage: e.toString()));
-    }
-  }
 }
 
 Future<void> _storeAllIdentity(LoginResponseBody body) async {

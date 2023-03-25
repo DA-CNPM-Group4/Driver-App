@@ -120,7 +120,7 @@ class HomeController extends GetxController {
         passenger: passenger!,
         tripRequest: trip!,
         onStart: () async {
-          await DriverAPIService.pickPassenger(tripId);
+          await DriverAPIService.tripApi.pickPassenger(tripId);
           await passengerLisenterAgent?.cancel();
 
           currentDestinationPostion['address'] = trip.Destination;
@@ -162,7 +162,7 @@ class HomeController extends GetxController {
           } else {
             try {
               isLoading.value = true;
-              await DriverAPIService.completeTrip(tripId);
+              await DriverAPIService.tripApi.completeTrip(tripId);
             } catch (e) {
               print(e.toString());
             }

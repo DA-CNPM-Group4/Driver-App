@@ -1,4 +1,6 @@
+import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
+import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 
@@ -69,14 +71,13 @@ class TripApiService {
     }
   }
 
-  //  TODO: HANDLE RESPONSE
-  Future<String> getDriverTrip(String tripId) async {
+  Future<TripResponse> getTrip(String tripId) async {
     try {
       var query = {'tripId': tripId};
       var response = await APIHandlerImp.instance
           .get('/Trip/Trip/GetCurrentTrip', query: query);
       if (response.data["status"]) {
-        return response.data['data'];
+        return TripResponse.fromJson(response.data['data']);
       } else {
         return Future.error(response.data['message']);
       }
@@ -86,8 +87,7 @@ class TripApiService {
     }
   }
 
-  //  TODO: HANDLE RESPONSE
-  Future<String> getDriverTrips() async {
+  Future<List<TripResponse>> getDriverTrips() async {
     try {
       var driverId = await APIHandlerImp.instance.getIdentity();
       var query = {'driverId': driverId};
@@ -95,7 +95,10 @@ class TripApiService {
       var response = await APIHandlerImp.instance
           .get('/Trip/Trip/GetDriverTrips', query: query);
       if (response.data["status"]) {
-        return response.data['data'];
+        var listTripJson = response.data['data'] as List;
+        return listTripJson
+            .map((tripJson) => TripResponse.fromJson(tripJson))
+            .toList();
       } else {
         return Future.error(response.data['message']);
       }

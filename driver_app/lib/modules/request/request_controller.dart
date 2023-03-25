@@ -15,8 +15,7 @@ class RequestController extends GetxController {
     try {
       var params = AcceptTripRequestParams(
           requestId: requestId, driverId: Get.arguments['testDriverId']);
-      var tripId = await DriverAPIService.acceptTripRequest(params);
-      print("handleAccept");
+      var tripId = await DriverAPIService.tripApi.acceptTripRequest(params);
 
       Get.back(result: {
         "accept": true,
@@ -49,10 +48,5 @@ class RequestController extends GetxController {
         count.value -= 1;
       });
     }
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }
