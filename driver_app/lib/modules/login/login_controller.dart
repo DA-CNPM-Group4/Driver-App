@@ -1,4 +1,4 @@
-import 'package:driver_app/modules/welcome/welcome_controller.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

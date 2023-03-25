@@ -12,7 +12,6 @@ import 'package:driver_app/modules/otp/otp_view.dart';
 import 'package:driver_app/modules/otp/otp_binding.dart';
 import 'package:driver_app/modules/splash/splash_view.dart';
 import 'package:driver_app/modules/splash/splash_binding.dart';
-import 'package:driver_app/modules/welcome/welcome_biding.dart';
 
 import 'package:get/get.dart';
 import '../modules/bank_registration/bank_registration_binding.dart';
@@ -42,7 +41,6 @@ class AppPages {
     GetPage(
       name: Paths.WELCOME,
       page: () => const WelcomeView(),
-      binding: WelcomeBinding(),
     ),
     GetPage(
       name: Paths.LOGIN,

@@ -1,7 +1,7 @@
 import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/utils/widgets.dart';
-import 'package:driver_app/modules/welcome/welcome_controller.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
