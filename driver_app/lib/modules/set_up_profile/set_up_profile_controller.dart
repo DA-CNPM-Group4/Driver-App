@@ -1,7 +1,7 @@
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/utils/widgets.dart';
-import 'package:driver_app/modules/register/register_controller.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +11,8 @@ import '../../data/vehicle.dart';
 class SetUpProfileController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
-  var registerController = Get.find<RegisterController>();
+  final LifeCycleController lifeCycleController =
+      Get.find<LifeCycleController>();
 
   List<Vehicle> vehicles = [
     Vehicle(
@@ -117,11 +118,11 @@ class SetUpProfileController extends GetxController {
       AverageRate: 0,
       NumberOfRate: 0,
       NumberOfTrip: 0,
-      Email: registerController.emailController.text,
+      Email: lifeCycleController.email,
       Gender: defaultGender.value,
       IdentityNumber: idController.text,
       Name: nameController.text,
-      Phone: registerController.phoneNumberController.text,
+      Phone: lifeCycleController.email,
     );
 
     try {

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 import 'package:driver_app/Data/models/local_entity/destination.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
@@ -9,8 +8,6 @@ import 'package:driver_app/Data/providers/firestore_realtime_provider.dart';
 import 'package:driver_app/Data/services/device_location_service.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/Data/services/firestore_realtime_service.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:intl/intl.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +15,20 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:driver_app/modules/home/controllers/confirm_order.dart';
 import 'package:driver_app/modules/income/income_controller.dart';
 
 import '../../../data/Maps.dart';
 import '../../../data/network_handler.dart';
-import '../../../routes/app_pages.dart';
 import '../../../routes/app_routes.dart';
 
-// TODO: OPTIMIZE DRAW ROUTE
 class HomeController extends GetxController {
+  var incomeController = Get.find<IncomeController>();
+
   StreamSubscription<Position>? gpsStreamSubscription;
+  StreamSubscription? listenTripAgent;
+  StreamSubscription? passengerLisenterAgent;
+
   String address = "";
 
   var driverId = "testDriverId";
@@ -41,31 +40,28 @@ class HomeController extends GetxController {
   late RealtimeDriver driver = RealtimeDriver(
       info: driverInfo, vehicle: vehicleInfo, location: driverLocation);
 
-  StreamSubscription? listenTripAgent;
-  StreamSubscription? passengerLisenterAgent;
-
 ////////////////////////////////////////////////////////////
 
   var isActive = false.obs;
   var isLoading = false.obs;
   var isMapLoaded = false.obs;
   var isAccepted = false.obs;
+
   var position = {}.obs;
   var currentDestinationPostion = {}.obs;
 
   var text = "Đã đón khách".obs;
-  String? id;
-  var incomeController = Get.find<IncomeController>();
-
+  String? tripId;
   Maps map = Maps();
+
   late GoogleMapController googleMapController;
-  OverlayEntry? overlayEntry;
-  OverlayState? overlayState;
-  StreamSubscription? listener;
   RxList<LatLng> polylinePoints = <LatLng>[].obs;
   List<PointLatLng> searchResult = [];
   final RxList<Polyline> polyline = <Polyline>[].obs;
   RxMap<MarkerId, Marker> markers = <MarkerId, Marker>{}.obs;
+
+  OverlayEntry? overlayEntry;
+  OverlayState? overlayState;
 
   void insertOverlay({
     required BuildContext context,
@@ -145,7 +141,7 @@ class HomeController extends GetxController {
               arguments: {'requestId': event.snapshot.key, "trip": request});
 
           if (result["accept"] == true) {
-            id = result["tripId"];
+            var tripId = result["tripId"];
 
             var passengerInfo = await FirestoreRealtimeService.instance
                 .readPassengerNode(request.PassengerId ?? 'fake-passenger-id');
@@ -167,7 +163,7 @@ class HomeController extends GetxController {
               context: context,
               trip: request,
               passenger: passengerInfo,
-              id: id!,
+              id: tripId!,
             );
           }
         }
@@ -251,18 +247,21 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value = true;
+
     if (isActive.value) {
       await enableRealtimeLocator();
     }
 
-    isLoading.value = true;
     isMapLoaded.value = true;
+
     await map.determinePosition();
     if (map.permission == LocationPermission.whileInUse ||
         map.permission == LocationPermission.always) {
       position.value = await map.getCurrentPosition();
     }
     isMapLoaded.value = false;
+
     polyline.add(Polyline(
       polylineId: const PolylineId('line1'),
       visible: true,
@@ -270,12 +269,8 @@ class HomeController extends GetxController {
       width: 5,
       color: Colors.blue,
     ));
-    isLoading.value = false;
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
+    isLoading.value = false;
   }
 
   @override
@@ -299,7 +294,6 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
-///////////////////////////////////////////////////
   Future<void> enableRealtimeLocator() async {
     await setDriverInfo();
 

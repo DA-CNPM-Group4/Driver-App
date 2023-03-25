@@ -23,9 +23,9 @@ abstract class APIHandlerInterface {
 }
 
 class APIHandlerImp implements APIHandlerInterface {
-  static String host = BackendEnviroment.host;
-  static const _storage = FlutterSecureStorage();
-  static final client = Dio();
+  static late final String host;
+  static late final FlutterSecureStorage _storage;
+  static late final Dio client;
 
   static final APIHandlerImp _singleton = APIHandlerImp._internal();
   static APIHandlerImp get instance => _singleton;
@@ -34,9 +34,11 @@ class APIHandlerImp implements APIHandlerInterface {
     return _singleton;
   }
 
-  APIHandlerImp._internal(
-      // init here
-      );
+  APIHandlerImp._internal() {
+    host = BackendEnviroment.host;
+    _storage = const FlutterSecureStorage();
+    client = Dio();
+  }
 
   Future<Map<String, String>> _buildHeader({
     bool useToken = false,

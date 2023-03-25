@@ -204,9 +204,7 @@ class LoginView extends GetView<LoginController> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
             onPressed: () async {
-              if (await controller.validateAndSave()) {
-                Get.toNamed(Routes.PASSWORD_LOGIN);
-              }
+              await controller.validateAndSave();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,

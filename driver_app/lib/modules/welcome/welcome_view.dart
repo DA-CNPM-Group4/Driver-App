@@ -1,12 +1,16 @@
+import 'package:driver_app/modules/welcome/welcome_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:get/get.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
-class WelcomeView extends StatelessWidget {
+class WelcomeView extends GetView<WelcomeController> {
   const WelcomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    Get.put(WelcomeController());
+
     Size size = MediaQuery.of(context).size;
     double heightSafeArea = size.height -
         MediaQuery.of(context).padding.top -

@@ -7,13 +7,14 @@ import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 
 class GeneralAPIService {
-  static Future<void> login({required LoginDriverRequestBody body}) async {
+  Future<void> login({required LoginDriverRequestBody body}) async {
     try {
       var response = await APIHandlerImp.instance
           .post(body.toJson(), '/Authentication/Login');
 
       if (response.data["status"]) {
         var body = LoginResponseBody.fromJson(response.data['data']);
+        print("Login Result: " + body.toJson().toString());
         await _storeAllIdentity(body);
       } else {
         return Future.error(IBussinessException(response.data['message']));
@@ -24,7 +25,7 @@ class GeneralAPIService {
     }
   }
 
-  static Future<void> register(RegisterDriverRequestBody body) async {
+  Future<void> register(RegisterDriverRequestBody body) async {
     try {
       var response = await APIHandlerImp.instance
           .post(body.toJson(), '/Authentication/Register');
@@ -38,7 +39,7 @@ class GeneralAPIService {
     }
   }
 
-  static Future<void> changePassword(ChangePasswordRequest body) async {
+  Future<void> changePassword(ChangePasswordRequest body) async {
     try {
       var response = await APIHandlerImp.instance.post(
         body.toJson(),
@@ -55,7 +56,7 @@ class GeneralAPIService {
     }
   }
 
-  static Future<void> logout() async {
+  Future<void> logout() async {
     try {
       var response = await APIHandlerImp.instance.post(
         null,

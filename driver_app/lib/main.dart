@@ -1,11 +1,12 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'firebase_options.dart';
@@ -13,7 +14,6 @@ import 'firebase_options.dart';
 void main() async {
   BackendEnviroment.checkDevelopmentMode();
   await setup();
-
   runApp(GetMaterialApp(
     title: "Application",
     // home: const TestUpdateLocation(),
@@ -37,6 +37,8 @@ Future<void> setup() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Get.put(LifeCycleController(), permanent: true);
 }
 
 class MyApp extends StatelessWidget {

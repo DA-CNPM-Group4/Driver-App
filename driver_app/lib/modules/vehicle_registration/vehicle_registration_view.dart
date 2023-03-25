@@ -142,11 +142,6 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
 
                 if (check) {
                   await controller.register();
-                  Get.snackbar("Register successfully",
-                      "You can access our system from now on",
-                      colorText: Colors.black,
-                      backgroundColor: Colors.grey[200]);
-                  Get.offAllNamed(Routes.WELCOME);
                 }
               },
               style: ElevatedButton.styleFrom(

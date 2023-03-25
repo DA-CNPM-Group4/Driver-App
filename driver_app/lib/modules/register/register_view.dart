@@ -161,11 +161,7 @@ class RegisterView extends GetView<RegisterController> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: ElevatedButton(
             onPressed: () async {
-              var check = await controller.validateAndSave();
-
-              if (check) {
-                Get.toNamed(Routes.PASSWORD_REGISTER);
-              }
+              await controller.validateAndSave();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
             child: Obx(() => Padding(

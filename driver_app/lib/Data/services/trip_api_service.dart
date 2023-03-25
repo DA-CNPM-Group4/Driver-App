@@ -3,8 +3,7 @@ import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 
 class TripApiService {
-  static Future<String> acceptTripRequest(
-      AcceptTripRequestParams params) async {
+  Future<String> acceptTripRequest(AcceptTripRequestParams params) async {
     try {
       var identity = await APIHandlerImp.instance.getIdentity();
       params.driverId = params.driverId ?? identity;
@@ -21,7 +20,7 @@ class TripApiService {
     }
   }
 
-  static Future<String> cancelTrip(String tripId) async {
+  Future<String> cancelTrip(String tripId) async {
     try {
       var query = {'tripId': tripId};
 
@@ -38,7 +37,7 @@ class TripApiService {
     }
   }
 
-  static Future<void> pickPassenger(String tripId) async {
+  Future<void> pickPassenger(String tripId) async {
     try {
       var query = {'tripId': tripId};
       var response = await APIHandlerImp.instance
@@ -54,7 +53,7 @@ class TripApiService {
     }
   }
 
-  static Future<String> completeTrip(String tripId) async {
+  Future<String> completeTrip(String tripId) async {
     try {
       var query = {'tripId': tripId};
       var response = await APIHandlerImp.instance
@@ -71,7 +70,7 @@ class TripApiService {
   }
 
   //  TODO: HANDLE RESPONSE
-  static Future<String> getDriverTrip(String tripId) async {
+  Future<String> getDriverTrip(String tripId) async {
     try {
       var query = {'tripId': tripId};
       var response = await APIHandlerImp.instance
@@ -88,7 +87,7 @@ class TripApiService {
   }
 
   //  TODO: HANDLE RESPONSE
-  static Future<String> getDriverTrips() async {
+  Future<String> getDriverTrips() async {
     try {
       var driverId = await APIHandlerImp.instance.getIdentity();
       var query = {'driverId': driverId};

@@ -8,25 +8,25 @@ part 'driver_entity.g.dart';
 @JsonSerializable(explicitToJson: true)
 class DriverEntity extends HiveObject {
   @HiveField(0)
-  String? accountId;
+  String accountId;
 
   @HiveField(1)
-  String? identityNumber;
+  String identityNumber;
 
   @HiveField(2)
-  String? email;
+  String email;
 
   @HiveField(3)
-  String? phone;
+  String phone;
 
   @HiveField(4)
-  String? name;
+  String name;
 
   @HiveField(5)
-  bool? gender;
+  bool gender;
 
   @HiveField(6)
-  String? address;
+  String address;
 
   @HiveField(7)
   double averageRate;
@@ -34,10 +34,13 @@ class DriverEntity extends HiveObject {
   @HiveField(8)
   double numberOfRate;
 
-  @HiveField(10)
+  @HiveField(9)
   int numberOfTrip;
 
-  @HiveField(9)
+  @HiveField(10)
+  bool? haveVehicleRegistered;
+
+  @HiveField(11)
   List<VehicleEntity>? vehicleList;
 
   DriverEntity({

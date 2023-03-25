@@ -17,23 +17,25 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DriverEntity(
-      accountId: fields[0] as String?,
-      identityNumber: fields[1] as String?,
-      name: fields[4] as String?,
-      phone: fields[3] as String?,
-      email: fields[2] as String?,
-      address: fields[6] as String?,
-      gender: fields[5] as bool?,
+      accountId: fields[0] as String,
+      identityNumber: fields[1] as String,
+      name: fields[4] as String,
+      phone: fields[3] as String,
+      email: fields[2] as String,
+      address: fields[6] as String,
+      gender: fields[5] as bool,
       averageRate: fields[7] as double,
       numberOfRate: fields[8] as double,
-      numberOfTrip: fields[10] as int,
-    )..vehicleList = (fields[9] as List?)?.cast<VehicleEntity>();
+      numberOfTrip: fields[9] as int,
+    )
+      ..haveVehicleRegistered = fields[10] as bool?
+      ..vehicleList = (fields[11] as List?)?.cast<VehicleEntity>();
   }
 
   @override
   void write(BinaryWriter writer, DriverEntity obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.accountId)
       ..writeByte(1)
@@ -52,9 +54,11 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
       ..write(obj.averageRate)
       ..writeByte(8)
       ..write(obj.numberOfRate)
-      ..writeByte(10)
-      ..write(obj.numberOfTrip)
       ..writeByte(9)
+      ..write(obj.numberOfTrip)
+      ..writeByte(10)
+      ..write(obj.haveVehicleRegistered)
+      ..writeByte(11)
       ..write(obj.vehicleList);
   }
 
@@ -74,19 +78,21 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
 // **************************************************************************
 
 DriverEntity _$DriverEntityFromJson(Map<String, dynamic> json) => DriverEntity(
-      accountId: json['accountId'] as String?,
-      identityNumber: json['identityNumber'] as String?,
-      name: json['name'] as String?,
-      phone: json['phone'] as String?,
-      email: json['email'] as String?,
-      address: json['address'] as String?,
-      gender: json['gender'] as bool?,
+      accountId: json['accountId'] as String,
+      identityNumber: json['identityNumber'] as String,
+      name: json['name'] as String,
+      phone: json['phone'] as String,
+      email: json['email'] as String,
+      address: json['address'] as String,
+      gender: json['gender'] as bool,
       averageRate: (json['averageRate'] as num).toDouble(),
       numberOfRate: (json['numberOfRate'] as num).toDouble(),
       numberOfTrip: json['numberOfTrip'] as int,
-    )..vehicleList = (json['vehicleList'] as List<dynamic>?)
-        ?.map((e) => VehicleEntity.fromJson(e as Map<String, dynamic>))
-        .toList();
+    )
+      ..haveVehicleRegistered = json['haveVehicleRegistered'] as bool?
+      ..vehicleList = (json['vehicleList'] as List<dynamic>?)
+          ?.map((e) => VehicleEntity.fromJson(e as Map<String, dynamic>))
+          .toList();
 
 Map<String, dynamic> _$DriverEntityToJson(DriverEntity instance) =>
     <String, dynamic>{
@@ -100,5 +106,6 @@ Map<String, dynamic> _$DriverEntityToJson(DriverEntity instance) =>
       'averageRate': instance.averageRate,
       'numberOfRate': instance.numberOfRate,
       'numberOfTrip': instance.numberOfTrip,
+      'haveVehicleRegistered': instance.haveVehicleRegistered,
       'vehicleList': instance.vehicleList?.map((e) => e.toJson()).toList(),
     };

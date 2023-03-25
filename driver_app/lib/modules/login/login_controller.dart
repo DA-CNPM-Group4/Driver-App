@@ -1,7 +1,12 @@
+import 'package:driver_app/modules/welcome/welcome_controller.dart';
+import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
+  final LifeCycleController lifeCycleController =
+      Get.find<LifeCycleController>();
+
   final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> emailFormKey = GlobalKey<FormState>();
   TextEditingController phoneNumberController = TextEditingController();
@@ -29,17 +34,15 @@ class LoginController extends GetxController {
     return null;
   }
 
-  Future<bool> validateAndSave() async {
+  Future<void> validateAndSave() async {
     isLoading.value = true;
     if (!isUsingEmail.value) {
       if (!phoneFormKey.currentState!.validate()) {
         isLoading.value = false;
-        return false;
       }
     } else {
       if (!emailFormKey.currentState!.validate()) {
         isLoading.value = false;
-        return false;
       }
     }
     // call api to check
@@ -48,7 +51,10 @@ class LoginController extends GetxController {
         ? emailFormKey.currentState!.save()
         : phoneFormKey.currentState!.save();
     isLoading.value = false;
-    return true;
+
+    lifeCycleController.setAuthFieldInfo(
+        phoneNumberController.text, emailController.text);
+    Get.toNamed(Routes.PASSWORD_LOGIN);
   }
 
   void changeLoginMethod() {
