@@ -122,7 +122,7 @@ class SetUpProfileController extends GetxController {
       Gender: defaultGender.value,
       IdentityNumber: idController.text,
       Name: nameController.text,
-      Phone: lifeCycleController.email,
+      Phone: lifeCycleController.phone,
     );
 
     try {

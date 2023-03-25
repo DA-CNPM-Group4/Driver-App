@@ -1,11 +1,11 @@
-class Destination {
+class PositionPoint {
   String? address;
   double? latitude;
   double? longitude;
 
-  Destination({this.address, this.latitude, this.longitude});
+  PositionPoint({this.address, this.latitude, this.longitude});
 
-  Destination.fromJson(Map<dynamic, dynamic> json) {
+  PositionPoint.fromJson(Map<dynamic, dynamic> json) {
     address = json['address'];
     latitude = json['latitude'];
     longitude = json['longitude'];

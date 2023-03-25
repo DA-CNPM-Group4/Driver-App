@@ -1,4 +1,5 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
+import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/models/requests/login_driver_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
@@ -34,27 +35,38 @@ class PasswordLoginController extends GetxController {
   }
 
   Future<void> login() async {
-    isLoading.value = false;
+    isLoading.value = true;
     try {
-      var body = await LoginDriverRequestBody(
+      var requestBody = await LoginDriverRequestBody(
         email: lifeCycleController.email,
         phone: lifeCycleController.phone,
         password: passwordController.text,
       );
-      await DriverAPIService.authApi.login(body: body);
+      await DriverAPIService.authApi.login(body: requestBody);
 
+      print("get driver info");
       DriverEntity driverInfo = await DriverAPIService.getDriverInfo();
+      lifeCycleController.driver = driverInfo;
+
       if (driverInfo.haveVehicleRegistered != true) {
+        showSnackBar(
+            "Register Vehicle", "You Need Setup Vehicle Before Driving");
         Get.toNamed(Routes.VEHICLE_REGISTRATION);
       }
+
+      print("get vehicle info");
+      VehicleEntity vehicleEntity = await DriverAPIService.getVehicle();
+      lifeCycleController.vehicle = vehicleEntity;
 
       Get.offNamedUntil(
           Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
     } on IBussinessException catch (e) {
-      print("Set driver Info");
+      showSnackBar(
+          "Setup Driver Info", "You Need Setup Driver Info Before Driving");
       Get.toNamed(Routes.SET_UP_PROFILE);
     } catch (e) {
       showSnackBar("Error", e.toString());
     }
+    isLoading.value = false;
   }
 }

@@ -66,7 +66,8 @@ class UserView extends GetView<UserController> {
                                   cvvCode: "",
                                   cardHolderName:
                                       "Balance ${controller.wallet!.balance!}",
-                                  bankName: controller.driverEntity!.name!,
+                                  bankName: controller.driverEntity?.name ??
+                                      "unKnown",
                                   isHolderNameVisible: true,
                                   showBackView: false,
                                   onCreditCardWidgetChange:
@@ -124,7 +125,7 @@ class UserView extends GetView<UserController> {
                                   vertical: 20, horizontal: 15),
                               leading: Image.asset("assets/Flexibility.png"),
                               title: Text(
-                                controller.driverEntity!.name!,
+                                controller.driverEntity?.name ?? "Unknown",
                                 style: BaseTextStyle.heading4(fontSize: 18),
                               ),
                               subtitle: Column(
@@ -132,16 +133,16 @@ class UserView extends GetView<UserController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    controller.driverEntity!.phone!,
+                                    controller.driverEntity?.phone ?? "Unknown",
                                     style: BaseTextStyle.body2(fontSize: 14),
                                   ),
                                   Text(
-                                    controller.driverEntity!.address!,
+                                    controller.driverEntity?.address ??
+                                        "Unknown",
                                     style: BaseTextStyle.body2(fontSize: 14),
                                   ),
                                   Text(
-                                    controller.driverEntity!.vehicleList!.first
-                                        .brand!,
+                                    controller.vehicleEntity?.brand ?? "Unknow",
                                     style: BaseTextStyle.body2(fontSize: 14),
                                   )
                                 ],

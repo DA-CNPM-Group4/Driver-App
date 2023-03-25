@@ -9,18 +9,19 @@ import 'package:intl/intl.dart';
 
 class OrderInformation extends StatelessWidget {
   void Function()? onStart;
+  void Function()? onCancle;
   void Function(RxBool)? onTrip;
   final RealtimeTripRequest tripRequest;
   final RealtimePassenger passenger;
   RxBool? isLoading = false.obs;
-  Timer? timer;
+  RxBool onDestination = false.obs;
 
   OrderInformation(
       {Key? key,
       this.onStart,
+      this.onCancle,
       this.onTrip,
       required this.tripRequest,
-      this.timer,
       required this.passenger})
       : super(key: key);
 
@@ -28,7 +29,6 @@ class OrderInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     var h = (size.height * 0.55).obs;
-    var text = "Đã đón khách".obs;
     final formatBalance = NumberFormat("#,##0", "vi_VN");
 
     return Obx(
@@ -64,7 +64,7 @@ class OrderInformation extends StatelessWidget {
                       ),
                       ListTile(
                         leading: Image.asset(
-                          "assets/icons/cat_icon.png",
+                          "assets/icons/profile_icon.png",
                           height: 40,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -90,7 +90,7 @@ class OrderInformation extends StatelessWidget {
                       ),
                       ListTile(
                         leading: Image.asset(
-                          "assets/icons/profile_icon.png",
+                          "assets/icons/address_icon.png",
                           height: 40,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -149,21 +149,46 @@ class OrderInformation extends StatelessWidget {
                 bottomSheet: Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        switch (text.value) {
-                          case "Đã đón khách":
-                            if (onStart != null) onStart!();
-                            text.value = "Hoàn thành chuyến";
-                            break;
-                          case "Hoàn thành chuyến":
-                            if (onTrip != null) onTrip!(isLoading!);
-                            break;
-                        }
-                      },
-                      child: Obx(() => isLoading!.value
-                          ? const CircularProgressIndicator()
-                          : Text(text.value))),
+                  child: Obx(
+                    () => !onDestination.value
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                onPressed: () {
+                                  if (onCancle != null) onCancle?.call();
+                                },
+                                child: Obx(
+                                  () => isLoading!.value
+                                      ? const CircularProgressIndicator()
+                                      : const Text("Hủy chuyển đi"),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (onStart != null) onStart!();
+                                  onDestination.value = true;
+                                },
+                                child: Obx(
+                                  () => isLoading!.value
+                                      ? const CircularProgressIndicator()
+                                      : const Text("Đã đón khách"),
+                                ),
+                              ),
+                            ],
+                          )
+                        : ElevatedButton(
+                            onPressed: () async {
+                              if (onTrip != null) onTrip!(isLoading!);
+                            },
+                            child: Obx(() => isLoading!.value
+                                ? const CircularProgressIndicator()
+                                : const Text("Hoàn thành chuyến")),
+                          ),
+                  ),
                 ),
               ),
             ),

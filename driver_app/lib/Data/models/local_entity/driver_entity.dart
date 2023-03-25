@@ -40,9 +40,6 @@ class DriverEntity extends HiveObject {
   @HiveField(10)
   bool? haveVehicleRegistered;
 
-  @HiveField(11)
-  List<VehicleEntity>? vehicleList;
-
   DriverEntity({
     required this.accountId,
     required this.identityNumber,

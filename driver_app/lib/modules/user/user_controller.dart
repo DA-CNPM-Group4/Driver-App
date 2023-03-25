@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
+import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/models/local_entity/wallet.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,8 @@ import '../../routes/app_routes.dart';
 class UserController extends GetxController {
   final count = 0.obs;
   DriverEntity? driverEntity;
+  VehicleEntity? vehicleEntity;
+
   var isLoading = false.obs;
   Wallet? wallet;
   var isClicked = false.obs;

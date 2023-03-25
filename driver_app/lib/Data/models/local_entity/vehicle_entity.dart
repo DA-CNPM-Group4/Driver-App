@@ -9,7 +9,7 @@ class VehicleEntity extends HiveObject {
   @HiveField(0)
   String? vehicleId;
   @HiveField(1)
-  int? driverId;
+  String? driverId;
   @HiveField(2)
   String? vehicleType;
   @HiveField(3)

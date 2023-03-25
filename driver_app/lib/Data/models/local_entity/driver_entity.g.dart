@@ -27,15 +27,13 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
       averageRate: fields[7] as double,
       numberOfRate: fields[8] as double,
       numberOfTrip: fields[9] as int,
-    )
-      ..haveVehicleRegistered = fields[10] as bool?
-      ..vehicleList = (fields[11] as List?)?.cast<VehicleEntity>();
+    )..haveVehicleRegistered = fields[10] as bool?;
   }
 
   @override
   void write(BinaryWriter writer, DriverEntity obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.accountId)
       ..writeByte(1)
@@ -57,9 +55,7 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
       ..writeByte(9)
       ..write(obj.numberOfTrip)
       ..writeByte(10)
-      ..write(obj.haveVehicleRegistered)
-      ..writeByte(11)
-      ..write(obj.vehicleList);
+      ..write(obj.haveVehicleRegistered);
   }
 
   @override
@@ -88,11 +84,7 @@ DriverEntity _$DriverEntityFromJson(Map<String, dynamic> json) => DriverEntity(
       averageRate: (json['averageRate'] as num).toDouble(),
       numberOfRate: (json['numberOfRate'] as num).toDouble(),
       numberOfTrip: json['numberOfTrip'] as int,
-    )
-      ..haveVehicleRegistered = json['haveVehicleRegistered'] as bool?
-      ..vehicleList = (json['vehicleList'] as List<dynamic>?)
-          ?.map((e) => VehicleEntity.fromJson(e as Map<String, dynamic>))
-          .toList();
+    )..haveVehicleRegistered = json['haveVehicleRegistered'] as bool?;
 
 Map<String, dynamic> _$DriverEntityToJson(DriverEntity instance) =>
     <String, dynamic>{
@@ -107,5 +99,4 @@ Map<String, dynamic> _$DriverEntityToJson(DriverEntity instance) =>
       'numberOfRate': instance.numberOfRate,
       'numberOfTrip': instance.numberOfTrip,
       'haveVehicleRegistered': instance.haveVehicleRegistered,
-      'vehicleList': instance.vehicleList?.map((e) => e.toJson()).toList(),
     };

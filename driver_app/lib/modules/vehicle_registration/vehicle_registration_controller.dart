@@ -2,6 +2,7 @@ import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/Data/vehicle.dart';
 import 'package:driver_app/core/utils/widgets.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/modules/password_register/password_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ import 'package:driver_app/modules/register/register_controller.dart';
 import 'package:driver_app/modules/set_up_profile/set_up_profile_controller.dart';
 
 class VehicleRegistrationController extends GetxController {
+  final LifeCycleController lifeCycleController =
+      Get.find<LifeCycleController>();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
   var setupProfileController = Get.find<SetUpProfileController>();
@@ -160,9 +164,10 @@ class VehicleRegistrationController extends GetxController {
             .vehicles[setupProfileController.selectedIndex.value].type,
       );
       await DriverAPIService.registerVehicle(body: body);
-      isLoading.value = false;
+      lifeCycleController.vehicle = await DriverAPIService.getVehicle();
 
-      Get.offAllNamed(Routes.DASHBOARD_PAGE);
+      Get.offNamedUntil(
+          Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
       showSnackBar("Sucess", "You can access our system from now on");
     } catch (e) {
       showSnackBar("Error", e.toString());

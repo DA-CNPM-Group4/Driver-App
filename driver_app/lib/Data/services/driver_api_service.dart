@@ -1,4 +1,5 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
+import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/services/general_api_service.dart';
 import 'package:driver_app/Data/services/trip_api_service.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
@@ -6,7 +7,6 @@ import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
-import 'package:driver_app/Data/models/requests/login_driver_request.dart';
 import 'package:driver_app/Data/models/requests/login_response.dart';
 import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/models/requests/update_driver_request.dart';
@@ -108,15 +108,16 @@ class DriverAPIService {
     }
   }
 
-  static Future<CreateVehicleRequestBody> getVehicle() async {
+  static Future<VehicleEntity> getVehicle() async {
     try {
       var identity = await APIHandlerImp.instance.getIdentity();
-      var accountId = identity;
+
+      var body = {"accountId": identity};
 
       var response = await APIHandlerImp.instance
-          .post(accountId, '/Info/Vehicle/GetDriverVehicle');
+          .post(body, '/Info/Vehicle/GetDriverVehicle');
       if (response.data["status"]) {
-        return CreateVehicleRequestBody.fromJson(response.data['data']);
+        return VehicleEntity.fromJson(response.data['data']);
       } else {
         return Future.error(IBussinessException(response.data['message']));
       }

@@ -18,7 +18,7 @@ class VehicleEntityAdapter extends TypeAdapter<VehicleEntity> {
     };
     return VehicleEntity(
       vehicleId: fields[0] as String?,
-      driverId: fields[1] as int?,
+      driverId: fields[1] as String?,
       vehicleType: fields[2] as String?,
       vehicleName: fields[3] as String?,
       brand: fields[4] as String?,
@@ -59,7 +59,7 @@ class VehicleEntityAdapter extends TypeAdapter<VehicleEntity> {
 VehicleEntity _$VehicleEntityFromJson(Map<String, dynamic> json) =>
     VehicleEntity(
       vehicleId: json['vehicleId'] as String?,
-      driverId: json['driverId'] as int?,
+      driverId: json['driverId'] as String?,
       vehicleType: json['vehicleType'] as String?,
       vehicleName: json['vehicleName'] as String?,
       brand: json['brand'] as String?,
