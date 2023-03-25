@@ -7,8 +7,6 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../data/user_response.dart';
-
 class OrderInformation extends StatelessWidget {
   void Function()? onStart;
   void Function(RxBool)? onTrip;

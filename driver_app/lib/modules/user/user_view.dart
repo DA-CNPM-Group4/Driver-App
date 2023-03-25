@@ -66,7 +66,7 @@ class UserView extends GetView<UserController> {
                                   cvvCode: "",
                                   cardHolderName:
                                       "Balance ${controller.wallet!.balance!}",
-                                  bankName: controller.driverEntity!.fullname!,
+                                  bankName: controller.driverEntity!.name!,
                                   isHolderNameVisible: true,
                                   showBackView: false,
                                   onCreditCardWidgetChange:
@@ -124,7 +124,7 @@ class UserView extends GetView<UserController> {
                                   vertical: 20, horizontal: 15),
                               leading: Image.asset("assets/Flexibility.png"),
                               title: Text(
-                                controller.driverEntity!.fullname!,
+                                controller.driverEntity!.name!,
                                 style: BaseTextStyle.heading4(fontSize: 18),
                               ),
                               subtitle: Column(

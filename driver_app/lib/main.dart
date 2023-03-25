@@ -1,6 +1,6 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
-import 'package:driver_app/modules/location_test/location_test_view.dart';
-import 'package:driver_app/data/model/vehicle_list_entity.dart';
+import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
+import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,8 +11,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  BackendEnviroment.checkDevelopmentMode();
   await setup();
-
   runApp(GetMaterialApp(
     title: "Application",
     // home: const TestUpdateLocation(),
@@ -35,10 +35,9 @@ Future<void> setup() async {
 
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(0)) {
-    Hive.registerAdapter(VehicleListEntityAdapter());
+    Hive.registerAdapter(VehicleEntityAdapter());
     Hive.registerAdapter(DriverEntityAdapter());
   }
-  // await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {

@@ -17,18 +17,17 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return DriverEntity(
-      driverId: fields[0] as int?,
-      username: fields[10] as String?,
-      fullname: fields[1] as String?,
+      accountId: fields[0] as String?,
+      identityNumber: fields[1] as String?,
+      name: fields[4] as String?,
       phone: fields[3] as String?,
-      address: fields[2] as String?,
-      email: fields[4] as String?,
-      gender: fields[7] as String?,
-      driverLicenseId: fields[5] as String?,
-      driverCitizenId: fields[6] as String?,
-      status: fields[8] as String?,
-      vehicleList: (fields[9] as List?)?.cast<VehicleListEntity>(),
-    );
+      email: fields[2] as String?,
+      address: fields[6] as String?,
+      gender: fields[5] as bool?,
+      averageRate: fields[7] as double,
+      numberOfRate: fields[8] as double,
+      numberOfTrip: fields[10] as int,
+    )..vehicleList = (fields[9] as List?)?.cast<VehicleEntity>();
   }
 
   @override
@@ -36,25 +35,25 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
     writer
       ..writeByte(11)
       ..writeByte(0)
-      ..write(obj.driverId)
-      ..writeByte(10)
-      ..write(obj.username)
+      ..write(obj.accountId)
       ..writeByte(1)
-      ..write(obj.fullname)
+      ..write(obj.identityNumber)
       ..writeByte(2)
-      ..write(obj.address)
+      ..write(obj.email)
       ..writeByte(3)
       ..write(obj.phone)
       ..writeByte(4)
-      ..write(obj.email)
+      ..write(obj.name)
       ..writeByte(5)
-      ..write(obj.driverLicenseId)
-      ..writeByte(6)
-      ..write(obj.driverCitizenId)
-      ..writeByte(7)
       ..write(obj.gender)
+      ..writeByte(6)
+      ..write(obj.address)
+      ..writeByte(7)
+      ..write(obj.averageRate)
       ..writeByte(8)
-      ..write(obj.status)
+      ..write(obj.numberOfRate)
+      ..writeByte(10)
+      ..write(obj.numberOfTrip)
       ..writeByte(9)
       ..write(obj.vehicleList);
   }
@@ -75,30 +74,31 @@ class DriverEntityAdapter extends TypeAdapter<DriverEntity> {
 // **************************************************************************
 
 DriverEntity _$DriverEntityFromJson(Map<String, dynamic> json) => DriverEntity(
-      driverId: json['driverId'] as int?,
-      username: json['username'] as String?,
-      fullname: json['fullname'] as String?,
+      accountId: json['accountId'] as String?,
+      identityNumber: json['identityNumber'] as String?,
+      name: json['name'] as String?,
       phone: json['phone'] as String?,
-      address: json['address'] as String?,
       email: json['email'] as String?,
-      gender: json['gender'] as String?,
-      driverLicenseId: json['driverLicenseId'] as String?,
-      driverCitizenId: json['driverCitizenId'] as String?,
-      status: json['status'] as String?,
-      vehicleList: json['vehicleList'] as List<VehicleListEntity>?,
-    );
+      address: json['address'] as String?,
+      gender: json['gender'] as bool?,
+      averageRate: (json['averageRate'] as num).toDouble(),
+      numberOfRate: (json['numberOfRate'] as num).toDouble(),
+      numberOfTrip: json['numberOfTrip'] as int,
+    )..vehicleList = (json['vehicleList'] as List<dynamic>?)
+        ?.map((e) => VehicleEntity.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$DriverEntityToJson(DriverEntity instance) =>
     <String, dynamic>{
-      'driverId': instance.driverId,
-      'username': instance.username,
-      'fullname': instance.fullname,
-      'address': instance.address,
-      'phone': instance.phone,
+      'accountId': instance.accountId,
+      'identityNumber': instance.identityNumber,
       'email': instance.email,
-      'driverLicenseId': instance.driverLicenseId,
-      'driverCitizenId': instance.driverCitizenId,
+      'phone': instance.phone,
+      'name': instance.name,
       'gender': instance.gender,
-      'status': instance.status,
-      'vehicleList': instance.vehicleList,
+      'address': instance.address,
+      'averageRate': instance.averageRate,
+      'numberOfRate': instance.numberOfRate,
+      'numberOfTrip': instance.numberOfTrip,
+      'vehicleList': instance.vehicleList?.map((e) => e.toJson()).toList(),
     };

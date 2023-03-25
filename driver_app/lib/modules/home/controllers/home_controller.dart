@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:driver_app/Data/models/local_entity/destination.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
@@ -18,7 +19,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
-import 'package:driver_app/data/user_response.dart';
 import 'package:driver_app/modules/home/controllers/confirm_order.dart';
 import 'package:driver_app/modules/income/income_controller.dart';
 
@@ -59,7 +59,6 @@ class HomeController extends GetxController {
 
   Maps map = Maps();
   late GoogleMapController googleMapController;
-  UserResponse? userResponse;
   OverlayEntry? overlayEntry;
   OverlayState? overlayState;
   StreamSubscription? listener;

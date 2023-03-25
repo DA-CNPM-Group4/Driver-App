@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
+import 'package:driver_app/Data/models/local_entity/wallet.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../data/model/wallet.dart';
 import '../../routes/app_routes.dart';
 
 class UserController extends GetxController {

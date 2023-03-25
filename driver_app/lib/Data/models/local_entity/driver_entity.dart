@@ -1,4 +1,4 @@
-import 'package:driver_app/data/model/vehicle_list_entity.dart';
+import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,50 +8,50 @@ part 'driver_entity.g.dart';
 @JsonSerializable(explicitToJson: true)
 class DriverEntity extends HiveObject {
   @HiveField(0)
-  int? driverId;
-
-  @HiveField(10)
-  String? username;
+  String? accountId;
 
   @HiveField(1)
-  String? fullname;
+  String? identityNumber;
 
   @HiveField(2)
-  String? address;
+  String? email;
 
   @HiveField(3)
   String? phone;
 
   @HiveField(4)
-  String? email;
+  String? name;
 
   @HiveField(5)
-  String? driverLicenseId;
+  bool? gender;
 
   @HiveField(6)
-  String? driverCitizenId;
+  String? address;
 
   @HiveField(7)
-  String? gender;
+  double averageRate;
 
   @HiveField(8)
-  String? status;
+  double numberOfRate;
+
+  @HiveField(10)
+  int numberOfTrip;
 
   @HiveField(9)
-  List<VehicleListEntity>? vehicleList;
+  List<VehicleEntity>? vehicleList;
 
-  DriverEntity(
-      {required this.driverId,
-      required this.username,
-      required this.fullname,
-      required this.phone,
-      required this.address,
-      required this.email,
-      required this.gender,
-      required this.driverLicenseId,
-      required this.driverCitizenId,
-      required this.status,
-      required this.vehicleList});
+  DriverEntity({
+    required this.accountId,
+    required this.identityNumber,
+    required this.name,
+    required this.phone,
+    required this.email,
+    required this.address,
+    required this.gender,
+    required this.averageRate,
+    required this.numberOfRate,
+    required this.numberOfTrip,
+  });
 
   factory DriverEntity.fromJson(Map<String, dynamic> json) =>
       _$DriverEntityFromJson(json);
