@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/models/local_entity/wallet.dart';
-import 'package:driver_app/Data/providers/api_provider.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:get/get.dart';
 import '../../routes/app_routes.dart';
 
 class UserController extends GetxController {
-  final count = 0.obs;
+  LifeCycleController lifeCycleController = Get.find<LifeCycleController>();
+
   DriverEntity? driverEntity;
   VehicleEntity? vehicleEntity;
 
@@ -24,7 +25,9 @@ class UserController extends GetxController {
   void onInit() async {
     super.onInit();
     isLoading.value = true;
-    await getWallet();
+
+    driverEntity = await lifeCycleController.getDriver;
+    vehicleEntity = await lifeCycleController.getVehicle;
     isLoading.value = false;
   }
 
@@ -38,18 +41,8 @@ class UserController extends GetxController {
     super.onClose();
   }
 
-  logout() async {
-    await APIHandlerImp.instance.deleteToken();
-    Get.offAllNamed(Routes.WELCOME);
-  }
-
-  void increment() => count.value++;
-
-  Future<void> getWallet() async {
-    isLoading.value = true;
-    // var response_1 = await apiHandlerImp.get("driver/getWallet", {});
-    // wallet = Wallet.fromJson(response_1.data["data"]);
-    isLoading.value = false;
+  void goToProfileView() {
+    Get.toNamed(Routes.EDIT_PROFILE);
   }
 
   sendOTP() async {

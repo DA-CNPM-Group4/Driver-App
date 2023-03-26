@@ -1,12 +1,9 @@
 import 'package:driver_app/core/utils/avatar_circle/avatar_circle.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../routes/app_pages.dart';
-import '../../routes/app_routes.dart';
 import 'edit_profile_controller.dart';
 
 class EditProfileView extends GetView<EditProfileController> {
@@ -99,9 +96,9 @@ class EditProfileView extends GetView<EditProfileController> {
                       contentPadding: EdgeInsets.zero,
                       leading: Radio(
                         value: true,
-                        groupValue: controller.defaultGender.value,
+                        groupValue: controller.gender.value,
                         onChanged: (value) {
-                          controller.defaultGender.value = value as bool;
+                          controller.gender.value = value as bool;
                         },
                       ),
                     ),
@@ -113,9 +110,9 @@ class EditProfileView extends GetView<EditProfileController> {
                       title: const Text("Female"),
                       leading: Radio(
                         value: false,
-                        groupValue: controller.defaultGender.value,
+                        groupValue: controller.gender.value,
                         onChanged: (value) {
-                          controller.defaultGender.value = value as bool;
+                          controller.gender.value = value as bool;
                         },
                       ),
                     ),
@@ -129,6 +126,14 @@ class EditProfileView extends GetView<EditProfileController> {
                       validator: (value) => controller.nameValidator(value!)),
                   h_20,
                   titleAndText(
+                      title: "Identity Number",
+                      // Nếu không cho sửa phone thì thay hint value thành driver.phone và thêm thuộc tính enable = false
+                      hint: "Enter your Identity number",
+                      controller: controller.identityController,
+                      validator: (value) => controller.idValidator(value!),
+                      textTheme: textTheme),
+                  h_20,
+                  titleAndText(
                       title: "Current Address",
                       hint: "Enter your current address",
                       controller: controller.addressController,
@@ -136,22 +141,19 @@ class EditProfileView extends GetView<EditProfileController> {
                       textTheme: textTheme),
                   h_20,
                   titleAndText(
-                      title: "Phone Number",
-                      // Nếu không cho sửa phone thì thay hint value thành driver.phone và thêm thuộc tính enable = false
-                      hint: "Enter your phone number",
-                      controller: controller.phoneController,
-                      validator: (value) =>
-                          controller.phoneNumberValidator(value!),
-                      textTheme: textTheme),
-                  h_20,
+                    title: "Email",
+                    // Nếu không cho sửa email thì thay hint value thành driver.email và thêm thuộc tính enable = false
+                    enable: false,
+                    hint: controller.driver?.email ?? "",
+                    textTheme: textTheme,
+                  ),
                   titleAndText(
-                      title: "Email",
-                      // Nếu không cho sửa email thì thay hint value thành driver.email và thêm thuộc tính enable = false
-
-                      hint: "Enter your email",
-                      controller: controller.emailController,
-                      validator: (value) => controller.emailValidator(value!),
-                      textTheme: textTheme),
+                    title: "phone",
+                    // Nếu không cho sửa email thì thay hint value thành driver.email và thêm thuộc tính enable = false
+                    enable: false,
+                    hint: controller.driver?.phone ?? "",
+                    textTheme: textTheme,
+                  ),
                 ],
               ),
             ),
@@ -161,7 +163,7 @@ class EditProfileView extends GetView<EditProfileController> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
             onPressed: () async {
-              // var check = await controller.validateAndSave();
+              await controller.validateAndSave();
             },
             style: ElevatedButton.styleFrom(
               primary: Colors.green,

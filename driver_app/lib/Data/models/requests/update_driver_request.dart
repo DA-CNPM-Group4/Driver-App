@@ -3,28 +3,23 @@ part 'update_driver_request.g.dart';
 
 @JsonSerializable()
 class UpdateDriverRequestBody {
-  String IdentityNumber;
-  String Email;
-  String Phone;
+  String? AccountId;
+  String? Email = "";
+  String? Phone = "";
   String Name;
+  String IdentityNumber;
   bool Gender;
   String Address;
-  double AverageRate;
-  double NumberOfRate;
-  int NumberOfTrip;
-  String? AccountId;
+  double? AverageRate;
+  double? NumberOfRate;
+  int? NumberOfTrip;
 
-  UpdateDriverRequestBody(
-      {required this.IdentityNumber,
-      required this.AverageRate,
-      required this.NumberOfTrip,
-      required this.NumberOfRate,
-      required this.Address,
-      required this.Email,
-      required this.Phone,
-      required this.Gender,
-      required this.Name,
-      this.AccountId});
+  UpdateDriverRequestBody({
+    required this.IdentityNumber,
+    required this.Address,
+    required this.Gender,
+    required this.Name,
+  });
 
   factory UpdateDriverRequestBody.fromJson(Map<String, dynamic> json) =>
       _$UpdateDriverRequestBodyFromJson(json);

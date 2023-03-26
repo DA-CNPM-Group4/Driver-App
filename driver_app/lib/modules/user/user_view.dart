@@ -27,7 +27,7 @@ class UserView extends GetView<UserController> {
             },
           ),
           title: Text(
-            "Account",
+            "Driver Profile",
             style: BaseTextStyle.heading2(fontSize: 18, color: Colors.white),
           ),
         ),
@@ -65,7 +65,7 @@ class UserView extends GetView<UserController> {
                                   expiryDate: "",
                                   cvvCode: "",
                                   cardHolderName:
-                                      "Balance ${controller.wallet!.balance!}",
+                                      "Balance ${controller.wallet?.balance ?? "1000"}",
                                   bankName: controller.driverEntity?.name ??
                                       "unKnown",
                                   isHolderNameVisible: true,
@@ -77,19 +77,22 @@ class UserView extends GetView<UserController> {
                       ),
                       const SizedBox(height: 24),
                       ListTile(
+                        onTap: () {
+                          controller.goToProfileView();
+                        },
                         leading: const Icon(
                           Icons.star,
                           color: Colors.brown,
                         ),
                         title: Text(
-                          "Assessment",
+                          "Edit Profile",
                           style: BaseTextStyle.heading2(fontSize: 18),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
                       ListTile(
                         onTap: () async {
-                          await controller.logout();
+                          await controller.lifeCycleController.logout();
                         },
                         leading: const Icon(
                           Icons.logout,

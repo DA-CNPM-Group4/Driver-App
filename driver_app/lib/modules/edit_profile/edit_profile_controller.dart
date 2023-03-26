@@ -1,18 +1,70 @@
-import 'package:driver_app/Data/models/requests/create_driver_request.dart';
+import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
+import 'package:driver_app/Data/models/requests/update_driver_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/utils/widgets.dart';
-import 'package:driver_app/modules/register/register_controller.dart';
-import 'package:driver_app/routes/app_routes.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../data/vehicle.dart';
+import 'package:pinput/pinput.dart';
 
 class EditProfileController extends GetxController {
+  final LifeCycleController lifeCycleController =
+      Get.find<LifeCycleController>();
+  DriverEntity? driver;
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
 
-  RxBool defaultGender = true.obs;
+  RxBool gender = true.obs;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController identityController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
+  @override
+  void onInit() async {
+    driver = await lifeCycleController.getDriver;
+    nameController.setText(driver!.name);
+    identityController.setText(driver!.identityNumber);
+    addressController.setText(driver!.address);
+    gender.value = driver!.gender;
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  Future<void> validateAndSave() async {
+    isLoading.value = true;
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) {
+      isLoading.value = false;
+    }
+
+    var body = UpdateDriverRequestBody(
+      Address: addressController.text,
+      Gender: gender.value,
+      IdentityNumber: identityController.text,
+      Name: nameController.text,
+    );
+
+    try {
+      await DriverAPIService.updateDriver(body: body);
+      showSnackBar("Success", "Edit Profile Success");
+      lifeCycleController.setDriver = await DriverAPIService.getDriverInfo();
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+    }
+
+    isLoading.value = false;
+  }
 
   String? nameValidator(String value) {
     if (value.isEmpty) {
@@ -32,21 +84,7 @@ class EditProfileController extends GetxController {
     return value.isPhoneNumber ? null : "You must enter a right phone number";
   }
 
-  String? emailValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return value.isEmail ? null : "You must enter a right email";
-  }
-
   String? idValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return value.length >= 12 ? null : "ID length can't be lower than 12";
-  }
-
-  String? driverLicenseValidator(String value) {
     if (value.isEmpty) {
       return "This field must be filled";
     }
@@ -58,76 +96,5 @@ class EditProfileController extends GetxController {
       return "This field must be filled";
     }
     return null;
-  }
-
-  var selectedIndex = 0.obs;
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-
-  // Future<bool> validateAndSave() async {
-  //   isLoading.value = true;
-  //   final isValid = formKey.currentState!.validate();
-  //   if (!isValid) {
-  //     isLoading.value = false;
-  //     return false;
-  //   }
-
-  //   // var response = await apiHandlerImp.post({
-  //   //   "phoneNumber": phoneNumberController.text,
-  //   //   "email": emailController.text,
-  //   //   "driverName": nameController.text,
-  //   //   "gender": defaultGender.value ? "Male" : "Female",
-  //   //   "driverAddress": addressController.text,
-  //   //   "citizenId": idController.text,
-  //   //   "driverLicenseId": driverLicenseController.text
-  //   // }, "driver/checkDriverInfo");
-
-  //   // if (!response.data["status"]) {
-  //   //   print(response.data["data"]);
-  //   //   isLoading.value = false;
-  //   //   return false;
-  //   // }
-
-  //   var body = CreateDriverRequestBody(
-  //     Address: addressController.text,
-  //     AverageRate: 0,
-  //     NumberOfRate: 0,
-  //     NumberOfTrip: 0,
-  //     Email: registerController.emailController.text,
-  //     Gender: defaultGender.value,
-  //     IdentityNumber: idController.text,
-  //     Name: nameController.text,
-  //     Phone: registerController.phoneNumberController.text,
-  //   );
-
-  //   try {
-  //     await DriverAPIService.createDriver(body: body);
-  //     isLoading.value = false;
-  //     Get.toNamed(Routes.VEHICLE_REGISTRATION);
-  //   } catch (e) {
-  //     showSnackBar("Oh no", e.toString());
-  //   }
-
-  //   isLoading.value = false;
-  //   return false;
-  // }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }
