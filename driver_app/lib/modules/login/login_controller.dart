@@ -1,3 +1,5 @@
+import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/utils/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -59,5 +61,13 @@ class LoginController extends GetxController {
 
   void changeLoginMethod() {
     isUsingEmail.value = !isUsingEmail.value;
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      await DriverAPIService.authApi.loginByGoogle();
+    } catch (e) {
+      showSnackBar("Sign in", e.toString());
+    }
   }
 }

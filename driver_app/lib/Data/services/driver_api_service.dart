@@ -16,20 +16,6 @@ class DriverAPIService {
   static GeneralAPIService authApi = GeneralAPIService();
   static TripApiService tripApi = TripApiService();
 
-  static Future<void> register(RegisterDriverRequestBody body) async {
-    try {
-      var response = await APIHandlerImp.instance
-          .post(body.toJson(), '/Authentication/Register');
-      if (response.data["status"]) {
-      } else {
-        return Future.error(IBussinessException(response.data['message']));
-      }
-    } catch (e) {
-      return Future.error(UnexpectedException(
-          context: "register-account", debugMessage: e.toString()));
-    }
-  }
-
   static Future<void> createDriverInfo(
       {required CreateDriverRequestBody body}) async {
     try {

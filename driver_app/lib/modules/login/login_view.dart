@@ -182,7 +182,9 @@ class LoginView extends GetView<LoginController> {
               child: ElevatedButton(
                   style:
                       ElevatedButton.styleFrom(backgroundColor: BaseColor.blue),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await controller.signInWithGoogle();
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

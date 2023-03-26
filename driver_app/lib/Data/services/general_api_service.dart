@@ -5,6 +5,8 @@ import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class GeneralAPIService {
   Future<void> login({required LoginDriverRequestBody body}) async {
@@ -14,11 +16,34 @@ class GeneralAPIService {
 
       if (response.data["status"]) {
         var body = LoginResponseBody.fromJson(response.data['data']);
-        print("Login Result: " + body.toJson().toString());
+        print("Login Result: ${body.toJson()}");
         await _storeAllIdentity(body);
       } else {
         return Future.error(IBussinessException(response.data['message']));
       }
+    } catch (e) {
+      return Future.error(
+          UnexpectedException(context: "login", debugMessage: e.toString()));
+    }
+  }
+
+  Future<void> loginByGoogle() async {
+    try {
+      // begin sign in process
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+
+      // obtain auth detail from request
+      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
+      // create a new credential for user
+      final credential = GoogleAuthProvider.credential(
+          accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+
+      // actually sign in
+
+      print("Credential: $credential");
+
+      // await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
       return Future.error(
           UnexpectedException(context: "login", debugMessage: e.toString()));

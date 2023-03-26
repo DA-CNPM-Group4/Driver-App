@@ -40,7 +40,7 @@ class PasswordController extends GetxController {
 
     try {
       isLoading.value = true;
-      await DriverAPIService.register(body);
+      await DriverAPIService.authApi.register(body);
       Get.offAllNamed(Routes.WELCOME);
       showSnackBar("Register Sucess", "Please Sign In To Setup Your Profile");
     } catch (e) {
