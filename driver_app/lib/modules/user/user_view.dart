@@ -123,7 +123,8 @@ class UserView extends GetView<UserController> {
                           : ListTile(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 20, horizontal: 15),
-                              leading: Image.asset("assets/Flexibility.png"),
+                              leading:
+                                  Image.asset("assets/images/Flexibility.png"),
                               title: Text(
                                 controller.driverEntity?.name ?? "Unknown",
                                 style: BaseTextStyle.heading4(fontSize: 18),

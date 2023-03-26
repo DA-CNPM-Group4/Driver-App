@@ -5,7 +5,6 @@ import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/models/local_entity/wallet.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import '../../routes/app_routes.dart';
 
 class UserController extends GetxController {
@@ -26,8 +25,6 @@ class UserController extends GetxController {
     super.onInit();
     isLoading.value = true;
     await getWallet();
-    var box = await Hive.openBox("box");
-    driverEntity = await box.get("driver");
     isLoading.value = false;
   }
 
@@ -42,8 +39,6 @@ class UserController extends GetxController {
   }
 
   logout() async {
-    var box = await Hive.openBox("box");
-    box.clear();
     await APIHandlerImp.instance.deleteToken();
     Get.offAllNamed(Routes.WELCOME);
   }

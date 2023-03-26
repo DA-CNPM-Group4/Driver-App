@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/position_point.dart';
+import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
@@ -8,6 +10,7 @@ import 'package:driver_app/Data/providers/firestore_realtime_provider.dart';
 import 'package:driver_app/Data/services/device_location_service.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/Data/services/firestore_realtime_service.dart';
+import 'package:driver_app/Data/vehicle.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -26,6 +29,10 @@ import '../../../routes/app_routes.dart';
 class HomeController extends GetxController {
   final LifeCycleController lifeCycleController =
       Get.find<LifeCycleController>();
+
+  late DriverEntity driver;
+  late VehicleEntity vehicle;
+
   var incomeController = Get.find<IncomeController>();
 
   StreamSubscription<Position>? gpsStreamSubscription;
@@ -252,6 +259,9 @@ class HomeController extends GetxController {
     super.onInit();
     isLoading.value = true;
 
+    driver = await lifeCycleController.getDriver;
+    vehicle = await lifeCycleController.getVehicle;
+
     if (isActive.value) {
       await enableRealtimeLocator();
     }
@@ -311,7 +321,7 @@ class HomeController extends GetxController {
       currentDriverPosition['address'] = address;
 
       await FirestoreRealtimeService.instance.updateDriverLocationNode(
-        lifeCycleController.driver!.accountId,
+        driver.accountId,
         RealtimeLocation(
           lat: location.latitude,
           long: location.longitude,
@@ -336,8 +346,7 @@ class HomeController extends GetxController {
 
   Future<void> disableRealtimeLocator() async {
     await gpsStreamSubscription?.cancel();
-    await FirestoreRealtimeService.instance
-        .deleteDriverNode(lifeCycleController.driver!.accountId);
+    await FirestoreRealtimeService.instance.deleteDriverNode(driver.accountId);
   }
 
   Future<void> setDriverInfo() async {
@@ -353,9 +362,6 @@ class HomeController extends GetxController {
         lat: currentDriverPosition['latitude'],
         long: currentDriverPosition['longitude'],
         address: currentDriverPosition['address']);
-
-    final driver = lifeCycleController.driver!;
-    final vehicle = lifeCycleController.vehicle!;
 
     lifeCycleController.realtimeDriver = RealtimeDriver(
       info: RealtimeDriverInfo(

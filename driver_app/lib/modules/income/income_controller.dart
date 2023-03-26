@@ -22,8 +22,6 @@ class IncomeController extends GetxController {
   void onInit() async {
     super.onInit();
     isLoading.value = true;
-    var box = await Hive.openBox("box");
-    driverEntity = await box.get("driver");
     // await getWallet();
     isLoading.value = false;
   }

@@ -7,8 +7,8 @@ import 'package:driver_app/routes/app_routes.dart';
 import 'package:get/get.dart';
 
 class LifeCycleController extends SuperController {
-  late DriverEntity? driver;
-  late VehicleEntity? vehicle;
+  DriverEntity? _driver;
+  VehicleEntity? _vehicle;
   late RealtimeDriver realtimeDriver;
 
   String phone = "";
@@ -36,15 +36,50 @@ class LifeCycleController extends SuperController {
   }
 
   Future<void> logout() async {
-    phone = "";
-    email = "";
-    driver = null;
-    vehicle = null;
+    _resetState(isCallAPI: true);
     try {
       await DriverAPIService.authApi.logout();
     } catch (e) {
       showSnackBar("Error", e.toString());
     } finally {
+      Get.offAllNamed(Routes.WELCOME);
+    }
+  }
+
+  Future<DriverEntity> get getDriver async {
+    try {
+      _driver ??= await DriverAPIService.getDriverInfo();
+      return _driver!;
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+      _resetState();
+    }
+    // never happen
+    return _driver!;
+  }
+
+  set setDriver(DriverEntity driverEntity) => _driver = driverEntity;
+
+  Future<VehicleEntity> get getVehicle async {
+    try {
+      _vehicle ??= await DriverAPIService.getVehicle();
+      return _vehicle!;
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+      _resetState();
+    }
+    // never happen
+    return _vehicle!;
+  }
+
+  set setVehicle(VehicleEntity vehicleEntity) => _vehicle = vehicleEntity;
+
+  void _resetState({bool isCallAPI = false}) {
+    phone = "";
+    email = "";
+    _driver = null;
+    _vehicle = null;
+    if (!isCallAPI) {
       Get.offAllNamed(Routes.WELCOME);
     }
   }

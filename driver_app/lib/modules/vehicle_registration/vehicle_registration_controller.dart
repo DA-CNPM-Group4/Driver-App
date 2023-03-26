@@ -164,7 +164,7 @@ class VehicleRegistrationController extends GetxController {
             .vehicles[setupProfileController.selectedIndex.value].type,
       );
       await DriverAPIService.registerVehicle(body: body);
-      lifeCycleController.vehicle = await DriverAPIService.getVehicle();
+      lifeCycleController.setVehicle = await DriverAPIService.getVehicle();
 
       Get.offNamedUntil(
           Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));

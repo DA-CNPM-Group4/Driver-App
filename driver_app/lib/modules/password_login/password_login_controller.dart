@@ -46,7 +46,7 @@ class PasswordLoginController extends GetxController {
 
       print("get driver info");
       DriverEntity driverInfo = await DriverAPIService.getDriverInfo();
-      lifeCycleController.driver = driverInfo;
+      lifeCycleController.setDriver = driverInfo;
 
       if (driverInfo.haveVehicleRegistered != true) {
         showSnackBar(
@@ -56,7 +56,7 @@ class PasswordLoginController extends GetxController {
 
       print("get vehicle info");
       VehicleEntity vehicleEntity = await DriverAPIService.getVehicle();
-      lifeCycleController.vehicle = vehicleEntity;
+      lifeCycleController.setVehicle = vehicleEntity;
 
       Get.offNamedUntil(
           Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
