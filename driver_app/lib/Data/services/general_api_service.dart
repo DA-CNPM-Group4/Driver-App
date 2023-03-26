@@ -41,12 +41,19 @@ class GeneralAPIService {
 
       // actually sign in
 
-      print("Credential: $credential");
-
       // await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      return Future.error(
-          UnexpectedException(context: "login", debugMessage: e.toString()));
+      return Future.error(UnexpectedException(
+          context: "Google Login", debugMessage: e.toString()));
+    }
+  }
+
+  Future<void> googleSignout() async {
+    try {
+      await GoogleSignIn().signOut();
+    } catch (e) {
+      return Future.error(UnexpectedException(
+          context: "Logout-google", debugMessage: e.toString()));
     }
   }
 
