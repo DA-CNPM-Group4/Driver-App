@@ -8,6 +8,7 @@ class CreateVehicleRequestBody {
   String VehicleType;
   String VehicleName;
   String Brand;
+  String LicensePlatesNum;
 
   CreateVehicleRequestBody({
     this.VehicleId,
@@ -15,6 +16,7 @@ class CreateVehicleRequestBody {
     required this.VehicleType,
     required this.Brand,
     required this.VehicleName,
+    required this.LicensePlatesNum,
   });
 
   factory CreateVehicleRequestBody.fromJson(Map<String, dynamic> json) =>

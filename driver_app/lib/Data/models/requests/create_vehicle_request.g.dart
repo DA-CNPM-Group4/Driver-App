@@ -14,6 +14,7 @@ CreateVehicleRequestBody _$CreateVehicleRequestBodyFromJson(
       VehicleType: json['VehicleType'] as String,
       Brand: json['Brand'] as String,
       VehicleName: json['VehicleName'] as String,
+      LicensePlatesNum: json['LicensePlatesNum'] as String,
     );
 
 Map<String, dynamic> _$CreateVehicleRequestBodyToJson(
@@ -24,4 +25,5 @@ Map<String, dynamic> _$CreateVehicleRequestBodyToJson(
       'VehicleType': instance.VehicleType,
       'VehicleName': instance.VehicleName,
       'Brand': instance.Brand,
+      'LicensePlatesNum': instance.LicensePlatesNum,
     };

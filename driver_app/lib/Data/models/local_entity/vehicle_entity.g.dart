@@ -17,18 +17,19 @@ class VehicleEntityAdapter extends TypeAdapter<VehicleEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return VehicleEntity(
-      vehicleId: fields[0] as String?,
-      driverId: fields[1] as String?,
-      vehicleType: fields[2] as String?,
-      vehicleName: fields[3] as String?,
-      brand: fields[4] as String?,
+      vehicleId: fields[0] as String,
+      driverId: fields[1] as String,
+      vehicleType: fields[2] as String,
+      vehicleName: fields[3] as String,
+      brand: fields[4] as String,
+      licensePlatesNum: fields[5] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, VehicleEntity obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.vehicleId)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class VehicleEntityAdapter extends TypeAdapter<VehicleEntity> {
       ..writeByte(3)
       ..write(obj.vehicleName)
       ..writeByte(4)
-      ..write(obj.brand);
+      ..write(obj.brand)
+      ..writeByte(5)
+      ..write(obj.licensePlatesNum);
   }
 
   @override
@@ -58,11 +61,12 @@ class VehicleEntityAdapter extends TypeAdapter<VehicleEntity> {
 
 VehicleEntity _$VehicleEntityFromJson(Map<String, dynamic> json) =>
     VehicleEntity(
-      vehicleId: json['vehicleId'] as String?,
-      driverId: json['driverId'] as String?,
-      vehicleType: json['vehicleType'] as String?,
-      vehicleName: json['vehicleName'] as String?,
-      brand: json['brand'] as String?,
+      vehicleId: json['vehicleId'] as String,
+      driverId: json['driverId'] as String,
+      vehicleType: json['vehicleType'] as String,
+      vehicleName: json['vehicleName'] as String,
+      brand: json['brand'] as String,
+      licensePlatesNum: json['licensePlatesNum'] as String,
     );
 
 Map<String, dynamic> _$VehicleEntityToJson(VehicleEntity instance) =>
@@ -72,4 +76,5 @@ Map<String, dynamic> _$VehicleEntityToJson(VehicleEntity instance) =>
       'vehicleType': instance.vehicleType,
       'vehicleName': instance.vehicleName,
       'brand': instance.brand,
+      'licensePlatesNum': instance.licensePlatesNum,
     };

@@ -10,8 +10,8 @@ import '../../routes/app_routes.dart';
 class UserController extends GetxController {
   LifeCycleController lifeCycleController = Get.find<LifeCycleController>();
 
-  DriverEntity? driverEntity;
-  VehicleEntity? vehicleEntity;
+  late Rxn<DriverEntity>? driverEntity;
+  late Rxn<VehicleEntity>? vehicleEntity;
 
   var isLoading = false.obs;
   Wallet? wallet;
@@ -26,8 +26,8 @@ class UserController extends GetxController {
     super.onInit();
     isLoading.value = true;
 
-    driverEntity = await lifeCycleController.getDriver;
-    vehicleEntity = await lifeCycleController.getVehicle;
+    driverEntity = await lifeCycleController.getRXDriver;
+    vehicleEntity = await lifeCycleController.getRXVehicle;
     isLoading.value = false;
   }
 
@@ -43,6 +43,10 @@ class UserController extends GetxController {
 
   void goToProfileView() {
     Get.toNamed(Routes.EDIT_PROFILE);
+  }
+
+  void goToChangePasswordView() {
+    Get.toNamed(Routes.PASSWORD_CHANGE);
   }
 
   sendOTP() async {

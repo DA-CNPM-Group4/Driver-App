@@ -1,3 +1,5 @@
+import 'package:driver_app/modules/change_password/change_password_binding.dart';
+import 'package:driver_app/modules/change_password/change_password_view.dart.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_binding.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_view.dart';
 import 'package:driver_app/modules/edit_profile/edit_profile_binding.dart';
@@ -122,6 +124,11 @@ class AppPages {
       name: Paths.BANK_REGISTRATION,
       page: () => const BankRegistrationView(),
       binding: BankRegistrationBinding(),
+    ),
+    GetPage(
+      name: Paths.PASSWORD_CHANGE,
+      page: () => const ChangePasswordView(),
+      binding: ChangePasswordBinding(),
     ),
   ];
 }

@@ -369,9 +369,9 @@ class HomeController extends GetxController {
         phone: driver.phone,
       ),
       vehicle: RealtimeDriverVehicle(
-          brand: vehicle.brand ?? "Unknown",
-          name: vehicle.vehicleName ?? "Unknown",
-          vehicleId: vehicle.vehicleId ?? "Unknown"),
+          brand: vehicle.brand,
+          name: vehicle.vehicleName,
+          vehicleId: vehicle.vehicleId),
       location: realtimeLocation,
     );
 

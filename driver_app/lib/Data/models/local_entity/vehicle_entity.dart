@@ -7,15 +7,17 @@ part 'vehicle_entity.g.dart';
 @JsonSerializable()
 class VehicleEntity extends HiveObject {
   @HiveField(0)
-  String? vehicleId;
+  String vehicleId;
   @HiveField(1)
-  String? driverId;
+  String driverId;
   @HiveField(2)
-  String? vehicleType;
+  String vehicleType;
   @HiveField(3)
-  String? vehicleName;
+  String vehicleName;
   @HiveField(4)
-  String? brand;
+  String brand;
+  @HiveField(5)
+  String licensePlatesNum;
 
   VehicleEntity({
     required this.vehicleId,
@@ -23,6 +25,7 @@ class VehicleEntity extends HiveObject {
     required this.vehicleType,
     required this.vehicleName,
     required this.brand,
+    required this.licensePlatesNum,
   });
 
   factory VehicleEntity.fromJson(Map<String, dynamic> json) =>

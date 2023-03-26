@@ -162,6 +162,7 @@ class VehicleRegistrationController extends GetxController {
         VehicleName: vehicleNameController.text,
         VehicleType: setupProfileController
             .vehicles[setupProfileController.selectedIndex.value].type,
+        LicensePlatesNum: numberPlateController.text,
       );
       await DriverAPIService.registerVehicle(body: body);
       lifeCycleController.setVehicle = await DriverAPIService.getVehicle();

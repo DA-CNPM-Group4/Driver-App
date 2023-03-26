@@ -39,8 +39,6 @@ class GeneralAPIService {
       final credential = GoogleAuthProvider.credential(
           accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
-      // actually sign in
-
       // await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
       return Future.error(UnexpectedException(

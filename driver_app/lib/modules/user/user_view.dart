@@ -66,8 +66,9 @@ class UserView extends GetView<UserController> {
                                   cvvCode: "",
                                   cardHolderName:
                                       "Balance ${controller.wallet?.balance ?? "1000"}",
-                                  bankName: controller.driverEntity?.name ??
-                                      "unKnown",
+                                  bankName:
+                                      controller.driverEntity?.value?.name ??
+                                          "unKnown",
                                   isHolderNameVisible: true,
                                   showBackView: false,
                                   onCreditCardWidgetChange:
@@ -81,11 +82,25 @@ class UserView extends GetView<UserController> {
                           controller.goToProfileView();
                         },
                         leading: const Icon(
-                          Icons.star,
+                          Icons.people_outline_outlined,
                           color: Colors.brown,
                         ),
                         title: Text(
                           "Edit Profile",
+                          style: BaseTextStyle.heading2(fontSize: 18),
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                      ),
+                      ListTile(
+                        onTap: () {
+                          controller.goToChangePasswordView();
+                        },
+                        leading: const Icon(
+                          Icons.password,
+                          color: Colors.brown,
+                        ),
+                        title: Text(
+                          "Change Password",
                           style: BaseTextStyle.heading2(fontSize: 18),
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
@@ -129,7 +144,8 @@ class UserView extends GetView<UserController> {
                               leading:
                                   Image.asset("assets/images/Flexibility.png"),
                               title: Text(
-                                controller.driverEntity?.name ?? "Unknown",
+                                controller.driverEntity?.value?.name ??
+                                    "Unknown",
                                 style: BaseTextStyle.heading4(fontSize: 18),
                               ),
                               subtitle: Column(
@@ -137,16 +153,18 @@ class UserView extends GetView<UserController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    controller.driverEntity?.phone ?? "Unknown",
-                                    style: BaseTextStyle.body2(fontSize: 14),
-                                  ),
-                                  Text(
-                                    controller.driverEntity?.address ??
+                                    controller.driverEntity?.value?.phone ??
                                         "Unknown",
                                     style: BaseTextStyle.body2(fontSize: 14),
                                   ),
                                   Text(
-                                    controller.vehicleEntity?.brand ?? "Unknow",
+                                    controller.driverEntity?.value?.address ??
+                                        "Unknown",
+                                    style: BaseTextStyle.body2(fontSize: 14),
+                                  ),
+                                  Text(
+                                    controller.vehicleEntity?.value?.brand ??
+                                        "Unknow",
                                     style: BaseTextStyle.body2(fontSize: 14),
                                   )
                                 ],

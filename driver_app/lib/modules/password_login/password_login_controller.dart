@@ -52,6 +52,7 @@ class PasswordLoginController extends GetxController {
         showSnackBar(
             "Register Vehicle", "You Need Setup Vehicle Before Driving");
         Get.toNamed(Routes.VEHICLE_REGISTRATION);
+        return;
       }
 
       print("get vehicle info");

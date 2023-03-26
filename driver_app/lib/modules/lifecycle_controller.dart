@@ -9,6 +9,12 @@ import 'package:get/get.dart';
 class LifeCycleController extends SuperController {
   DriverEntity? _driver;
   VehicleEntity? _vehicle;
+
+  // born because of special problem from user page -> edit profile
+  late final _rxDriver = Rxn<DriverEntity>();
+  late final _rxVehicle = Rxn<VehicleEntity>();
+  //////////////////////////////////////////////
+
   late RealtimeDriver realtimeDriver;
 
   String phone = "";
@@ -58,7 +64,21 @@ class LifeCycleController extends SuperController {
     return _driver!;
   }
 
-  set setDriver(DriverEntity driverEntity) => _driver = driverEntity;
+  Future<Rxn<DriverEntity>> get getRXDriver async {
+    try {
+      _rxDriver.value ??= await getDriver;
+      return _rxDriver;
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+      _resetState();
+    }
+    return _rxDriver;
+  }
+
+  set setDriver(DriverEntity driverEntity) {
+    _driver = driverEntity;
+    _rxDriver.value = _driver;
+  }
 
   Future<VehicleEntity> get getVehicle async {
     try {
@@ -72,7 +92,21 @@ class LifeCycleController extends SuperController {
     return _vehicle!;
   }
 
-  set setVehicle(VehicleEntity vehicleEntity) => _vehicle = vehicleEntity;
+  Future<Rxn<VehicleEntity>> get getRXVehicle async {
+    try {
+      _rxVehicle.value ??= await getVehicle;
+      return _rxVehicle;
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+      _resetState();
+    }
+    return _rxVehicle;
+  }
+
+  set setVehicle(VehicleEntity vehicleEntity) {
+    _vehicle = vehicleEntity;
+    _rxVehicle.value = _vehicle;
+  }
 
   void _resetState({bool isCallAPI = false}) {
     phone = "";
