@@ -1,5 +1,7 @@
 import 'package:driver_app/modules/dashboard_page/dashboard_page_binding.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_view.dart';
+import 'package:driver_app/modules/edit_profile/edit_profile_binding.dart';
+import 'package:driver_app/modules/edit_profile/edit_profile_view.dart';
 import 'package:driver_app/modules/login/login_binding.dart';
 import 'package:driver_app/modules/login/login_view.dart';
 import 'package:driver_app/modules/password_login/password_login_view.dart';
@@ -35,7 +37,11 @@ import 'package:driver_app/modules/welcome/welcome_view.dart';
 class AppPages {
   AppPages._();
 
+<<<<<<< Updated upstream
   static const INITIAL = Routes.WELCOME;
+=======
+  static const INITIAL = Routes.EDIT_PROFILE;
+>>>>>>> Stashed changes
 
   static final routes = [
     GetPage(
@@ -81,6 +87,11 @@ class AppPages {
       name: Paths.USER,
       page: () => const UserView(),
       binding: UserBinding(),
+    ),
+    GetPage(
+      name: Paths.EDIT_PROFILE,
+      page: () => const EditProfileView(),
+      binding: EditProfileBinding(),
     ),
     GetPage(
         name: Paths.DASHBOARD_PAGE,

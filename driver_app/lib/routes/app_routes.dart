@@ -15,8 +15,7 @@ abstract class Routes {
   static const USER = Paths.USER;
   static const REQUEST = Paths.REQUEST;
   static const OTP = Paths.OTP;
-
-
+  static const EDIT_PROFILE = Paths.EDIT_PROFILE;
 }
 
 abstract class Paths {
@@ -36,5 +35,5 @@ abstract class Paths {
   static const USER = '/user';
   static const REQUEST = '/request';
   static const OTP = '/otp';
-
+  static const EDIT_PROFILE = '/edit-profile';
 }
