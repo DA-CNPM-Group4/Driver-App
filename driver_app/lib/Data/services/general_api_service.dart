@@ -58,8 +58,7 @@ class GeneralAPIService {
 
   Future<void> logout() async {
     try {
-      var response = await APIHandlerImp.instance.post(
-        null,
+      var response = await APIHandlerImp.instance.get(
         "/Authentication/Logout",
         useToken: true,
       );

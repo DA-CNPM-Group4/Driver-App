@@ -311,7 +311,7 @@ class HomeController extends GetxController {
       currentDriverPosition['address'] = address;
 
       await FirestoreRealtimeService.instance.updateDriverLocationNode(
-        lifeCycleController.driver.accountId,
+        lifeCycleController.driver!.accountId,
         RealtimeLocation(
           lat: location.latitude,
           long: location.longitude,
@@ -337,7 +337,7 @@ class HomeController extends GetxController {
   Future<void> disableRealtimeLocator() async {
     await gpsStreamSubscription?.cancel();
     await FirestoreRealtimeService.instance
-        .deleteDriverNode(lifeCycleController.driver.accountId);
+        .deleteDriverNode(lifeCycleController.driver!.accountId);
   }
 
   Future<void> setDriverInfo() async {
@@ -354,8 +354,8 @@ class HomeController extends GetxController {
         long: currentDriverPosition['longitude'],
         address: currentDriverPosition['address']);
 
-    final driver = lifeCycleController.driver;
-    final vehicle = lifeCycleController.vehicle;
+    final driver = lifeCycleController.driver!;
+    final vehicle = lifeCycleController.vehicle!;
 
     lifeCycleController.realtimeDriver = RealtimeDriver(
       info: RealtimeDriverInfo(
@@ -369,9 +369,8 @@ class HomeController extends GetxController {
       location: realtimeLocation,
     );
 
-    await FirestoreRealtimeService.instance.setDriverNode(
-        lifeCycleController.driver.accountId,
-        lifeCycleController.realtimeDriver);
+    await FirestoreRealtimeService.instance
+        .setDriverNode(driver.accountId, lifeCycleController.realtimeDriver);
   }
 
   bool checkCompleteTripCondition() {
