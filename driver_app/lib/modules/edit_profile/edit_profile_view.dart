@@ -82,11 +82,45 @@ class EditProfileView extends GetView<EditProfileController> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 24),
                   Text(
                     "Please fill required fields below",
                     style: BaseTextStyle.heading2(fontSize: 16),
                   ),
                   h_20,
+                  Text(
+                    "Gender",
+                    style: BaseTextStyle.body1(fontSize: 14),
+                  ),
+                  Obx(
+                    () => ListTile(
+                      title: const Text("Male"),
+                      horizontalTitleGap: 0,
+                      contentPadding: EdgeInsets.zero,
+                      leading: Radio(
+                        value: true,
+                        groupValue: controller.defaultGender.value,
+                        onChanged: (value) {
+                          controller.defaultGender.value = value as bool;
+                        },
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      horizontalTitleGap: 0,
+                      title: const Text("Female"),
+                      leading: Radio(
+                        value: false,
+                        groupValue: controller.defaultGender.value,
+                        onChanged: (value) {
+                          controller.defaultGender.value = value as bool;
+                        },
+                      ),
+                    ),
+                  ),
+                  h_10,
                   titleAndText(
                       title: "Full Name",
                       hint: "e.g. Adit Brahmana",
@@ -103,7 +137,8 @@ class EditProfileView extends GetView<EditProfileController> {
                   h_20,
                   titleAndText(
                       title: "Phone Number",
-                      hint: "Enter your citizen ID",
+                      // Nếu không cho sửa phone thì thay hint value thành driver.phone và thêm thuộc tính enable = false
+                      hint: "Enter your phone number",
                       controller: controller.phoneController,
                       validator: (value) =>
                           controller.phoneNumberValidator(value!),
@@ -111,7 +146,9 @@ class EditProfileView extends GetView<EditProfileController> {
                   h_20,
                   titleAndText(
                       title: "Email",
-                      hint: "Enter your driver license ID",
+                      // Nếu không cho sửa email thì thay hint value thành driver.email và thêm thuộc tính enable = false
+
+                      hint: "Enter your email",
                       controller: controller.emailController,
                       validator: (value) => controller.emailValidator(value!),
                       textTheme: textTheme),
@@ -148,6 +185,7 @@ class EditProfileView extends GetView<EditProfileController> {
       required String hint,
       required TextTheme textTheme,
       TextEditingController? controller,
+      bool? enable,
       String? Function(String?)? validator}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,6 +202,7 @@ class EditProfileView extends GetView<EditProfileController> {
           validator: (value) => validator != null ? validator(value) : null,
           onSaved: (value) {},
           inputFormatters: [],
+          enabled: enable ?? true,
           decoration: InputDecoration(hintText: hint),
         ),
       ],

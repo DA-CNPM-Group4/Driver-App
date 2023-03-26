@@ -66,7 +66,6 @@ class EditProfileController extends GetxController {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController driverLicenseController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
   // Future<bool> validateAndSave() async {

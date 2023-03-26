@@ -37,11 +37,7 @@ import 'package:driver_app/modules/welcome/welcome_view.dart';
 class AppPages {
   AppPages._();
 
-<<<<<<< Updated upstream
-  static const INITIAL = Routes.WELCOME;
-=======
   static const INITIAL = Routes.EDIT_PROFILE;
->>>>>>> Stashed changes
 
   static final routes = [
     GetPage(
