@@ -34,10 +34,8 @@ class GeneralAPIService {
       await GoogleSignIn().signOut();
       final GoogleSignInAccount? gUser = await GoogleSignIn(
         scopes: [
-          // 'https://www.googleapis.com/auth/userinfo.email',
-          // 'https://www.googleapis.com/auth/userinfo.profile',
-          'email',
-          'https://www.googleapis.com/auth/contacts.readonly',
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile',
         ],
       ).signIn();
 
