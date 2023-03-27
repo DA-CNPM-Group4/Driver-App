@@ -13,6 +13,7 @@ RealtimeTripRequest _$RealtimeTripRequestFromJson(Map<String, dynamic> json) =>
       Distance: (json['Distance'] as num).toDouble(),
       Destination: json['Destination'] as String,
       LatDesAddr: (json['LatDesAddr'] as num).toDouble(),
+      StaffId: json['StaffId'] as String,
       LongDesAddr: (json['LongDesAddr'] as num).toDouble(),
       StartAddress: json['StartAddress'] as String,
       LatStartAddr: (json['LatStartAddr'] as num).toDouble(),
@@ -22,7 +23,6 @@ RealtimeTripRequest _$RealtimeTripRequestFromJson(Map<String, dynamic> json) =>
       VehicleType: json['VehicleType'] as String,
     )
       ..PassengerId = json['PassengerId'] as String?
-      ..StaffId = json['StaffId'] as String
       ..RequestStatus = json['RequestStatus'] as String?;
 
 Map<String, dynamic> _$RealtimeTripRequestToJson(

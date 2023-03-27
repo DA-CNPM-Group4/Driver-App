@@ -1,11 +1,16 @@
 import 'dart:async';
 
+import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:get/get.dart';
 
 class RequestController extends GetxController {
+  final LifeCycleController lifeCycleController =
+      Get.find<LifeCycleController>();
+
   final count = 20.obs;
   var isLoading = false.obs;
   late String requestId = "";
@@ -13,8 +18,10 @@ class RequestController extends GetxController {
 
   Future<void> handleAccept() async {
     try {
+      final driverEnitty = await lifeCycleController.getDriver;
       var params = AcceptTripRequestParams(
-          requestId: requestId, driverId: Get.arguments['testDriverId']);
+          requestId: requestId, driverId: driverEnitty.accountId);
+
       var tripId = await DriverAPIService.tripApi.acceptTripRequest(params);
 
       Get.back(result: {
@@ -22,8 +29,8 @@ class RequestController extends GetxController {
         "tripId": tripId,
       });
     } catch (e) {
-      Get.snackbar("Failed", "Failed");
-      Get.back();
+      Get.snackbar("Failed", "You Late! Or Passenger just cancel request");
+      Get.back(result: {"accept": false});
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:driver_app/core/constants/common_object.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'trip_request.g.dart';
 
@@ -29,6 +30,7 @@ class RealtimeTripRequest {
       required this.Distance,
       required this.Destination,
       required this.LatDesAddr,
+      required this.StaffId,
       required this.LongDesAddr,
       required this.StartAddress,
       required this.LatStartAddr,
@@ -41,4 +43,14 @@ class RealtimeTripRequest {
       _$RealtimeTripRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$RealtimeTripRequestToJson(this);
+}
+
+extension TripRequest on RealtimeTripRequest {
+  bool isCreatedByPassenger() {
+    return StaffId == CommonObject.emptyUUID;
+  }
+
+  bool isEmptyPassengerID() {
+    return PassengerId == CommonObject.emptyUUID;
+  }
 }

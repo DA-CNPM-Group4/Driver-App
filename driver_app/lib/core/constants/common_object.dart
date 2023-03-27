@@ -1,6 +1,10 @@
 import 'package:driver_app/data/vehicle.dart';
 
 class CommonObject {
+  static const String emptyUUID = "00000000-0000-0000-0000-000000000000";
+  static const String test_passenger_id =
+      "5686df08-cdc0-45a0-a45a-08db257d53cf";
+
   static List<Vehicle> vehicles = [
     Vehicle(
         name: "Bike driver",

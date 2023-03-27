@@ -11,6 +11,7 @@ class TripApiService {
       params.driverId = params.driverId ?? identity;
       var response = await APIHandlerImp.instance
           .post(null, '/Trip/Trip/AcceptRequest', query: params.toJson());
+      print(response.data);
       if (response.data["status"]) {
         return response.data['data'];
       } else {
