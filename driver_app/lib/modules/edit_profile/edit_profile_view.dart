@@ -149,7 +149,7 @@ class EditProfileView extends GetView<EditProfileController> {
                   ),
                   titleAndText(
                     title: "phone",
-                    // Nếu không cho sửa email thì thay hint value thành driver.email và thêm thuộc tính enable = false
+                    // Nếu không cho sửa email thì thay hint value thành driver.phone và thêm thuộc tính enable = false
                     enable: false,
                     hint: controller.driver?.phone ?? "",
                     textTheme: textTheme,

@@ -1,7 +1,6 @@
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:driver_app/routes/app_routes.dart';
 import './password_controller.dart';
 
 class PasswordView extends GetView<PasswordController> {
@@ -83,7 +82,7 @@ class PasswordView extends GetView<PasswordController> {
                   ? const CircularProgressIndicator(
                       color: Colors.white,
                     )
-                  : Text("Confirm")),
+                  : const Text("Confirm")),
             ),
           ),
         ),

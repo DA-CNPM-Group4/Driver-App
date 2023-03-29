@@ -111,7 +111,7 @@ class IncomeView extends GetView<IncomeController> {
                             Obx(() => controller.isLoading.value
                                 ? const CircularProgressIndicator()
                                 : Text(
-                                    "chetah",
+                                    "50000",
                                     // controller.wallet!.balance!.toString(),
                                     style: BaseTextStyle.heading4(fontSize: 16),
                                   )),

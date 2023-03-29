@@ -1,11 +1,8 @@
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
-import '../../routes/app_pages.dart';
-import '../../routes/app_routes.dart';
 import 'set_up_profile_controller.dart';
 
 class SetUpProfileView extends GetView<SetUpProfileController> {

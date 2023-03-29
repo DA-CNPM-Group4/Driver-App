@@ -1,11 +1,9 @@
-import 'package:driver_app/routes/app_routes.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
-import '../../routes/app_pages.dart';
 import 'vehicle_registration_controller.dart';
 
 class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
