@@ -61,6 +61,7 @@ class EditProfileController extends GetxController {
       lifeCycleController.setDriver = await DriverAPIService.getDriverInfo();
     } catch (e) {
       showSnackBar("Error", e.toString());
+      // await lifeCycleController.logout();
     }
 
     isLoading.value = false;

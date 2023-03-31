@@ -37,14 +37,24 @@ class PasswordLoginController extends GetxController {
   Future<void> login() async {
     isLoading.value = true;
     try {
-      var requestBody = await LoginDriverRequestBody(
+      var requestBody = LoginDriverRequestBody(
         email: lifeCycleController.email,
         phone: lifeCycleController.phone,
         password: passwordController.text,
       );
       await DriverAPIService.authApi.login(body: requestBody);
-
-      print("get driver info");
+    } on IBussinessException catch (e) {
+      if (e is AccountNotActiveException) {
+        showSnackBar("Active Account", "Check your Email To Get OTP");
+        lifeCycleController.isActiveOTP = true;
+        Get.toNamed(Routes.OTP);
+      } else {
+        showSnackBar("Login Failed", e.toString());
+        isLoading.value = false;
+      }
+      return;
+    }
+    try {
       DriverEntity driverInfo = await DriverAPIService.getDriverInfo();
       lifeCycleController.setDriver = driverInfo;
 
@@ -55,7 +65,6 @@ class PasswordLoginController extends GetxController {
         return;
       }
 
-      print("get vehicle info");
       VehicleEntity vehicleEntity = await DriverAPIService.getVehicle();
       lifeCycleController.setVehicle = vehicleEntity;
 

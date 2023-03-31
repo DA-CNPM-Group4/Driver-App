@@ -6,6 +6,7 @@ import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -21,6 +22,7 @@ void main() async {
     initialRoute: AppPages.INITIAL,
     getPages: AppPages.routes,
     theme: baseTheme(),
+    builder: EasyLoading.init(),
   ));
 }
 

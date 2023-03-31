@@ -68,38 +68,56 @@ class OtpView extends GetView<OtpController> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   height: 60,
-                  child: Obx(
-                    () => ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red),
-                        onPressed: controller.isClicked.value
-                            ? null
-                            : () {
-                                controller.startTimer();
-                              },
-                        child: controller.isClicked.value
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "${controller.start.value}s",
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ],
-                              )
-                            : const Text("Resend")),
-                  ),
-                )
+                  child: ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      onPressed: () async {
+                        await controller.startTimer();
+                      },
+                      child: controller.isLoading2.value
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text("Resend")),
+                ),
+
+                // const SizedBox(height: 24),
+                // SizedBox(
+                //   width: double.infinity,
+                //   height: 60,
+                //   child: Obx(
+                //     () => ElevatedButton(
+                //         style: ElevatedButton.styleFrom(
+                //             backgroundColor: Colors.red),
+                //         onPressed: controller.isClicked.value
+                //             ? null
+                //             : () {
+                //                 controller.startTimer();
+                //               },
+                //         child: controller.isClicked.value
+                //             ? Row(
+                //                 mainAxisAlignment: MainAxisAlignment.center,
+                //                 children: [
+                //                   const CircularProgressIndicator(
+                //                     color: Colors.white,
+                //                   ),
+                //                   const SizedBox(
+                //                     width: 10,
+                //                   ),
+                //                   Text(
+                //                     "${controller.start.value}s",
+                //                     style: const TextStyle(fontSize: 20),
+                //                   ),
+                //                 ],
+                //               )
+                //             : const Text("Resend")),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -107,12 +125,7 @@ class OtpView extends GetView<OtpController> {
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: ElevatedButton(
               onPressed: () async {
-                var check = controller.check();
-                if (check) {
-                  await controller.validateOTP()
-                      ? Get.toNamed(Routes.PASSWORD_REGISTER)
-                      : null;
-                }
+                await controller.confirmOTP();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
               child: Obx(() => Padding(

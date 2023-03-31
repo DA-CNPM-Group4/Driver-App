@@ -91,20 +91,26 @@ class UserView extends GetView<UserController> {
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
-                      ListTile(
-                        onTap: () {
-                          controller.goToChangePasswordView();
-                        },
-                        leading: const Icon(
-                          Icons.password,
-                          color: Colors.brown,
-                        ),
-                        title: Text(
-                          "Change Password",
-                          style: BaseTextStyle.heading2(fontSize: 18),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
+                      Builder(builder: (context) {
+                        if (!controller.lifeCycleController.isloginByGoogle) {
+                          return ListTile(
+                            onTap: () {
+                              controller.goToChangePasswordView();
+                            },
+                            leading: const Icon(
+                              Icons.password,
+                              color: Colors.brown,
+                            ),
+                            title: Text(
+                              "Change Password",
+                              style: BaseTextStyle.heading2(fontSize: 18),
+                            ),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }),
                       ListTile(
                         onTap: () async {
                           await controller.lifeCycleController.logout();

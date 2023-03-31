@@ -16,6 +16,13 @@ class IBussinessException implements Exception {
   }
 }
 
+class AccountNotActiveException extends IBussinessException {
+  const AccountNotActiveException(String accountId,
+      {String? message = "Trip Not Found", String? place})
+      : super(message,
+            debugMessage: "This $accountId not active", place: place);
+}
+
 class TripNotFoundException extends IBussinessException {
   const TripNotFoundException(String tripId,
       {String? message = "Trip Not Found", String? place})

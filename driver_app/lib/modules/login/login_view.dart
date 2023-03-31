@@ -36,138 +36,239 @@ class LoginView extends GetView<LoginController> {
             ),
             Obx(() => controller.isUsingEmail.value
                 ? Text(
-                    "Enter your registered Email address to log in:",
+                    "Enter your registered Email and phone number to log in",
                     style: BaseTextStyle.heading2(fontSize: 20),
                   )
                 : Text(
-                    "Enter your registered phone number to log in:",
+                    "Enter your registered Email and phone number to log in",
                     style: BaseTextStyle.heading2(fontSize: 20),
                   )),
             const SizedBox(
               height: 22,
             ),
-            Obx(
-              () => controller.isUsingEmail.value
-                  ? Row(
-                      children: [
-                        SizedBox(
-                          width: 100,
-                          height: 30,
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.email,
-                                    color: BaseColor.green,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "Email",
-                                    style: BaseTextStyle.body1(fontSize: 14),
-                                  )
-                                ],
-                              )),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Form(
-                          key: controller.emailFormKey,
-                          child: Flexible(
-                            child: TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              controller: controller.emailController,
-                              validator: (value) =>
-                                  controller.emailValidator(value!),
-                              onSaved: (value) {},
-                              decoration: InputDecoration(
-                                hintText: 'Someemail@Email.com',
-                                errorText: controller.error.value,
-                              ),
-                            ),
+
+            Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  height: 30,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.email,
+                            color: BaseColor.green,
+                            size: 15,
                           ),
-                        ),
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        SizedBox(
-                          width: 100,
-                          height: 30,
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                              ),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    "assets/icons/flag.png",
-                                    height: 25,
-                                    width: 25,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "+84",
-                                    style: BaseTextStyle.body2(fontSize: 14),
-                                  )
-                                ],
-                              )),
-                        ),
-                        const SizedBox(width: 8),
-                        Form(
-                          key: controller.phoneFormKey,
-                          child: Flexible(
-                            child: Obx(
-                              () => TextFormField(
-                                keyboardType: TextInputType.number,
-                                controller: controller.phoneNumberController,
-                                validator: (value) =>
-                                    controller.phoneNumberValidator(value!),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: InputDecoration(
-                                  errorText: controller.error.value,
-                                  hintText: '123xxxxxxx',
-                                ),
-                              ),
-                            ),
+                          const SizedBox(
+                            width: 5,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Email",
+                            style: BaseTextStyle.body1(fontSize: 14),
+                          )
+                        ],
+                      )),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Form(
+                  key: controller.emailFormKey,
+                  child: Flexible(
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: controller.emailController,
+                      validator: (value) => controller.emailValidator(value!),
+                      onSaved: (value) {},
+                      decoration: InputDecoration(
+                        hintText: 'Someemail@Email.com',
+                        errorText: controller.error.value,
+                      ),
                     ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 22,
+
+            Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  height: 30,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/flag.png",
+                            height: 25,
+                            width: 25,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "+84",
+                            style: BaseTextStyle.body2(fontSize: 14),
+                          )
+                        ],
+                      )),
+                ),
+                const SizedBox(width: 8),
+                Form(
+                  key: controller.phoneFormKey,
+                  child: Flexible(
+                    child: Obx(
+                      () => TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: controller.phoneNumberController,
+                        validator: (value) =>
+                            controller.phoneNumberValidator(value!),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: InputDecoration(
+                          errorText: controller.error.value,
+                          hintText: '123xxxxxxx',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(backgroundColor: BaseColor.hint),
-                onPressed: () {
-                  controller.changeLoginMethod();
-                },
-                child: Obx(() {
-                  if (controller.isUsingEmail.value) {
-                    return const Text("Login By Phone");
-                  } else {
-                    return const Text("Login By Email");
-                  }
-                }),
-              ),
-            ),
+            // Obx(
+            //   () => controller.isUsingEmail.value
+            //       ? Row(
+            //           children: [
+            //             SizedBox(
+            //               width: 100,
+            //               height: 30,
+            //               child: ElevatedButton(
+            //                   onPressed: () {},
+            //                   style: ElevatedButton.styleFrom(
+            //                     backgroundColor: Colors.white,
+            //                   ),
+            //                   child: Row(
+            //                     children: [
+            //                       const Icon(
+            //                         Icons.email,
+            //                         color: BaseColor.green,
+            //                         size: 15,
+            //                       ),
+            //                       const SizedBox(
+            //                         width: 5,
+            //                       ),
+            //                       Text(
+            //                         "Email",
+            //                         style: BaseTextStyle.body1(fontSize: 14),
+            //                       )
+            //                     ],
+            //                   )),
+            //             ),
+            //             const SizedBox(
+            //               width: 5,
+            //             ),
+            //             Form(
+            //               key: controller.emailFormKey,
+            //               child: Flexible(
+            //                 child: TextFormField(
+            //                   keyboardType: TextInputType.emailAddress,
+            //                   controller: controller.emailController,
+            //                   validator: (value) =>
+            //                       controller.emailValidator(value!),
+            //                   onSaved: (value) {},
+            //                   decoration: InputDecoration(
+            //                     hintText: 'Someemail@Email.com',
+            //                     errorText: controller.error.value,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         )
+            //       : Row(
+            //           children: [
+            //             SizedBox(
+            //               width: 100,
+            //               height: 30,
+            //               child: ElevatedButton(
+            //                   onPressed: () {},
+            //                   style: ElevatedButton.styleFrom(
+            //                     backgroundColor: Colors.white,
+            //                   ),
+            //                   child: Row(
+            //                     children: [
+            //                       Image.asset(
+            //                         "assets/icons/flag.png",
+            //                         height: 25,
+            //                         width: 25,
+            //                       ),
+            //                       const SizedBox(
+            //                         width: 5,
+            //                       ),
+            //                       Text(
+            //                         "+84",
+            //                         style: BaseTextStyle.body2(fontSize: 14),
+            //                       )
+            //                     ],
+            //                   )),
+            //             ),
+            //             const SizedBox(width: 8),
+            //             Form(
+            //               key: controller.phoneFormKey,
+            //               child: Flexible(
+            //                 child: Obx(
+            //                   () => TextFormField(
+            //                     keyboardType: TextInputType.number,
+            //                     controller: controller.phoneNumberController,
+            //                     validator: (value) =>
+            //                         controller.phoneNumberValidator(value!),
+            //                     inputFormatters: [
+            //                       FilteringTextInputFormatter.digitsOnly
+            //                     ],
+            //                     decoration: InputDecoration(
+            //                       errorText: controller.error.value,
+            //                       hintText: '123xxxxxxx',
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            // ),
+
+            // const SizedBox(
+            //   height: 22,
+            // ),
+
+            // SizedBox(
+            //   width: double.infinity,
+            //   height: 50,
+            //   child: ElevatedButton(
+            //     style:
+            //         ElevatedButton.styleFrom(backgroundColor: BaseColor.hint),
+            //     onPressed: () {
+            //       controller.changeLoginMethod();
+            //     },
+            //     child: Obx(() {
+            //       if (controller.isUsingEmail.value) {
+            //         return const Text("Login By Phone");
+            //       } else {
+            //         return const Text("Login By Email");
+            //       }
+            //     }),
+            //   ),
+            // ),
             const SizedBox(height: 12),
             Center(
               child: Text(

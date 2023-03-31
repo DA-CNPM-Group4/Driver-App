@@ -4,6 +4,7 @@ import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/utils/widgets.dart';
 import 'package:driver_app/routes/app_routes.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class LifeCycleController extends SuperController {
@@ -24,6 +25,9 @@ class LifeCycleController extends SuperController {
   RxDouble latitud = 0.0.obs;
   RxDouble longitud = 0.0.obs;
 
+  bool isActiveOTP = true;
+  bool isloginByGoogle = false;
+
   @override
   void onDetached() {}
 
@@ -42,12 +46,14 @@ class LifeCycleController extends SuperController {
   }
 
   Future<void> logout() async {
+    EasyLoading.show(status: 'Logout...');
     _resetState(isCallAPI: true);
     try {
       await DriverAPIService.authApi.logout();
     } catch (e) {
       showSnackBar("Error", e.toString());
     } finally {
+      EasyLoading.dismiss();
       Get.offAllNamed(Routes.WELCOME);
     }
   }
@@ -113,6 +119,8 @@ class LifeCycleController extends SuperController {
     email = "";
     _driver = null;
     _vehicle = null;
+    _rxDriver.value = null;
+    _rxVehicle.value = null;
     if (!isCallAPI) {
       Get.offAllNamed(Routes.WELCOME);
     }

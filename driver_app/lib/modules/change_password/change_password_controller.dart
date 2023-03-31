@@ -32,6 +32,7 @@ class ChangePasswordController extends GetxController {
       showSnackBar("Success", "Change Password Success");
     } catch (e) {
       showSnackBar("Error", e.toString());
+      // await lifeCycleController.logout();
     }
 
     isLoading.value = false;

@@ -1,4 +1,7 @@
+import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
+import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/utils/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
@@ -38,15 +41,27 @@ class LoginController extends GetxController {
 
   Future<void> validateAndSave() async {
     isLoading.value = true;
-    if (!isUsingEmail.value) {
-      if (!phoneFormKey.currentState!.validate()) {
-        isLoading.value = false;
-      }
-    } else {
-      if (!emailFormKey.currentState!.validate()) {
-        isLoading.value = false;
-      }
+    lifeCycleController.isloginByGoogle = false;
+
+    //.. if using phone and email
+    if (!phoneFormKey.currentState!.validate() &&
+        !emailFormKey.currentState!.validate()) {
+      isLoading.value = false;
+      return;
     }
+
+    //.. if using phone or email
+    // if (!isUsingEmail.value) {
+    //   if (!phoneFormKey.currentState!.validate()) {
+    //     isLoading.value = false;
+    //     return;
+    //   }
+    // } else {
+    //   if (!emailFormKey.currentState!.validate()) {
+    //     isLoading.value = false;
+    //     return;
+    //   }
+    // }
     // call api to check
 
     isUsingEmail.value
@@ -56,6 +71,7 @@ class LoginController extends GetxController {
 
     lifeCycleController.setAuthFieldInfo(
         phoneNumberController.text, emailController.text);
+
     Get.toNamed(Routes.PASSWORD_LOGIN);
   }
 
@@ -64,10 +80,39 @@ class LoginController extends GetxController {
   }
 
   Future<void> signInWithGoogle() async {
+    isLoading.value = true;
+    lifeCycleController.isloginByGoogle = true;
+
     try {
       await DriverAPIService.authApi.loginByGoogle();
     } catch (e) {
       showSnackBar("Sign in", e.toString());
     }
+
+    try {
+      DriverEntity driverInfo = await DriverAPIService.getDriverInfo();
+      lifeCycleController.setDriver = driverInfo;
+
+      if (driverInfo.haveVehicleRegistered != true) {
+        showSnackBar(
+            "Register Vehicle", "You Need Setup Vehicle Before Driving");
+        Get.toNamed(Routes.VEHICLE_REGISTRATION);
+        return;
+      }
+
+      VehicleEntity vehicleEntity = await DriverAPIService.getVehicle();
+      lifeCycleController.setVehicle = vehicleEntity;
+
+      Get.offNamedUntil(
+          Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
+    } on IBussinessException catch (e) {
+      showSnackBar(
+          "Setup Driver Info", "You Need Setup Driver Info Before Driving");
+      Get.toNamed(Routes.SET_UP_PROFILE);
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+      // await lifeCycleController.logout();
+    }
+    isLoading.value = false;
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:driver_app/Data/models/requests/login_response.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:dio/dio.dart';
+import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 abstract class APIHandlerInterface {
@@ -112,6 +114,38 @@ class APIHandlerImp implements APIHandlerInterface {
       ),
     );
     return response;
+  }
+
+  Future<void> refreshToken() async {
+    try {
+      var accessToken = await APIHandlerImp.instance.getAccessToken();
+      var refreshToken = await APIHandlerImp.instance.getRefreshToken();
+
+      var response = await APIHandlerImp.instance.post(
+        {
+          'AccessToken': accessToken,
+          'RefreshToken': refreshToken,
+        },
+        "/Authentication/RetriveTokens",
+      );
+      if (response.data['status']) {
+        var body = LoginResponseBody.fromJson(response.data['data']);
+
+        await storeRefreshToken(body.refreshToken);
+        await storeAccessToken(body.accessToken);
+        await storeIdentity(body.accountId);
+      } else {
+        return Future.error(UnexpectedException(
+          message: "Something Happend Please Login Again",
+          context: "Refresh Token",
+          debugMessage: response.data['message'],
+        ));
+      }
+    } catch (e) {
+      await APIHandlerImp.instance.deleteToken();
+      return Future.error(UnexpectedException(
+          context: "Refresh Token", debugMessage: e.toString()));
+    }
   }
 
   @override

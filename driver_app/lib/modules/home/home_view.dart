@@ -36,8 +36,8 @@ class HomeView extends GetView<HomeController> {
                     },
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
-                          controller.currentDriverPosition["latitude"],
-                          controller.currentDriverPosition["longitude"]),
+                          controller.currentDriverPosition["latitude"] ?? 0,
+                          controller.currentDriverPosition["longitude"] ?? 0),
                       zoom: 14.44,
                     ),
                   ),
