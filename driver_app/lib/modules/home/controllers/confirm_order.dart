@@ -9,17 +9,17 @@ import 'package:intl/intl.dart';
 
 class OrderInformation extends StatelessWidget {
   void Function()? onStart;
-  void Function()? onCancle;
-  void Function(RxBool)? onTrip;
+  void Function()? onCancel;
+  void Function()? onTrip;
   final RealtimeTripRequest tripRequest;
-  final RealtimePassenger passenger;
+  final RealtimePassengerInfo passenger;
   RxBool? isLoading = false.obs;
   RxBool onDestination = false.obs;
 
   OrderInformation(
       {Key? key,
       this.onStart,
-      this.onCancle,
+      this.onCancel,
       this.onTrip,
       required this.tripRequest,
       required this.passenger})
@@ -73,7 +73,7 @@ class OrderInformation extends StatelessWidget {
                           "Order by",
                           style: TextStyle(fontWeight: FontWeight.w700),
                         ),
-                        subtitle: Text(passenger.info.name),
+                        subtitle: Text(passenger.name),
                         trailing: IconButton(
                             icon: const Icon(
                               Icons.call,
@@ -81,7 +81,7 @@ class OrderInformation extends StatelessWidget {
                             ),
                             onPressed: () async {
                               await FlutterPhoneDirectCaller.callNumber(
-                                  passenger.info.phone);
+                                  passenger.phone);
                             }),
                       ),
                       const Divider(
@@ -127,7 +127,7 @@ class OrderInformation extends StatelessWidget {
                             ),
                             ListTile(
                               title: const Text(
-                                "Tiền mặt",
+                                "Price",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               trailing: Text(
@@ -159,12 +159,12 @@ class OrderInformation extends StatelessWidget {
                                   backgroundColor: Colors.red,
                                 ),
                                 onPressed: () {
-                                  if (onCancle != null) onCancle?.call();
+                                  if (onCancel != null) onCancel?.call();
                                 },
                                 child: Obx(
                                   () => isLoading!.value
                                       ? const CircularProgressIndicator()
-                                      : const Text("Hủy chuyển đi"),
+                                      : const Text("Canceling Trip"),
                                 ),
                               ),
                               ElevatedButton(
@@ -175,18 +175,18 @@ class OrderInformation extends StatelessWidget {
                                 child: Obx(
                                   () => isLoading!.value
                                       ? const CircularProgressIndicator()
-                                      : const Text("Đã đón khách"),
+                                      : const Text("Picked Passenger"),
                                 ),
                               ),
                             ],
                           )
                         : ElevatedButton(
                             onPressed: () async {
-                              if (onTrip != null) onTrip!(isLoading!);
+                              onTrip?.call();
                             },
                             child: Obx(() => isLoading!.value
                                 ? const CircularProgressIndicator()
-                                : const Text("Hoàn thành chuyến")),
+                                : const Text("Completed Trip")),
                           ),
                   ),
                 ),

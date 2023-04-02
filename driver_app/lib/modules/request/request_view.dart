@@ -65,7 +65,7 @@ class RequestView extends GetView<RequestController> {
                 flex: 1,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.back();
+                    Get.back(result: {"accept": false});
                   },
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.white),

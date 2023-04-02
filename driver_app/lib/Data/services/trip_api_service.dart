@@ -3,6 +3,7 @@ import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
 import 'package:driver_app/Data/models/requests/trip_feedback_response.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
+import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 
 class TripApiService {
@@ -15,7 +16,8 @@ class TripApiService {
       if (response.data["status"]) {
         return response.data['data'];
       } else {
-        return Future.error(response.data['message']);
+        return Future.error(const IBussinessException(
+            "Passenger have canceled or You are Late"));
       }
     } catch (e) {
       return Future.error(UnexpectedException(
@@ -122,6 +124,21 @@ class TripApiService {
     } catch (e) {
       return Future.error(UnexpectedException(
           context: "get-trip-info", debugMessage: e.toString()));
+    }
+  }
+
+  Future<void> cancelRequest({required String requestId}) async {
+    try {
+      var query = {"requestId": requestId};
+      var response = await APIHandlerImp.instance
+          .post(null, '/Trip/TripRequest/CancelRequest', query: query);
+      if (response.data["status"]) {
+      } else {
+        return Future.error(IBussinessException(response.data['message']));
+      }
+    } catch (e) {
+      return Future.error(UnexpectedException(
+          context: "cancel-trip-request", debugMessage: e.toString()));
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
+import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/utils/widgets.dart';
 import 'package:driver_app/routes/app_routes.dart';
@@ -15,18 +16,22 @@ class LifeCycleController extends SuperController {
   late final _rxDriver = Rxn<DriverEntity>();
   late final _rxVehicle = Rxn<VehicleEntity>();
   //////////////////////////////////////////////
-
   late RealtimeDriver realtimeDriver;
-
+  RealtimeTripRequest? currentTripRequest;
+  String? requestId;
+  String? tripId;
+  // login, register state
   String phone = "";
   String email = "";
+  bool isloginByGoogle = false;
 
+  // todo: refactor to enum
+  bool isActiveOTP = true;
+
+  // currently not use
   RxBool isActive = false.obs;
   RxDouble latitud = 0.0.obs;
   RxDouble longitud = 0.0.obs;
-
-  bool isActiveOTP = true;
-  bool isloginByGoogle = false;
 
   @override
   void onDetached() {}
@@ -121,8 +126,15 @@ class LifeCycleController extends SuperController {
     _vehicle = null;
     _rxDriver.value = null;
     _rxVehicle.value = null;
+    resetDrivingState();
     if (!isCallAPI) {
       Get.offAllNamed(Routes.WELCOME);
     }
+  }
+
+  void resetDrivingState() {
+    tripId = null;
+    requestId = null;
+    currentTripRequest = null;
   }
 }

@@ -44,7 +44,7 @@ class HomeView extends GetView<HomeController> {
           ),
           Obx(
             () => Visibility(
-              visible: !controller.isAccepted.value,
+              visible: !controller.isAcceptedTrip.value,
               child: SafeArea(
                 child: Container(
                   height: 55,
@@ -66,7 +66,7 @@ class HomeView extends GetView<HomeController> {
                       Expanded(
                           child: GestureDetector(
                         onTap: () {
-                          if (controller.isActive.value) {
+                          if (controller.isDriverActive.value) {
                             showGeneralDialog(
                                 barrierColor: Colors.black.withOpacity(0.5),
                                 transitionBuilder: (context, a1, a2, widget) {
@@ -104,7 +104,7 @@ class HomeView extends GetView<HomeController> {
                                 ? JumpingText('Loading...',
                                     style: BaseTextStyle.body2(fontSize: 14))
                                 : Text(
-                                    controller.isActive.value
+                                    controller.isDriverActive.value
                                         ? "Active"
                                         : "Inactive",
                                     style: BaseTextStyle.heading4(fontSize: 18),
@@ -116,7 +116,7 @@ class HomeView extends GetView<HomeController> {
                         height: 50,
                         child: Obx(
                           () => FloatingActionButton(
-                            backgroundColor: controller.isActive.value
+                            backgroundColor: controller.isDriverActive.value
                                 ? Colors.green
                                 : Colors.black,
                             child: controller.isLoading.value
@@ -142,7 +142,7 @@ class HomeView extends GetView<HomeController> {
           ),
           Obx(
             () => Positioned.fill(
-              bottom: !controller.isAccepted.value
+              bottom: !controller.isAcceptedTrip.value
                   ? Get.height * 0.03
                   : Get.height * 0.35,
               child: Container(

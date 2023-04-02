@@ -1,3 +1,4 @@
+import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
 import 'package:driver_app/data/vehicle.dart';
 
 class CommonObject {
@@ -22,4 +23,7 @@ class CommonObject {
         description: "Get orders for Cars7S",
         img: "assets/icons/car.png"),
   ];
+
+  static RealtimePassengerInfo callcenterPassenger =
+      RealtimePassengerInfo(name: "Outside User", phone: "xxxxxxxxxx");
 }
