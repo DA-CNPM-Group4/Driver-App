@@ -19,7 +19,7 @@ class RequestController extends GetxController {
   Future<void> handleAccept() async {
     try {
       final driverEnitty = await lifeCycleController.getDriver;
-      var params = AcceptTripRequestParams(
+      var params = AcceptTripRequestBody(
           requestId: requestId, driverId: driverEnitty.accountId);
 
       var tripId = await DriverAPIService.tripApi.acceptTripRequest(params);

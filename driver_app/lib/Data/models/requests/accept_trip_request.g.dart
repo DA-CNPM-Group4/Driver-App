@@ -6,15 +6,15 @@ part of 'accept_trip_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AcceptTripRequestParams _$AcceptTripRequestParamsFromJson(
+AcceptTripRequestBody _$AcceptTripRequestBodyFromJson(
         Map<String, dynamic> json) =>
-    AcceptTripRequestParams(
+    AcceptTripRequestBody(
       driverId: json['driverId'] as String?,
       requestId: json['requestId'] as String,
     );
 
-Map<String, dynamic> _$AcceptTripRequestParamsToJson(
-        AcceptTripRequestParams instance) =>
+Map<String, dynamic> _$AcceptTripRequestBodyToJson(
+        AcceptTripRequestBody instance) =>
     <String, dynamic>{
       'driverId': instance.driverId,
       'requestId': instance.requestId,

@@ -5,13 +5,12 @@ import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 
 class TripApiService {
-  Future<String> acceptTripRequest(AcceptTripRequestParams params) async {
+  Future<String> acceptTripRequest(AcceptTripRequestBody body) async {
     try {
       var identity = await APIHandlerImp.instance.getIdentity();
-      params.driverId = params.driverId ?? identity;
+      body.driverId = body.driverId ?? identity;
       var response = await APIHandlerImp.instance
-          .post(null, '/Trip/Trip/AcceptRequest', query: params.toJson());
-      print(response.data);
+          .post(body.toJson(), '/Trip/Trip/AcceptRequest');
       if (response.data["status"]) {
         return response.data['data'];
       } else {
@@ -28,7 +27,7 @@ class TripApiService {
       var query = {'tripId': tripId};
 
       var response = await APIHandlerImp.instance
-          .get('/Trip/Trip/CancelTrip', query: query);
+          .post(null, '/Trip/Trip/CancelTrip', query: query);
       if (response.data["status"]) {
         return response.data['data'];
       } else {
@@ -36,7 +35,7 @@ class TripApiService {
       }
     } catch (e) {
       return Future.error(UnexpectedException(
-          context: "accept-trip", debugMessage: e.toString()));
+          context: "cancel-trip", debugMessage: e.toString()));
     }
   }
 
@@ -44,7 +43,7 @@ class TripApiService {
     try {
       var query = {'tripId': tripId};
       var response = await APIHandlerImp.instance
-          .get('/Trip/Trip/PickedPassenger', query: query);
+          .post(null, '/Trip/Trip/PickedPassenger', query: query);
       if (response.data["status"]) {
         return response.data['data'];
       } else {

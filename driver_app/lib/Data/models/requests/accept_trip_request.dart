@@ -2,17 +2,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'accept_trip_request.g.dart';
 
 @JsonSerializable()
-class AcceptTripRequestParams {
+class AcceptTripRequestBody {
   String? driverId;
   String requestId;
 
-  AcceptTripRequestParams({
+  AcceptTripRequestBody({
     this.driverId,
     required this.requestId,
   });
 
-  factory AcceptTripRequestParams.fromJson(Map<String, dynamic> json) =>
-      _$AcceptTripRequestParamsFromJson(json);
+  factory AcceptTripRequestBody.fromJson(Map<String, dynamic> json) =>
+      _$AcceptTripRequestBodyFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AcceptTripRequestParamsToJson(this);
+  Map<String, dynamic> toJson() => _$AcceptTripRequestBodyToJson(this);
 }
