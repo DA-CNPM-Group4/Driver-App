@@ -1,5 +1,6 @@
 import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
+import 'package:driver_app/Data/models/requests/trip_feedback_response.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
@@ -84,6 +85,22 @@ class TripApiService {
     } catch (e) {
       return Future.error(UnexpectedException(
           context: "get-trip-info", debugMessage: e.toString()));
+    }
+  }
+
+  Future<TripFeedbackResponse> getTripFeedback(String tripId) async {
+    try {
+      var query = {'tripId': tripId};
+      var response = await APIHandlerImp.instance
+          .get('/Trip/TripFeedback/TripFeedback', query: query);
+      if (response.data["status"]) {
+        return TripFeedbackResponse.fromJson(response.data['data']);
+      } else {
+        return Future.error(response.data['message']);
+      }
+    } catch (e) {
+      return Future.error(UnexpectedException(
+          context: "get-trip-feedback", debugMessage: e.toString()));
     }
   }
 
