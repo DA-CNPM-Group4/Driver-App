@@ -4,6 +4,8 @@ import 'package:driver_app/modules/dashboard_page/dashboard_page_binding.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_view.dart';
 import 'package:driver_app/modules/edit_profile/edit_profile_binding.dart';
 import 'package:driver_app/modules/edit_profile/edit_profile_view.dart';
+import 'package:driver_app/modules/forgot_password/forgot_password_binding.dart';
+import 'package:driver_app/modules/forgot_password/forgot_password_view.dart';
 import 'package:driver_app/modules/login/login_binding.dart';
 import 'package:driver_app/modules/login/login_view.dart';
 import 'package:driver_app/modules/password_login/password_login_view.dart';
@@ -129,6 +131,11 @@ class AppPages {
       name: Paths.PASSWORD_CHANGE,
       page: () => const ChangePasswordView(),
       binding: ChangePasswordBinding(),
+    ),
+    GetPage(
+      name: Paths.FORGOT_PASSWORD,
+      page: () => const ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
     ),
   ];
 }

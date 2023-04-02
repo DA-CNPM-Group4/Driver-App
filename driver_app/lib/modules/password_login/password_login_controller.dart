@@ -46,12 +46,11 @@ class PasswordLoginController extends GetxController {
     } on IBussinessException catch (e) {
       if (e is AccountNotActiveException) {
         showSnackBar("Active Account", "Check your Email To Get OTP");
-        lifeCycleController.isActiveOTP = true;
-        Get.toNamed(Routes.OTP);
+        await handleSendActiveAccountOTP();
       } else {
         showSnackBar("Login Failed", e.toString());
-        isLoading.value = false;
       }
+      isLoading.value = false;
       return;
     }
     try {
@@ -78,5 +77,12 @@ class PasswordLoginController extends GetxController {
       showSnackBar("Error", e.toString());
     }
     isLoading.value = false;
+  }
+
+  Future<void> handleSendActiveAccountOTP() async {
+    lifeCycleController.isActiveOTP = true;
+    await DriverAPIService.authApi
+        .requestActiveAccountOTP(lifeCycleController.email);
+    Get.toNamed(Routes.OTP);
   }
 }

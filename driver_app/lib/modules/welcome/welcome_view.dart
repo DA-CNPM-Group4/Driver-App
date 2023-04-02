@@ -71,27 +71,29 @@ class WelcomeView extends StatelessWidget {
                           },
                           child: const Text("Log in"))),
                   Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder(
-                              side: BorderSide(
-                                color: Colors.green,
-                              ),
-                            ),
-                            backgroundColor: Colors.white,
-                            elevation: 0,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(
+                          side: BorderSide(
+                            color: Colors.green,
                           ),
-                          onPressed: () {
-                            Get.toNamed(Routes.REGISTER);
-                          },
-                          child: Text(
-                            "REGISTER AS DRIVER-PARTNER",
-                            style: BaseTextStyle.body1(
-                                color: BaseColor.green, fontSize: 16),
-                          ))),
+                        ),
+                        backgroundColor: Colors.white,
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        Get.toNamed(Routes.REGISTER);
+                      },
+                      child: Text(
+                        "REGISTER AS DRIVER-PARTNER",
+                        style: BaseTextStyle.body1(
+                            color: BaseColor.green, fontSize: 16),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 16),

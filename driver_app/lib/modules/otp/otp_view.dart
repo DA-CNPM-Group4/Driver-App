@@ -1,4 +1,3 @@
-import 'package:driver_app/routes/app_routes.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +15,10 @@ class OtpView extends GetView<OtpController> {
         },
         child: Scaffold(
           appBar: AppBar(
+            title: Text(
+              "OTP",
+              style: BaseTextStyle.heading2(fontSize: 20),
+            ),
             leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back,
@@ -38,7 +41,7 @@ class OtpView extends GetView<OtpController> {
               )
             ],
           ),
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,8 +71,33 @@ class OtpView extends GetView<OtpController> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 24),
+                controller.lifeCycleController.isActiveOTP == false
+                    ? SizedBox(
+                        height: 160,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Enter your new password",
+                              style: BaseTextStyle.heading2(fontSize: 20),
+                            ),
+                            Form(
+                              key: controller.passwordFormKey,
+                              child: TextFormField(
+                                obscureText: true,
+                                controller: controller.passwordController,
+                                validator: (value) =>
+                                    controller.passwordValidator(value!),
+                                decoration: const InputDecoration(),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : Container(),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
                   height: 60,

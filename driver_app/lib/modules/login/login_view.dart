@@ -12,6 +12,10 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          "Login",
+          style: BaseTextStyle.heading2(fontSize: 20),
+        ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -269,7 +273,17 @@ class LoginView extends GetView<LoginController> {
             //     }),
             //   ),
             // ),
-            const SizedBox(height: 12),
+            TextButton(
+              onPressed: () {
+                Get.toNamed(Routes.FORGOT_PASSWORD);
+              },
+              child: Text(
+                "Forgot password?",
+                style:
+                    BaseTextStyle.subtitle3(fontSize: 14, color: Colors.blue),
+              ),
+            ),
+            const SizedBox(height: 10),
             Center(
               child: Text(
                 "Or",

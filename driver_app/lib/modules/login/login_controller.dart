@@ -71,7 +71,6 @@ class LoginController extends GetxController {
 
     lifeCycleController.setAuthFieldInfo(
         phoneNumberController.text, emailController.text);
-
     Get.toNamed(Routes.PASSWORD_LOGIN);
   }
 

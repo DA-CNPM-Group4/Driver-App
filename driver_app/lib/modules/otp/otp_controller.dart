@@ -8,32 +8,20 @@ import 'package:get/get.dart';
 
 class OtpController extends GetxController {
   final lifeCycleController = Get.find<LifeCycleController>();
-  var isLoading = false.obs;
-  var isLoading2 = false.obs;
 
-  var isClicked = true.obs;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
 
   TextEditingController otpController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  var error = ''.obs;
+
   Timer? timer;
   var start = 15.obs;
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  var error = ''.obs;
-
-  @override
-  void onInit() async {
-    super.onInit();
-    await startTimer();
-  }
-
-  String? validator() {
-    if (otpController.text.isEmpty) {
-      return "OTP can't be empty";
-    } else if (otpController.text.length < 6) {
-      return "Please fill all the numbers";
-    }
-    return null;
-  }
+  var isLoading = false.obs;
+  var isLoading2 = false.obs;
+  var isClicked = true.obs;
 
   Future<bool> validateOTP() async {
     return true;
@@ -52,14 +40,14 @@ class OtpController extends GetxController {
         await DriverAPIService.authApi
             .activeAccountByOTP(lifeCycleController.email, otpController.text);
       } else {
-        await DriverAPIService.authApi.resetPassword(
-            lifeCycleController.email, "123123", otpController.text);
+        await DriverAPIService.authApi.resetPassword(lifeCycleController.email,
+            passwordController.text, otpController.text);
       }
     } catch (e) {
       showSnackBar("Error", e.toString());
     }
     isLoading.value = false;
-    Get.offAndToNamed(Routes.SET_UP_PROFILE);
+    Get.offAllNamed(Routes.WELCOME);
     return;
   }
 
@@ -91,5 +79,23 @@ class OtpController extends GetxController {
       DriverAPIService.authApi.requestResetPassword(lifeCycleController.email);
     }
     isLoading2.value = false;
+  }
+
+  String? validator() {
+    if (otpController.text.isEmpty) {
+      return "OTP can't be empty";
+    } else if (otpController.text.length < 6) {
+      return "Please fill all the numbers";
+    }
+    return null;
+  }
+
+  String? passwordValidator(String value) {
+    if (value.isEmpty) {
+      return "This field is required";
+    } else if (value.length < 6) {
+      return "Password length must be longer than 6 digits";
+    }
+    return null;
   }
 }
