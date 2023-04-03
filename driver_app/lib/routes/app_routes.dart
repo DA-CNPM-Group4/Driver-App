@@ -13,6 +13,7 @@ abstract class Routes {
   static const DASHBOARD_PAGE = Paths.DASHBOARD_PAGE;
   static const INCOME = Paths.INCOME;
   static const USER = Paths.USER;
+  static const CHAT = Paths.CHAT;
   static const REQUEST = Paths.REQUEST;
   static const OTP = Paths.OTP;
   static const EDIT_PROFILE = Paths.EDIT_PROFILE;
@@ -35,6 +36,7 @@ abstract class Paths {
   static const DASHBOARD_PAGE = '/dashboard-page';
   static const INCOME = '/income';
   static const USER = '/user';
+  static const CHAT = '/chat';
   static const REQUEST = '/request';
   static const OTP = '/otp';
   static const EDIT_PROFILE = '/edit-profile';

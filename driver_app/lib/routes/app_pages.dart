@@ -1,5 +1,7 @@
 import 'package:driver_app/modules/change_password/change_password_binding.dart';
 import 'package:driver_app/modules/change_password/change_password_view.dart.dart';
+import 'package:driver_app/modules/chat/chat_binding.dart';
+import 'package:driver_app/modules/chat/chat_view.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_binding.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_view.dart';
 import 'package:driver_app/modules/edit_profile/edit_profile_binding.dart';
@@ -87,6 +89,11 @@ class AppPages {
       name: Paths.USER,
       page: () => const UserView(),
       binding: UserBinding(),
+    ),
+    GetPage(
+      name: Paths.CHAT,
+      page: () => const ChatView(),
+      binding: ChatBinding(),
     ),
     GetPage(
       name: Paths.EDIT_PROFILE,

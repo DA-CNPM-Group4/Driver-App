@@ -16,8 +16,8 @@ class ChatMessageWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       color: chatMessageType == ChatMessageType.driver
-          ? Colors.white
-          : Colors.grey[300],
+          ? Colors.grey[300]
+          : Colors.white,
       child: Row(
         children: [
           Container(
