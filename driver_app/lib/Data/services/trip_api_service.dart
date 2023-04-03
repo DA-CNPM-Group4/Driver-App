@@ -58,13 +58,14 @@ class TripApiService {
     }
   }
 
-  Future<String> completeTrip(String tripId) async {
+  Future<void> completeTrip(String tripId) async {
     try {
       var query = {'tripId': tripId};
       var response = await APIHandlerImp.instance
           .post(null, '/Trip/Trip/FinishTrip', query: query);
       if (response.data["status"]) {
-        return response.data['data'];
+        // return response.data['data'];
+        return;
       } else {
         return Future.error(response.data['message']);
       }
