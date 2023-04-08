@@ -78,9 +78,9 @@ class HomeController extends GetxController {
           final data = Map<String, dynamic>.from(event.snapshot.value as Map);
           var request = RealtimeTripRequest.fromJson(data);
 
-          // if (await handleRequestTimeout(request, event.snapshot.key ?? "")) {
-          //   return;
-          // }
+          if (await handleRequestTimeout(request, event.snapshot.key ?? "")) {
+            return;
+          }
 
           var result = await Get.toNamed(Routes.REQUEST, arguments: {
             'requestId': event.snapshot.key,
@@ -360,7 +360,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() async {
-    // disableRealtimeLocator();
+    await disableRealtimeLocator();
     super.onClose();
   }
 

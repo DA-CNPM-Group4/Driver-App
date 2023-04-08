@@ -22,6 +22,7 @@ class ForgotPasswordController extends GetxController {
       isLoading.value = false;
     }
     try {
+      lifeCycleController.email = emailController.text;
       await DriverAPIService.authApi
           .requestResetPassword(lifeCycleController.email);
 

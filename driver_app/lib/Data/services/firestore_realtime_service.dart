@@ -14,12 +14,12 @@ class FirestoreRealtimeService {
     return _instance ??= FirestoreRealtimeService();
   }
 
-  final database = FirebaseDatabase.instance;
+  final firebaseRealtime = FirebaseDatabase.instance;
 
   Future<RealtimeDriver?> readDriverNode(
     String driverId,
   ) async {
-    var ref = database.ref(FirebaseRealtimePaths.DRIVERS);
+    var ref = firebaseRealtime.ref(FirebaseRealtimePaths.DRIVERS);
     var snapshot = await ref.child(driverId).get();
 
     if (snapshot.exists) {
@@ -36,7 +36,7 @@ class FirestoreRealtimeService {
   Future<RealtimePassenger?> readPassengerNode(
     String passengerId,
   ) async {
-    var ref = database.ref(FirebaseRealtimePaths.PASSENGERS);
+    var ref = firebaseRealtime.ref(FirebaseRealtimePaths.PASSENGERS);
     var snapshot = await ref.child(passengerId).get();
 
     if (snapshot.exists) {
@@ -51,14 +51,15 @@ class FirestoreRealtimeService {
   }
 
   Future<void> setDriverNode(String driverId, RealtimeDriver driver) async {
-    var ref = database.ref(FirebaseRealtimePaths.DRIVERS).child(driverId);
+    var ref =
+        firebaseRealtime.ref(FirebaseRealtimePaths.DRIVERS).child(driverId);
     Map<String, dynamic> data = driver.toJson();
     await ref.set(data);
   }
 
   Future<void> updateDriverLocationNode(
       String driverId, RealtimeLocation location) async {
-    var ref = database
+    var ref = firebaseRealtime
         .ref(FirebaseRealtimePaths.DRIVERS)
         .child(driverId)
         .child('location');
@@ -67,7 +68,8 @@ class FirestoreRealtimeService {
   }
 
   Future<void> deleteDriverNode(String driverId) async {
-    var ref = database.ref(FirebaseRealtimePaths.DRIVERS).child(driverId);
+    var ref =
+        firebaseRealtime.ref(FirebaseRealtimePaths.DRIVERS).child(driverId);
     await ref.remove();
   }
 
@@ -75,7 +77,8 @@ class FirestoreRealtimeService {
     String driverId,
     Function(DatabaseEvent) callback,
   ) async {
-    var ref = database.ref(FirebaseRealtimePaths.DRIVERS).child(driverId);
+    var ref =
+        firebaseRealtime.ref(FirebaseRealtimePaths.DRIVERS).child(driverId);
 
     ref.onValue.listen((e) {
       callback(e);
@@ -86,7 +89,7 @@ class FirestoreRealtimeService {
     String driverId,
     Function(DatabaseEvent) callback,
   ) async {
-    var ref = database.ref(FirebaseRealtimePaths.TRIPS);
+    var ref = firebaseRealtime.ref(FirebaseRealtimePaths.TRIPS);
 
     ref.onChildAdded.listen((e) {
       callback(e);
@@ -95,7 +98,7 @@ class FirestoreRealtimeService {
 
   DatabaseReference getDatabaseReference(
       {required String nodeId, required String rootPath}) {
-    var ref = database.ref(rootPath).child(nodeId);
+    var ref = firebaseRealtime.ref(rootPath).child(nodeId);
     return ref;
   }
 }

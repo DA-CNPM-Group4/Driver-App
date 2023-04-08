@@ -200,6 +200,7 @@ class GeneralAPIService {
   }
 
   Future<void> requestResetPassword(String email) async {
+    print(email);
     try {
       var body = {
         'email': email,
