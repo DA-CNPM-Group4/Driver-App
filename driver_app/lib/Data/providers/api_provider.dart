@@ -52,6 +52,8 @@ class APIHandlerImp implements APIHandlerInterface {
       HttpHeaders.contentTypeHeader: "application/json",
       "device": "app"
     };
+    baseHeader["X-Api-Key"] = "ApplicationKey";
+
     if (useToken) {
       String? token =
           !useRefereshToken ? await getAccessToken() : await getRefreshToken();
