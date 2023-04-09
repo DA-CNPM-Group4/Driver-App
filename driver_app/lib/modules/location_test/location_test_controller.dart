@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
 import 'package:driver_app/Data/services/device_location_service.dart';
-import 'package:driver_app/Data/services/firestore_realtime_service.dart';
+import 'package:driver_app/Data/services/firebase_realtime_service.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -61,7 +61,7 @@ class LocationTestController extends GetxController {
       address.value =
           await DeviceLocationService.instance.getAddressFromLatLang(position);
 
-      await FirestoreRealtimeService.instance.updateDriverLocationNode(
+      await FireBaseRealtimeService.instance.updateDriverLocationNode(
         driverId,
         RealtimeLocation(
           lat: position.latitude,
@@ -74,7 +74,7 @@ class LocationTestController extends GetxController {
 
   Future<void> disableRealtimeLocator() async {
     await gpsStreamSubscription?.cancel();
-    await FirestoreRealtimeService.instance.deleteDriverNode(driverId);
+    await FireBaseRealtimeService.instance.deleteDriverNode(driverId);
   }
 
   Future<void> setDriverInfo() async {
@@ -86,6 +86,6 @@ class LocationTestController extends GetxController {
         await DeviceLocationService.instance.getAddressFromLatLang(location);
     driver.location = RealtimeLocation(
         lat: lat.value, long: long.value, address: address.value);
-    await FirestoreRealtimeService.instance.setDriverNode(driverId, driver);
+    await FireBaseRealtimeService.instance.setDriverNode(driverId, driver);
   }
 }

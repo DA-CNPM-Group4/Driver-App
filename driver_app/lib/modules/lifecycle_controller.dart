@@ -3,7 +3,7 @@ import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
-import 'package:driver_app/core/utils/widgets.dart';
+import 'package:driver_app/modules/utils/widgets.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';

@@ -3,15 +3,14 @@ import 'dart:async';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
-import 'package:driver_app/Data/providers/firestore_realtime_provider.dart';
+import 'package:driver_app/Data/providers/firesbase_realtime_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/utils/stream_subscriber_mixin.dart';
 
-class FirestoreRealtimeService {
-  static FirestoreRealtimeService? _instance;
+class FireBaseRealtimeService {
+  static FireBaseRealtimeService? _instance;
 
-  static FirestoreRealtimeService get instance {
-    return _instance ??= FirestoreRealtimeService();
+  static FireBaseRealtimeService get instance {
+    return _instance ??= FireBaseRealtimeService();
   }
 
   final firebaseRealtime = FirebaseDatabase.instance;

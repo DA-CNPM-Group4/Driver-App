@@ -6,13 +6,13 @@ import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
 import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
-import 'package:driver_app/Data/providers/firestore_realtime_provider.dart';
+import 'package:driver_app/Data/providers/firesbase_realtime_provider.dart';
 import 'package:driver_app/Data/services/device_location_service.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
-import 'package:driver_app/Data/services/firestore_realtime_service.dart';
+import 'package:driver_app/Data/services/firebase_realtime_service.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/core/constants/common_object.dart';
-import 'package:driver_app/core/utils/widgets.dart';
+import 'package:driver_app/modules/utils/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -148,7 +148,7 @@ class HomeController extends GetxController {
     if (request.isCreatedByPassenger()) {
       assignPassengerLocationListener(request);
     }
-    var passengerNode = await FirestoreRealtimeService.instance
+    var passengerNode = await FireBaseRealtimeService.instance
         .readPassengerNode(request.PassengerId!);
 
     return passengerNode == null
@@ -248,7 +248,7 @@ class HomeController extends GetxController {
   void assignPassengerLocationListener(RealtimeTripRequest request) {
     if (request.isCreatedByPassenger()) {
       var firebasePassengerRef =
-          FirestoreRealtimeService.instance.getDatabaseReference(
+          FireBaseRealtimeService.instance.getDatabaseReference(
         nodeId: request.PassengerId ?? CommonObject.test_passenger_id,
         rootPath: FirebaseRealtimePaths.PASSENGERS,
       );
@@ -392,7 +392,7 @@ class HomeController extends GetxController {
       currentDriverPosition['longitude'] = location.longitude;
       currentDriverPosition['address'] = address;
 
-      await FirestoreRealtimeService.instance.updateDriverLocationNode(
+      await FireBaseRealtimeService.instance.updateDriverLocationNode(
         driver.accountId,
         RealtimeLocation(
           lat: location.latitude,
@@ -418,7 +418,7 @@ class HomeController extends GetxController {
 
   Future<void> disableRealtimeLocator() async {
     await gpsStreamSubscription?.cancel();
-    await FirestoreRealtimeService.instance.deleteDriverNode(driver.accountId);
+    await FireBaseRealtimeService.instance.deleteDriverNode(driver.accountId);
   }
 
   Future<void> setDriverInfo() async {
@@ -447,7 +447,7 @@ class HomeController extends GetxController {
       location: realtimeLocation,
     );
 
-    await FirestoreRealtimeService.instance
+    await FireBaseRealtimeService.instance
         .setDriverNode(driver.accountId, lifeCycleController.realtimeDriver);
   }
 
