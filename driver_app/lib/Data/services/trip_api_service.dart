@@ -1,5 +1,5 @@
-import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
+import 'package:driver_app/Data/models/requests/get_income_request.dart';
 import 'package:driver_app/Data/models/requests/trip_feedback_response.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
@@ -140,6 +140,25 @@ class TripApiService {
     } catch (e) {
       return Future.error(UnexpectedException(
           context: "cancel-trip-request", debugMessage: e.toString()));
+    }
+  }
+
+  Future<double> getInComeRequest(
+      {required GetIncomeRequestBody requestBody}) async {
+    try {
+      requestBody.driverId = await APIHandlerImp.instance.getIdentity();
+      var response = await APIHandlerImp.instance.get(
+        '/Trip/Trip/GetIncome',
+        body: requestBody,
+      );
+      if (response.data["status"]) {
+        return response.data['data'];
+      } else {
+        return Future.error(IBussinessException(response.data['message']));
+      }
+    } catch (e) {
+      return Future.error(UnexpectedException(
+          context: "Trip-GetIncome", debugMessage: e.toString()));
     }
   }
 }

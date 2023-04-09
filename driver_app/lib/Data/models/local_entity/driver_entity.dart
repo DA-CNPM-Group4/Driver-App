@@ -1,4 +1,3 @@
-import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 

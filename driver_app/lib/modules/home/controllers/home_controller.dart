@@ -12,7 +12,7 @@ import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/Data/services/firebase_realtime_service.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/core/constants/common_object.dart';
-import 'package:driver_app/modules/utils/widgets.dart';
+import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 
 import 'package:firebase_database/firebase_database.dart';

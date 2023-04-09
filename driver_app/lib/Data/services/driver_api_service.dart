@@ -1,20 +1,19 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
+import 'package:driver_app/Data/services/chat_api_service.dart';
 import 'package:driver_app/Data/services/general_api_service.dart';
 import 'package:driver_app/Data/services/trip_api_service.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
-import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
-import 'package:driver_app/Data/models/requests/login_response.dart';
-import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/models/requests/update_driver_request.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 
 class DriverAPIService {
   static GeneralAPIService authApi = GeneralAPIService();
   static TripApiService tripApi = TripApiService();
+  static ChatAPIService chatAPI = ChatAPIService();
 
   static Future<void> createDriverInfo(
       {required CreateDriverRequestBody body}) async {
@@ -112,10 +111,4 @@ class DriverAPIService {
           context: "get-vehicle", debugMessage: e.toString()));
     }
   }
-}
-
-Future<void> _storeAllIdentity(LoginResponseBody body) async {
-  await APIHandlerImp.instance.storeIdentity(body.accountId);
-  await APIHandlerImp.instance.storeRefreshToken(body.refreshToken);
-  await APIHandlerImp.instance.storeAccessToken(body.accessToken);
 }

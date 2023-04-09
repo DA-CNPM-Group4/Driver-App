@@ -2,7 +2,7 @@ import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
-import 'package:driver_app/modules/utils/widgets.dart';
+import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
