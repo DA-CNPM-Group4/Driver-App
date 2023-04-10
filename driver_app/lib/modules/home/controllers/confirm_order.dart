@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
 import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +6,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class OrderInformation extends StatelessWidget {
-  void Function()? onStart;
-  void Function()? onCancel;
-  void Function()? onTrip;
+  final void Function()? onStart;
+  final void Function()? onCancel;
+  final void Function()? onTrip;
   final RealtimeTripRequest tripRequest;
   final RealtimePassengerInfo passenger;
-  RxBool? isLoading = false.obs;
-  RxBool onDestination = false.obs;
+  final RxBool? isLoading = false.obs;
+  final RxBool onDestination = false.obs;
 
   OrderInformation(
       {Key? key,

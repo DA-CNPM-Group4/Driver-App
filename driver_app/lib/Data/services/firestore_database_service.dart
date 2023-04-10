@@ -3,6 +3,7 @@ import 'package:driver_app/Data/models/realtime_models/firestore_chat.dart';
 import 'package:driver_app/Data/models/realtime_models/firestore_message.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class FireStoreDatabaseService {
   static FireStoreDatabaseService? _instance;
@@ -72,7 +73,7 @@ class FireStoreDatabaseService {
     try {
       await createChat(tripId: id, data: chatData);
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
 
     Stream<QuerySnapshot<Map<String, dynamic>>> chatStreamController =
@@ -84,7 +85,7 @@ class FireStoreDatabaseService {
           var chat = FirestoreMessageModel.fromJson(docAdd.doc.data()!);
           chats.add(chat);
         }
-        print(chats.length);
+        debugPrint(chats.length.toString());
       }
     });
 
@@ -107,7 +108,7 @@ class FireStoreDatabaseService {
           senderName: "Test name");
       await sendMessage(data: messsage, tripId: id);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

@@ -121,10 +121,10 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
             onPressed: () async {
-              var check = await controller.validateAndSave();
+              await controller.validateAndSave();
             },
             style: ElevatedButton.styleFrom(
-              primary: Colors.green,
+              backgroundColor: Colors.green,
             ),
             child: Obx(() => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
@@ -160,7 +160,7 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
           controller: controller,
           validator: (value) => validator != null ? validator(value) : null,
           onSaved: (value) {},
-          inputFormatters: [],
+          inputFormatters: const [],
           decoration: InputDecoration(hintText: hint),
         ),
       ],

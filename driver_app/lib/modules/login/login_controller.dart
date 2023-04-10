@@ -104,7 +104,7 @@ class LoginController extends GetxController {
 
       Get.offNamedUntil(
           Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
-    } on IBussinessException catch (e) {
+    } on IBussinessException catch (_) {
       showSnackBar(
           "Setup Driver Info", "You Need Setup Driver Info Before Driving");
       Get.toNamed(Routes.SET_UP_PROFILE);

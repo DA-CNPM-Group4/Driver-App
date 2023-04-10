@@ -89,12 +89,12 @@ class SetUpProfileController extends GetxController {
   TextEditingController driverLicenseController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
-  Future<bool> validateAndSave() async {
+  Future<void> validateAndSave() async {
     isLoading.value = true;
     final isValid = formKey.currentState!.validate();
     if (!isValid) {
       isLoading.value = false;
-      return false;
+      return;
     }
 
     // var response = await apiHandlerImp.post({
@@ -134,21 +134,6 @@ class SetUpProfileController extends GetxController {
     }
 
     isLoading.value = false;
-    return false;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+    return;
   }
 }

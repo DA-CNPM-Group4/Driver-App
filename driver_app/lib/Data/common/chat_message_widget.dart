@@ -29,7 +29,7 @@ class ChatMessageWidget extends StatelessWidget {
                   child: Text(text,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyLarge
                           ?.copyWith(color: Colors.black)),
                 )
               ],
@@ -63,7 +63,7 @@ class ChatMessageWidget extends StatelessWidget {
                         child: Text(text,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText1
+                                .bodyLarge
                                 ?.copyWith(color: Colors.black)),
                       )
                     ],

@@ -371,7 +371,7 @@ class HomeController extends GetxController {
     if (isDriverActive.value) {
       try {
         await changeActiveMode(context);
-      } catch (e) {}
+      } catch (_) {}
     } else {
       listenRequestAgent?.pause();
       await disableRealtimeLocator();

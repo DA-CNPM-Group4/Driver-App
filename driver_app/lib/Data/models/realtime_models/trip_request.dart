@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:driver_app/core/constants/common_object.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'trip_request.g.dart';

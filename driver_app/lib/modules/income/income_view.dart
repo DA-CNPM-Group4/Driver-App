@@ -74,8 +74,8 @@ class IncomeView extends GetView<IncomeController> {
                             ),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.green,
-                                    shape: StadiumBorder()),
+                                    backgroundColor: Colors.green,
+                                    shape: const StadiumBorder()),
                                 onPressed: () {},
                                 child: const Text("Detail"))
                           ],
@@ -277,13 +277,8 @@ class IncomeView extends GetView<IncomeController> {
                   height: 60,
                   child: Obx(
                     () => ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
-                        // onPressed: check1.value && check2.value
-                        //     ? () async {
-                        //         await controller.validateOTP(
-                        //             otpController, moneyController, type);
-                        //       }
-                        //     : null,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green),
                         onPressed: () {},
                         child: controller.buttonLoading.value
                             ? const CircularProgressIndicator(

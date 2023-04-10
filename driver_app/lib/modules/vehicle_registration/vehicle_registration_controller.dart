@@ -1,6 +1,5 @@
 import 'package:driver_app/Data/models/requests/create_vehicle_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
-import 'package:driver_app/Data/vehicle.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/modules/password_register/password_controller.dart';
@@ -178,19 +177,4 @@ class VehicleRegistrationController extends GetxController {
   }
 
   var selectedItem = 0.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

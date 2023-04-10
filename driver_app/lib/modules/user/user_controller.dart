@@ -31,16 +31,6 @@ class UserController extends GetxController {
     isLoading.value = false;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   void goToProfileView() {
     Get.toNamed(Routes.EDIT_PROFILE);
   }

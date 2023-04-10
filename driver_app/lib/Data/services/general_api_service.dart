@@ -6,6 +6,7 @@ import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GeneralAPIService {
@@ -200,7 +201,7 @@ class GeneralAPIService {
   }
 
   Future<void> requestResetPassword(String email) async {
-    print(email);
+    debugPrint(email);
     try {
       var body = {
         'email': email,

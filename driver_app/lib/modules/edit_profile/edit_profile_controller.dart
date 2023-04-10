@@ -31,16 +31,6 @@ class EditProfileController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   Future<void> validateAndSave() async {
     isLoading.value = true;
     final isValid = formKey.currentState!.validate();

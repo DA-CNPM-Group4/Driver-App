@@ -358,14 +358,9 @@ class UserView extends GetView<UserController> {
                   height: 60,
                   child: Obx(
                     () => ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.green),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green),
                         onPressed: () {},
-                        // onPressed: check1.value && check2.value
-                        //     ? () async {
-                        //         await controller.validateOTP(
-                        //             otpController, moneyController, type);
-                        //       }
-                        //     : null,
                         child: controller.buttonLoading.value
                             ? const CircularProgressIndicator(
                                 color: Colors.white,
