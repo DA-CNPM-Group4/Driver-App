@@ -124,7 +124,7 @@ class TripApiService {
       }
     } catch (e) {
       return Future.error(UnexpectedException(
-          context: "get-trip-info", debugMessage: e.toString()));
+          context: "get-trips-info", debugMessage: e.toString()));
     }
   }
 

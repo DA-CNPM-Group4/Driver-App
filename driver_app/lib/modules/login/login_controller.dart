@@ -102,8 +102,10 @@ class LoginController extends GetxController {
       VehicleEntity vehicleEntity = await DriverAPIService.getVehicle();
       lifeCycleController.setVehicle = vehicleEntity;
 
-      Get.offNamedUntil(
-          Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
+      // Get.offNamedUntil(
+      //     Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
+
+      Get.offNamedUntil(Routes.CHAT, ModalRoute.withName(Routes.CHAT));
     } on IBussinessException catch (_) {
       showSnackBar(
           "Setup Driver Info", "You Need Setup Driver Info Before Driving");

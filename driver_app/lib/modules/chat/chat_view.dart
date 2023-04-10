@@ -1,5 +1,4 @@
 import 'package:driver_app/Data/common/chat_message_widget.dart';
-import 'package:driver_app/Data/models/chat_message/chat_message.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -61,15 +60,19 @@ class ChatView extends GetView<ChatController> {
           color: Colors.grey[300],
           borderRadius: BorderRadius.circular(30),
         ),
-        child: TextField(
-          textCapitalization: TextCapitalization.sentences,
-          controller: controller.textController,
-          style: const TextStyle(color: Colors.black),
-          decoration: const InputDecoration(
-            hintText: "Type a message...",
-            hintStyle: TextStyle(color: Colors.black38),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        child: Form(
+          key: controller.formKey,
+          child: TextFormField(
+            validator: (value) => controller.messageValidator(value!),
+            textCapitalization: TextCapitalization.sentences,
+            controller: controller.textController,
+            style: const TextStyle(color: Colors.black),
+            decoration: const InputDecoration(
+              hintText: "Type a message...",
+              hintStyle: TextStyle(color: Colors.black38),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            ),
           ),
         ),
       ),
@@ -92,20 +95,11 @@ class ChatView extends GetView<ChatController> {
                 icon: const Icon(Icons.send),
                 iconSize: 25,
                 color: Colors.white,
-                onPressed: () {
-                  //display user input
-                  // setState(() {
-                  controller.addMessage(ChatMessage(
-                      text: controller.textController.text,
-                      chatMessageType: ChatMessageType.passenger));
-                  // isLoading = true;
-                  // });
-                  var input = controller.textController.text;
-                  controller.textController.clear();
+                onPressed: () async {
+                  await controller.addMessage();
                   Future.delayed(const Duration(milliseconds: 50))
                       .then((value) => _scrollDown());
-                },
-              ),
+                }),
       ),
     );
   }
