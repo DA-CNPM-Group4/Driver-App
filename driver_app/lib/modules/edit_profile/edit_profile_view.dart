@@ -71,7 +71,8 @@ class EditProfileView extends GetView<EditProfileController> {
                               radius: 15,
                               child: SvgPicture.asset(
                                 "assets/icons/ic_camera.svg",
-                                color: Colors.grey[700],
+                                colorFilter: ColorFilter.mode(
+                                    Colors.grey[700]!, BlendMode.srcIn),
                               ),
                             ),
                           ),

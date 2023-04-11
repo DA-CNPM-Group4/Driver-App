@@ -80,12 +80,15 @@ class LoginController extends GetxController {
 
   Future<void> signInWithGoogle() async {
     isLoading.value = true;
-    lifeCycleController.isloginByGoogle = true;
 
+    // handle google login
     try {
+      lifeCycleController.isloginByGoogle = true;
       await DriverAPIService.authApi.loginByGoogle();
     } catch (e) {
       showSnackBar("Sign in", e.toString());
+      isLoading.value = false;
+      return;
     }
 
     try {
@@ -102,17 +105,18 @@ class LoginController extends GetxController {
       VehicleEntity vehicleEntity = await DriverAPIService.getVehicle();
       lifeCycleController.setVehicle = vehicleEntity;
 
-      // Get.offNamedUntil(
-      //     Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
-
-      Get.offNamedUntil(Routes.CHAT, ModalRoute.withName(Routes.CHAT));
+      Get.offNamedUntil(
+          Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
+      // Get.offNamedUntil(Routes.CHAT, ModalRoute.withName(Routes.CHAT));
     } on IBussinessException catch (_) {
+      // handle get driver info (delete after backend fix)
+
       showSnackBar(
           "Setup Driver Info", "You Need Setup Driver Info Before Driving");
       Get.toNamed(Routes.SET_UP_PROFILE);
     } catch (e) {
       showSnackBar("Error", e.toString());
-      // await lifeCycleController.logout();
+      await lifeCycleController.logout();
     }
     isLoading.value = false;
   }

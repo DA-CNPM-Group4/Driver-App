@@ -90,7 +90,7 @@ class WelcomeView extends StatelessWidget {
                       child: Text(
                         "REGISTER AS DRIVER-PARTNER",
                         style: BaseTextStyle.body1(
-                            color: Color.fromARGB(255, 10, 105, 26),
+                            color: const Color.fromARGB(255, 10, 105, 26),
                             fontSize: 16),
                       ),
                     ),

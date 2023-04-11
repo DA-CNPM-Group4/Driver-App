@@ -31,7 +31,7 @@ class BaseColor {
 class BaseTextStyle {
   static const appFontFamily = "Roboto";
 
-  static TextStyle heading1({Color? color,double? fontSize}) {
+  static TextStyle heading1({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Regular",
         fontSize: fontSize ?? 32,
@@ -39,7 +39,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w400);
   }
 
-  static TextStyle heading2({Color? color,double? fontSize}) {
+  static TextStyle heading2({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Medium",
         fontSize: fontSize ?? 24,
@@ -47,7 +47,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w500);
   }
 
-  static TextStyle heading3({Color? color,double? fontSize}) {
+  static TextStyle heading3({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Regular",
         fontSize: fontSize ?? 24,
@@ -63,7 +63,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w600);
   }
 
-  static TextStyle heading5({Color? color,double? fontSize}) {
+  static TextStyle heading5({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Regular",
         fontSize: fontSize ?? 20,
@@ -71,7 +71,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w400);
   }
 
-  static TextStyle subtitle1({Color? color,double? fontSize}) {
+  static TextStyle subtitle1({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Medium",
         fontSize: fontSize ?? 18,
@@ -79,7 +79,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w500);
   }
 
-  static TextStyle subtitle2({Color? color,double? fontSize}) {
+  static TextStyle subtitle2({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Medium",
         fontSize: fontSize ?? 16,
@@ -87,7 +87,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w500);
   }
 
-  static TextStyle subtitle3({Color? color,double? fontSize}) {
+  static TextStyle subtitle3({Color? color, double? fontSize}) {
     return TextStyle(
         decoration: TextDecoration.underline,
         fontFamily: "${BaseTextStyle.appFontFamily}-Medium",
@@ -96,7 +96,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w500);
   }
 
-  static TextStyle body1({Color? color,double? fontSize}) {
+  static TextStyle body1({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Regular",
         fontSize: fontSize ?? 18,
@@ -104,7 +104,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w400);
   }
 
-  static TextStyle body2({Color? color,double? fontSize}) {
+  static TextStyle body2({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Regular",
         fontSize: fontSize ?? 16,
@@ -112,7 +112,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w400);
   }
 
-  static TextStyle body3({Color? color,double? fontSize}) {
+  static TextStyle body3({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Medium",
         fontSize: fontSize ?? 14,
@@ -120,7 +120,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w500);
   }
 
-  static TextStyle button({Color? color,double? fontSize}) {
+  static TextStyle button({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Medium",
         fontSize: fontSize ?? 16,
@@ -128,7 +128,7 @@ class BaseTextStyle {
         fontWeight: FontWeight.w600);
   }
 
-  static TextStyle caption({Color? color,double? fontSize}) {
+  static TextStyle caption({Color? color, double? fontSize}) {
     return TextStyle(
         fontFamily: "${BaseTextStyle.appFontFamily}-Medium",
         fontSize: fontSize ?? 12,

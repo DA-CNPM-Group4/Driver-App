@@ -67,7 +67,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                           height: 50,
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  primary: Colors.white,
+                                  backgroundColor: Colors.white,
                                   shape: const StadiumBorder(
                                       side: BorderSide(color: Colors.green))),
                               onPressed: () {
@@ -143,7 +143,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                backgroundColor: Colors.green,
               ),
               child: Obx(() => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),

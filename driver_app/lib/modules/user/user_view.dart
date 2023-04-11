@@ -72,7 +72,7 @@ class UserView extends GetView<UserController> {
                                   isHolderNameVisible: true,
                                   showBackView: false,
                                   onCreditCardWidgetChange:
-                                      (CreditCardBrand) {}, //true when you want to show cvv(back) view
+                                      (creditCardBrand) {}, //true when you want to show cvv(back) view
                                 ),
                         ),
                       ),
