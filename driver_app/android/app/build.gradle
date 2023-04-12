@@ -65,7 +65,7 @@ android {
             storePassword 'android'
         }
     }
-
+    
     buildTypes {
         debug {
             // TODO: Add your own signing config for the release build.
