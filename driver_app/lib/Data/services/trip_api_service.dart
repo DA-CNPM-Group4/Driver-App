@@ -27,10 +27,10 @@ class TripApiService {
 
   Future<String> cancelTrip(String tripId) async {
     try {
-      var query = {'tripId': tripId};
+      var body = {'tripId': tripId};
 
-      var response = await APIHandlerImp.instance
-          .post(null, '/Trip/Trip/CancelTrip', query: query);
+      var response =
+          await APIHandlerImp.instance.post(body, '/Trip/Trip/CancelTrip');
       if (response.data["status"]) {
         return response.data['data'];
       } else {
@@ -44,9 +44,11 @@ class TripApiService {
 
   Future<void> pickPassenger(String tripId) async {
     try {
-      var query = {'tripId': tripId};
-      var response = await APIHandlerImp.instance
-          .post(null, '/Trip/Trip/PickedPassenger', query: query);
+      var body = {'tripId': tripId};
+      var response = await APIHandlerImp.instance.post(
+        body,
+        '/Trip/Trip/PickedPassenger',
+      );
       if (response.data["status"]) {
         return response.data['data'];
       } else {
@@ -60,9 +62,11 @@ class TripApiService {
 
   Future<void> completeTrip(String tripId) async {
     try {
-      var query = {'tripId': tripId};
-      var response = await APIHandlerImp.instance
-          .post(null, '/Trip/Trip/FinishTrip', query: query);
+      var body = {'tripId': tripId};
+      var response = await APIHandlerImp.instance.post(
+        body,
+        '/Trip/Trip/FinishTrip',
+      );
       if (response.data["status"]) {
         // return response.data['data'];
         return;
@@ -77,9 +81,11 @@ class TripApiService {
 
   Future<TripResponse> getTrip(String tripId) async {
     try {
-      var query = {'tripId': tripId};
-      var response = await APIHandlerImp.instance
-          .get('/Trip/Trip/GetCurrentTrip', query: query);
+      var body = {'tripId': tripId};
+      var response = await APIHandlerImp.instance.get(
+        '/Trip/Trip/GetCurrentTrip',
+        body: body,
+      );
       if (response.data["status"]) {
         return TripResponse.fromJson(response.data['data']);
       } else {
@@ -110,10 +116,10 @@ class TripApiService {
   Future<List<TripResponse>> getDriverTrips() async {
     try {
       var driverId = await APIHandlerImp.instance.getIdentity();
-      var query = {'driverId': driverId};
+      var body = {'driverId': driverId};
 
       var response = await APIHandlerImp.instance
-          .get('/Trip/Trip/GetDriverTrips', query: query);
+          .get('/Trip/Trip/GetDriverTrips', body: body);
       if (response.data["status"]) {
         var listTripJson = response.data['data'] as List;
         return listTripJson
@@ -130,9 +136,11 @@ class TripApiService {
 
   Future<void> cancelRequest({required String requestId}) async {
     try {
-      var query = {"requestId": requestId};
-      var response = await APIHandlerImp.instance
-          .post(null, '/Trip/TripRequest/CancelRequest', query: query);
+      var body = {"requestId": requestId};
+      var response = await APIHandlerImp.instance.post(
+        body,
+        '/Trip/TripRequest/CancelRequest',
+      );
       if (response.data["status"]) {
       } else {
         return Future.error(IBussinessException(response.data['message']));
@@ -149,7 +157,7 @@ class TripApiService {
       requestBody.driverId = await APIHandlerImp.instance.getIdentity();
       var response = await APIHandlerImp.instance.get(
         '/Trip/Trip/GetIncome',
-        body: requestBody,
+        body: requestBody.toJson(),
       );
       if (response.data["status"]) {
         return response.data['data'];
