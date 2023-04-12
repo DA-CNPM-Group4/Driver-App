@@ -39,6 +39,7 @@ class PasswordLoginView extends GetView<PasswordLoginController> {
             Form(
               key: controller.formKey,
               child: TextFormField(
+                key: const Key("password_login_password_field"),
                 controller: controller.passwordController,
                 validator: (value) => controller.passwordValidator(value!),
                 obscureText: true,
@@ -53,6 +54,7 @@ class PasswordLoginView extends GetView<PasswordLoginController> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
+              key: const Key("password_login_login_btn"),
               onPressed: () async {
                 if (controller.validateAndSave()) {
                   await controller.login();

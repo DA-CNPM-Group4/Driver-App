@@ -115,6 +115,7 @@ class HomeView extends GetView<HomeController> {
                         height: 50,
                         child: Obx(
                           () => FloatingActionButton(
+                            key: const Key("home_active_inactive_btn"),
                             backgroundColor: controller.isDriverActive.value
                                 ? Colors.green
                                 : Colors.black,

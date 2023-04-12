@@ -85,6 +85,7 @@ class LoginView extends GetView<LoginController> {
                   key: controller.emailFormKey,
                   child: Flexible(
                     child: TextFormField(
+                      key: const Key("login_email_field"),
                       keyboardType: TextInputType.emailAddress,
                       controller: controller.emailController,
                       validator: (value) => controller.emailValidator(value!),
@@ -132,6 +133,7 @@ class LoginView extends GetView<LoginController> {
                   child: Flexible(
                     child: Obx(
                       () => TextFormField(
+                        key: const Key("login_phone_field"),
                         keyboardType: TextInputType.number,
                         controller: controller.phoneNumberController,
                         validator: (value) =>
@@ -320,6 +322,7 @@ class LoginView extends GetView<LoginController> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: ElevatedButton(
+            key: const Key("login_login_btn"),
             onPressed: () async {
               await controller.validateAndSave();
             },
