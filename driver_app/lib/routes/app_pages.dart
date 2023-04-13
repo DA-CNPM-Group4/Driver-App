@@ -20,6 +20,8 @@ import 'package:driver_app/modules/otp/otp_view.dart';
 import 'package:driver_app/modules/otp/otp_binding.dart';
 import 'package:driver_app/modules/splash/splash_view.dart';
 import 'package:driver_app/modules/splash/splash_binding.dart';
+import 'package:driver_app/modules/trip_info/trip_info_binding.dart';
+import 'package:driver_app/modules/trip_info/trip_info_view.dart';
 
 import 'package:get/get.dart';
 import '../modules/bank_registration/bank_registration_binding.dart';
@@ -143,6 +145,16 @@ class AppPages {
       name: Paths.FORGOT_PASSWORD,
       page: () => const ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: Paths.TRIP_INFO,
+      page: () => const TripInfoView(),
+      binding: TripInfoBinding(),
+    ),
+    GetPage(
+      name: Paths.TRIP_DETAIL,
+      page: () => const TripDetailView(),
+      binding: TripDetailBinding(),
     ),
   ];
 }
