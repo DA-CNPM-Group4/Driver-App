@@ -79,6 +79,20 @@ class UserView extends GetView<UserController> {
                       const SizedBox(height: 24),
                       ListTile(
                         onTap: () {
+                          controller.goToTripHistoryView();
+                        },
+                        leading: const Icon(
+                          Icons.history,
+                          color: Colors.brown,
+                        ),
+                        title: Text(
+                          "Trips History",
+                          style: BaseTextStyle.heading2(fontSize: 18),
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                      ),
+                      ListTile(
+                        onTap: () {
                           controller.goToProfileView();
                         },
                         leading: const Icon(
@@ -336,11 +350,8 @@ class UserView extends GetView<UserController> {
                       alignment: Alignment.centerRight,
                       child: Obx(
                         () => ElevatedButton(
-                            onPressed: controller.isClicked.value
-                                ? null
-                                : () async {
-                                    await controller.startTimer();
-                                  },
+                            onPressed:
+                                controller.isClicked.value ? null : () async {},
                             child: controller.isClicked.value
                                 ? Text(
                                     "${controller.start.value}s",

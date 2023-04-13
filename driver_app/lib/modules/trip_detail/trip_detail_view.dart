@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/modules/request/request_view.dart';
 import 'package:driver_app/modules/trip_detail/trip_detail_controller.dart';
 import 'package:driver_app/modules/trip_detail/widgets/rate_comment.dart';
@@ -32,7 +33,9 @@ class TripDetailView extends GetView<TripDetailController> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildDriverInfo(),
+                Obx(() => controller.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : _buildDriverInfo()),
                 const SizedBox(height: 18),
                 _buildTripAddress(size.height, size.width),
                 const SizedBox(height: 12),
@@ -44,9 +47,17 @@ class TripDetailView extends GetView<TripDetailController> {
                       _buildTripInfo(),
                       const SizedBox(height: 22),
                       Text("Rate and reviews",
-                          style: BaseTextStyle.heading2(fontSize: 17)),
+                          style: BaseTextStyle.heading2(fontSize: 20)),
                       const SizedBox(height: 12),
-                      const RateAndComment(),
+                      Obx(
+                        () => controller.isRate.value
+                            ? RateAndComment(
+                                feedback: controller.feedback.note,
+                                passengerName: "Sung won",
+                                rating: 3,
+                              )
+                            : const Text("Trip currenly not rated yet"),
+                      ),
                     ],
                   ),
                 ),
@@ -80,6 +91,8 @@ class TripDetailView extends GetView<TripDetailController> {
                           fit: BoxFit.cover),
                     ),
                   ),
+                  Text(controller.driver?.value?.name ?? "",
+                      style: BaseTextStyle.heading2(fontSize: 12)),
                 ],
               ),
               const Spacer(),
@@ -88,10 +101,13 @@ class TripDetailView extends GetView<TripDetailController> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Customer name", //Replace with customer name
-                      style: BaseTextStyle.heading2(fontSize: 12)),
                   Text(
-                    "0931328047", //Replace with driver phone number
+                    "Phone", //Replace with vehicle name
+                    style: BaseTextStyle.heading3(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    controller.driver?.value?.phone ?? "",
                     style: BaseTextStyle.heading2(fontSize: 15),
                   ),
                 ],
@@ -134,18 +150,20 @@ class TripDetailView extends GetView<TripDetailController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const Text(
-                  '102 Nguyen Van Linh, District 7, Ho Chi Minh City',
+                Text(
+                  controller.trip.startAddress,
                   //Replace with start address
-                  style: TextStyle(fontSize: 13, color: Colors.black),
+                  style: const TextStyle(fontSize: 13, color: Colors.black),
                 ),
                 Divider(
                   height: 1,
                   thickness: 1,
                   color: Colors.grey[500]!,
                 ),
-                const Text('85 Nguyen Van Cu, District 5, Ho Chi Minh City',
-                    style: TextStyle(fontSize: 13, color: Colors.black)),
+                Text(
+                  controller.trip.destination,
+                  style: const TextStyle(fontSize: 13, color: Colors.black),
+                ),
               ],
             ),
           )
@@ -175,7 +193,8 @@ class TripDetailView extends GetView<TripDetailController> {
                   ),
                 ],
               ),
-              child: Text("Distance: 5.5 km", //Replace with distance
+              child: Text(
+                  "Distance: ${controller.trip.distance.ceilToDouble()} km", //Replace with distance
                   style: BaseTextStyle.heading2(
                       fontSize: 15, color: Colors.white)),
             ),
@@ -193,9 +212,13 @@ class TripDetailView extends GetView<TripDetailController> {
                   ),
                 ],
               ),
-              child: Text("Price: 50000đ", //Replace with price
-                  style: BaseTextStyle.heading2(
-                      fontSize: 15, color: Colors.white)),
+              child: Text(
+                "Price: ${controller.trip.price}", //Replace with price
+                style: BaseTextStyle.heading2(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),
@@ -220,12 +243,35 @@ class TripDetailView extends GetView<TripDetailController> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: "Time: ",
-                style: BaseTextStyle.heading3(fontSize: 18),
+                text: "Created Time \n",
+                style: BaseTextStyle.heading3(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               TextSpan(
-                text:
-                    "April 12, 16:00 - April 12, 17:00", //Replace with trip time
+                text: Utils.dateTimeToTime(
+                    controller.trip.createdTime), //Replace with trip time
+                style: BaseTextStyle.heading3(fontSize: 18),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "Completed Time\n",
+                style: BaseTextStyle.heading3(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: Utils.dateTimeToTime(DateTime.parse(controller
+                    .trip.completeTime
+                    .toString())), //Replace with trip time
                 style: BaseTextStyle.heading3(fontSize: 18),
               ),
             ],

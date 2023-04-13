@@ -1,5 +1,7 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/modules/edit_profile/widgets/avatar_circle.dart';
+import 'package:driver_app/routes/app_routes.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,6 +11,20 @@ class SessionItem extends StatelessWidget {
   const SessionItem({Key? key, required this.session}) : super(key: key);
 
   final TripResponse session;
+
+  Text handleTripStatus() {
+    if (session.tripStatus == "Finished") {
+      return Text(
+        session.tripStatus, //Replace with driver name
+        style: BaseTextStyle.heading2(fontSize: 16, color: Colors.green),
+      );
+    } else {
+      return Text(
+        session.tripStatus, //Replace with driver name
+        style: BaseTextStyle.heading2(fontSize: 16, color: Colors.red),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +56,7 @@ class SessionItem extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
-                      child: Text(
-                        "Customer Name", //Replace with driver name
-                        style: BaseTextStyle.heading2(fontSize: 16),
-                      ),
+                      child: handleTripStatus(),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
@@ -56,9 +69,10 @@ class SessionItem extends StatelessWidget {
                                 "assets/icons/ic_calendar.svg",
                                 width: 15),
                           ),
-                          const Text(
-                            "10/06/2023", //Replace with trip date
-                            style: TextStyle(fontSize: 13),
+                          Text(
+                            Utils.dateTimeToDate(
+                                session.createdTime), //Replace with trip date
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ],
                       ),
@@ -73,9 +87,9 @@ class SessionItem extends StatelessWidget {
                             child: SvgPicture.asset("assets/icons/ic_clock.svg",
                                 width: 20),
                           ),
-                          const Text(
-                            "17:00 - 18:00", //Replace with trip create time and end time
-                            style: TextStyle(fontSize: 13),
+                          Text(
+                            " ${Utils.dateTimeToTime(session.createdTime)} - ${Utils.dateTimeToTime(DateTime.parse(session.completeTime.toString()))}", //Replace with trip create time and end time
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ],
                       ),
@@ -85,14 +99,12 @@ class SessionItem extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            width: 20,
-                            child: SvgPicture.asset("assets/icons/ic_score.svg",
-                                width: 15),
-                          ),
-                          const Text(
-                            "Great Trip!",
-                            style: TextStyle(fontSize: 13),
+                              margin: const EdgeInsets.only(right: 10),
+                              width: 20,
+                              child: const Icon(Icons.price_change)),
+                          Text(
+                            "${session.price.ceil().toString()} money",
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ],
                       ),
@@ -121,7 +133,7 @@ class SessionItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
                           Text(
-                            "Chat Log",
+                            "Rate trip",
                             style: TextStyle(color: Colors.white),
                           )
                         ],
@@ -132,7 +144,7 @@ class SessionItem extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      // Get.toNamed(Routes.TRIP_DETAIL);
+                      Get.toNamed(Routes.TRIP_DETAIL, arguments: session);
                     },
                     child: Container(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),

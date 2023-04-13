@@ -23,10 +23,6 @@ class OtpController extends GetxController {
   var isLoading2 = false.obs;
   var isClicked = true.obs;
 
-  Future<bool> validateOTP() async {
-    return true;
-  }
-
   Future<void> confirmOTP() async {
     isLoading.value = true;
     final isValid = formKey.currentState!.validate();
@@ -47,27 +43,24 @@ class OtpController extends GetxController {
       showSnackBar("Error", e.toString());
     }
     isLoading.value = false;
+    showSnackBar(
+        "Success",
+        lifeCycleController.isActiveOTP
+            ? "Active Account Successfully"
+            : "Reset Password Sucessfully");
     Get.offAllNamed(Routes.WELCOME);
     return;
   }
 
   Future<void> startTimer() async {
-    await handleSendOTP();
-    // isClicked.value = true;
-    // const oneSec = Duration(seconds: 1);
-
-    // timer = Timer.periodic(
-    //   oneSec,
-    //   (Timer timer) {
-    //     if (start.value == 0) {
-    //       start.value = 30;
-    //       isClicked.value = false;
-    //       timer.cancel();
-    //     } else {
-    //       start.value -= 1;
-    //     }
-    //   },
-    // );
+    isLoading2.value = true;
+    try {
+      await handleSendOTP();
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+    } finally {
+      isLoading2.value = false;
+    }
   }
 
   Future<void> handleSendOTP() async {

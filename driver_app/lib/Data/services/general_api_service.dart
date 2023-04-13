@@ -2,6 +2,7 @@ import 'package:driver_app/Data/models/requests/change_password_request.dart';
 import 'package:driver_app/Data/models/requests/login_driver_request.dart';
 import 'package:driver_app/Data/models/requests/login_response.dart';
 import 'package:driver_app/Data/models/requests/register_driver_request.dart';
+import 'package:driver_app/Data/models/requests/register_driver_request_2.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
@@ -89,6 +90,20 @@ class GeneralAPIService {
     } catch (e) {
       return Future.error(UnexpectedException(
           context: "register-account", debugMessage: e.toString()));
+    }
+  }
+
+  Future<void> registerV2(RegisterDriverRequestBodyV2 body) async {
+    try {
+      var response = await APIHandlerImp.instance
+          .post(body.toJson(), '/Authentication/Register');
+      if (response.data["status"]) {
+      } else {
+        return Future.error(IBussinessException(response.data['message']));
+      }
+    } catch (e) {
+      return Future.error(UnexpectedException(
+          context: "register-account-v2", debugMessage: e.toString()));
     }
   }
 

@@ -99,9 +99,9 @@ class TripApiService {
 
   Future<TripFeedbackResponse> getTripFeedback(String tripId) async {
     try {
-      var query = {'tripId': tripId};
+      var body = {'tripId': tripId};
       var response = await APIHandlerImp.instance
-          .get('/Trip/TripFeedback/TripFeedback', query: query);
+          .get('/Trip/TripFeedback/TripFeedback', body: body);
       if (response.data["status"]) {
         return TripFeedbackResponse.fromJson(response.data['data']);
       } else {

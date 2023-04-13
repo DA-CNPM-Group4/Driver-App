@@ -52,7 +52,6 @@ class HomeController extends GetxController {
   var currentDestinationPostion = {}.obs;
 
   String? tripId;
-  Maps map = Maps();
 
   late GoogleMapController googleMapController;
   RxList<LatLng> polylinePoints = <LatLng>[].obs;
@@ -64,11 +63,12 @@ class HomeController extends GetxController {
   OverlayState? overlayState;
 
   Future<void> changeActiveMode(BuildContext context) async {
-    await enableRealtimeLocator();
-
     isLoading.value = true;
-    currentDriverPosition.value = await map.getCurrentPosition();
     try {
+      currentDriverPosition.value =
+          await DeviceLocationService.instance.getCurrentPositionAsMap();
+      await enableRealtimeLocator();
+
       var firebaseRequestRef =
           FirebaseDatabase.instance.ref(FirebaseRealtimePaths.REQUESTS);
 
@@ -121,8 +121,7 @@ class HomeController extends GetxController {
         }
       });
     } catch (e) {
-      Get.log(e.toString());
-      isLoading.value = false;
+      showSnackBar("Error", e.toString());
     }
     isLoading.value = false;
   }
@@ -310,7 +309,7 @@ class HomeController extends GetxController {
     };
     try {
       var response = await NetworkHandler.getWithQuery('route', query);
-      print("RESPONSE: ${response.toString()}");
+      debugPrint("RESPONSE: ${response.toString()}");
       searchResult = PolylinePoints()
           .decodePolyline(response["result"]["routes"][0]["overviewPolyline"]);
       for (var point in searchResult) {
@@ -347,11 +346,9 @@ class HomeController extends GetxController {
 
     isMapLoaded.value = true;
 
-    await map.determinePosition();
-    if (map.permission == LocationPermission.whileInUse ||
-        map.permission == LocationPermission.always) {
-      currentDriverPosition.value = await map.getCurrentPosition();
-    }
+    currentDriverPosition.value =
+        await DeviceLocationService.instance.getCurrentPositionAsMap();
+
     isMapLoaded.value = false;
 
     polyline.add(Polyline(
@@ -392,8 +389,8 @@ class HomeController extends GetxController {
     var stream = await DeviceLocationService.instance.getLocationStream();
 
     gpsStreamSubscription = stream.listen((Position location) async {
-      var address =
-          await DeviceLocationService.instance.getAddressFromLatLang(location);
+      var address = await DeviceLocationService.instance.getAddressFromLatLang(
+          latitude: location.latitude, longitude: location.longitude);
 
       currentDriverPosition['latitude'] = location.latitude;
       currentDriverPosition['longitude'] = location.longitude;
@@ -433,8 +430,8 @@ class HomeController extends GetxController {
     currentDriverPosition.value = {
       "latitude": location.latitude,
       "longitude": location.longitude,
-      'address':
-          await DeviceLocationService.instance.getAddressFromLatLang(location)
+      'address': await DeviceLocationService.instance.getAddressFromLatLang(
+          latitude: location.latitude, longitude: location.longitude)
     };
 
     var realtimeLocation = RealtimeLocation(

@@ -8,12 +8,14 @@ class RegisterDriverRequestBody {
   String password;
   String? role = "Driver";
   String name;
+  String mode = "1";
 
-  RegisterDriverRequestBody(
-      {required this.email,
-      required this.phone,
-      required this.password,
-      required this.name});
+  RegisterDriverRequestBody({
+    required this.email,
+    required this.phone,
+    required this.password,
+    required this.name,
+  });
 
   factory RegisterDriverRequestBody.fromJson(Map<String, dynamic> json) =>
       _$RegisterDriverRequestBodyFromJson(json);

@@ -58,8 +58,9 @@ class LocationTestController extends GetxController {
     gpsStreamSubscription = stream.listen((Position position) async {
       lat.value = position.latitude;
       long.value = position.longitude;
-      address.value =
-          await DeviceLocationService.instance.getAddressFromLatLang(position);
+      address.value = await DeviceLocationService.instance
+          .getAddressFromLatLang(
+              latitude: position.latitude, longitude: position.longitude);
 
       await FireBaseRealtimeService.instance.updateDriverLocationNode(
         driverId,
@@ -82,8 +83,8 @@ class LocationTestController extends GetxController {
 
     lat.value = location.latitude;
     long.value = location.longitude;
-    address.value =
-        await DeviceLocationService.instance.getAddressFromLatLang(location);
+    address.value = await DeviceLocationService.instance.getAddressFromLatLang(
+        latitude: location.latitude, longitude: location.longitude);
     driver.location = RealtimeLocation(
         lat: lat.value, long: long.value, address: address.value);
     await FireBaseRealtimeService.instance.setDriverNode(driverId, driver);
