@@ -99,7 +99,7 @@ class HomeController extends GetxController {
             String tripId = result["tripId"];
 
             RealtimePassengerInfo passengerInfo =
-                await handlePassenger(request);
+                await handleReadPassenger(request);
 
             await drawRoute(
                 from: PositionPoint(
@@ -127,43 +127,13 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<bool> handleRequestTimeout(
-      RealtimeTripRequest request, String requestId) async {
-    DateTime requestDate = DateTime.parse(request.CreatedTime);
-    var waitingTime = DateTime.now().difference(requestDate).inSeconds;
-    if (waitingTime > 30 + 40) {
-      try {
-        await DriverAPIService.tripApi.cancelRequest(requestId: requestId);
-      } catch (e) {
-        //
-      }
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future<RealtimePassengerInfo> handlePassenger(
-      RealtimeTripRequest request) async {
-    if (request.isCreatedByPassenger()) {
-      assignPassengerLocationListener(request);
-    }
-    var passengerNode = await FireBaseRealtimeService.instance
-        .readPassengerNode(request.PassengerId!);
-
-    return passengerNode == null
-        ? RealtimePassengerInfo(
-            phone: request.PassengerPhone, name: "Outside Passenger")
-        : passengerNode.info;
-  }
-
   void insertOverlay({
     required BuildContext context,
     required RealtimeTripRequest? trip,
     required String tripId,
     required RealtimePassengerInfo passenger,
   }) {
-    assignTripRemovedListner(tripId);
+    assignTripRemovedListener(tripId);
     overlayState = Overlay.of(context);
     overlayEntry = OverlayEntry(builder: (context) {
       return OrderInformation(
@@ -178,6 +148,8 @@ class HomeController extends GetxController {
         onTrip: () async {
           if (checkCompleteTripCondition()) {
             isLoading.value = true;
+            await removeTripRemovedListener();
+
             try {
               await DriverAPIService.tripApi.completeTrip(tripId);
               showSnackBar("Success", "The trip was completed");
@@ -198,6 +170,36 @@ class HomeController extends GetxController {
     overlayState!.insert(overlayEntry!);
   }
 
+  Future<bool> handleRequestTimeout(
+      RealtimeTripRequest request, String requestId) async {
+    DateTime requestDate = DateTime.parse(request.CreatedTime);
+    var waitingTime = DateTime.now().difference(requestDate).inSeconds;
+    if (waitingTime > 30 + 40) {
+      try {
+        await DriverAPIService.tripApi.cancelRequest(requestId: requestId);
+      } catch (e) {
+        //
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<RealtimePassengerInfo> handleReadPassenger(
+      RealtimeTripRequest request) async {
+    if (request.isCreatedByPassenger()) {
+      assignPassengerLocationListener(request);
+    }
+    var passengerNode = await FireBaseRealtimeService.instance
+        .readPassengerNode(request.PassengerId!);
+
+    return passengerNode == null
+        ? RealtimePassengerInfo(
+            phone: request.PassengerPhone, name: "Outside Passenger")
+        : passengerNode.info;
+  }
+
   Future<void> handleCancleTrip(String tripId) async {
     try {
       isLoading.value = true;
@@ -211,7 +213,7 @@ class HomeController extends GetxController {
     reset();
   }
 
-  void assignTripRemovedListner(String tripId) {
+  void assignTripRemovedListener(String tripId) {
     var firebaseRequestRef = FirebaseDatabase.instance
         .ref(FirebaseRealtimePaths.TRIPS)
         .child(tripId);
@@ -222,6 +224,10 @@ class HomeController extends GetxController {
       reset();
       showSnackBar("Oops", "The trip was canceld");
     });
+  }
+
+  Future<void> removeTripRemovedListener() async {
+    await listenTripAgent?.cancel();
   }
 
   Future<void> changeToPickPassengerState(
