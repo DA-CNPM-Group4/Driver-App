@@ -153,6 +153,7 @@ class OrderInformation extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ElevatedButton(
+                                key: const Key("confirm_order_cancel_trip"),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.red,
                                 ),
@@ -166,6 +167,8 @@ class OrderInformation extends StatelessWidget {
                                 ),
                               ),
                               ElevatedButton(
+                                key:
+                                    const Key("confirm_order_picked_passenger"),
                                 onPressed: () {
                                   if (onStart != null) onStart!();
                                   onDestination.value = true;
@@ -179,6 +182,7 @@ class OrderInformation extends StatelessWidget {
                             ],
                           )
                         : ElevatedButton(
+                            key: const Key("confirm_order_complete_trip"),
                             onPressed: () async {
                               onTrip?.call();
                             },

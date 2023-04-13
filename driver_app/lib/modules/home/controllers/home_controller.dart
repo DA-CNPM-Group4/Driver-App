@@ -304,6 +304,7 @@ class HomeController extends GetxController {
     };
     try {
       var response = await NetworkHandler.getWithQuery('route', query);
+      print("RESPONSE: ${response.toString()}");
       searchResult = PolylinePoints()
           .decodePolyline(response["result"]["routes"][0]["overviewPolyline"]);
       for (var point in searchResult) {

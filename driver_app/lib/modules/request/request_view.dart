@@ -64,6 +64,7 @@ class RequestView extends GetView<RequestController> {
               Expanded(
                 flex: 1,
                 child: ElevatedButton(
+                  key: const Key("request_view_cancel_request"),
                   onPressed: () {
                     Get.back(result: {"accept": false});
                   },
@@ -84,6 +85,7 @@ class RequestView extends GetView<RequestController> {
               Expanded(
                 flex: 3,
                 child: ElevatedButton(
+                  key: const Key("request_view_accept_request"),
                   onPressed: () async {
                     await controller.handleAccept();
                   },

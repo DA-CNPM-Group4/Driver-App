@@ -59,7 +59,6 @@ Future<void> _initApp(WidgetTester tester) async {
   );
 }
 
-
 Future<void> _navigateFromWelcomeToLogin(WidgetTester tester) async {
   final loginFinder = find.byKey(const Key("welcome_login_btn"));
   await tester.tap(loginFinder);
@@ -74,23 +73,143 @@ Future<void> _loginWithEmailAndPassword(WidgetTester tester) async {
   await tester.enterText(phoneFinder, '123456333');
   await tester.tap(find.byKey(const Key('login_login_btn')));
   await tester.pumpAndSettle(const Duration(seconds: 2));
-  // await Future.delayed(const Duration(seconds: 1));
 
   final passwordFinder = find.byKey(const Key("password_login_password_field"));
   await tester.enterText(passwordFinder, '123456');
   await tester.tap(find.byKey(const Key('password_login_login_btn')));
-  await tester.pumpAndSettle(const Duration(seconds: 2));
-  // await Future.delayed(const Duration(seconds: 20));
+  await tester.pumpAndSettle(const Duration(seconds: 1));
 
+  final activeToggleFinder = find.byKey(const Key('home_active_inactive_btn'));
+  await tester.tap(activeToggleFinder);
+  await tester.pumpAndSettle(const Duration(seconds: 10));
+
+  // First request
+  await _testReceiveRequestAndShowDialog(tester: tester);
+  await _testCancelRequestAndVerifyDialogDisappear(tester: tester);
+
+  // Second request
+  await _testReceiveRequestAndShowDialog(tester: tester);
+  await _testAcceptRequest(tester: tester);
+  await _testPickedPassengerButton(tester: tester);
+  await _testCompletedTripButton(tester: tester);
+}
+
+Future<bool> _testReceiveRequestAndShowDialog({
+  required WidgetTester tester,
+}) async {
+  // Wait for a request from customer or timeout (60s)
+  final customerRequestReceived = await Future.any([
+    _waitForCustomerRequest(tester, 60),
+  ]);
+
+  // Check if the request is received in a specific time period.
+  expect(customerRequestReceived, true,
+      reason: 'Did not receive request from customer for 60s');
+
+  return customerRequestReceived;
+}
+
+Future<void> _testPickedPassengerButton({
+  required WidgetTester tester,
+}) async {
+  expect(
+    find.byKey(const Key('confirm_order_picked_passenger')),
+    findsOneWidget,
+    reason: "No picked_passenger button received",
+  );
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.byKey(const Key('confirm_order_picked_passenger')));
+  await tester.pumpAndSettle();
+
+  expect(
+    find.byKey(const Key('confirm_order_picked_passenger')),
+    findsNothing,
+    reason: "Clicked picked_passenger button but it still visible",
+  );
+}
+
+Future<void> _testCompletedTripButton({
+  required WidgetTester tester,
+}) async {
+  await tester.pump(const Duration(seconds: 2));
+  expect(
+    find.byKey(const Key('confirm_order_complete_trip')),
+    findsOneWidget,
+    reason:
+        "Clicked picked_passenger button but can not find complete trip button",
+  );
+
+  await tester.tap(find.byKey(const Key('confirm_order_complete_trip')));
+  await tester.pumpAndSettle(const Duration(seconds: 2));
+
+  expect(
+    find.byKey(const Key('confirm_order_complete_trip')),
+    findsNothing,
+    reason: "Clicked complete_trip button but it still visible",
+  );
+}
+
+Future<void> _testAcceptRequest({
+  required WidgetTester tester,
+}) async {
+  expect(
+    find.byKey(const Key('request_view_accept_request')),
+    findsOneWidget,
+    reason: "No request received",
+  );
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.byKey(const Key('request_view_accept_request')));
   await tester.pumpAndSettle(const Duration(seconds: 5));
-  expect(find.byKey(const Key('home_active_inactive_btn')), findsOneWidget);
-  // final bookingBikeFinder = find.byKey(const Key("home_booking_bike"));
-  // await tester.tap(bookingBikeFinder);
-  // await tester.pumpAndSettle();
-  // await Future.delayed(const Duration(seconds: 2));
-  //
-  // final searchBoxFinder = find.byKey(const Key("find_transportation_box_search_field"));
-  // await tester.tap(searchBoxFinder);
-  // await tester.pumpAndSettle();
-  // await Future.delayed(const Duration(seconds: 2));
+
+  expect(
+    find.byKey(const Key('request_view_accept_request')),
+    findsNothing,
+    reason: "Clicked accept_request button but its still visible",
+  );
+}
+
+Future<void> _testCancelRequestAndVerifyDialogDisappear({
+  required WidgetTester tester,
+}) async {
+  expect(
+    find.byKey(const Key('request_view_cancel_request')),
+    findsOneWidget,
+    reason: "No request received",
+  );
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.byKey(const Key('request_view_cancel_request')));
+  await tester.pumpAndSettle();
+
+  expect(
+    find.byKey(const Key('request_view_cancel_request')),
+    findsNothing,
+    reason: "Driver canceled but request dialog still visible",
+  );
+}
+
+Future<bool> _waitForCustomerRequest(
+    WidgetTester tester, int waitingTime) async {
+  bool requestFound = false;
+
+  for (int i = 0; i < waitingTime; i++) {
+    await tester.pump(const Duration(seconds: 1));
+    if (find
+            .byKey(const Key("request_view_cancel_request"))
+            .evaluate()
+            .isNotEmpty &&
+        find
+            .byKey(const Key("request_view_accept_request"))
+            .evaluate()
+            .isNotEmpty) {
+      requestFound = true;
+      break;
+    }
+  }
+  return requestFound;
 }
