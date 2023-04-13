@@ -19,6 +19,8 @@ abstract class Routes {
   static const EDIT_PROFILE = Paths.EDIT_PROFILE;
   static const PASSWORD_CHANGE = Paths.PASSWORD_CHANGE;
   static const FORGOT_PASSWORD = Paths.FORGOT_PASSWORD;
+  static const TRIP_INFO = Paths.TRIP_INFO;
+  static const TRIP_DETAIL = Paths.TRIP_DETAIL;
 }
 
 abstract class Paths {
@@ -42,4 +44,6 @@ abstract class Paths {
   static const EDIT_PROFILE = '/edit-profile';
   static const PASSWORD_CHANGE = '/change-password';
   static const FORGOT_PASSWORD = '/forgot-password';
+  static const TRIP_INFO = '/trip-info';
+  static const TRIP_DETAIL = '/trip-detail';
 }
