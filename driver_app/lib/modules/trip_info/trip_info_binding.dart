@@ -1,4 +1,4 @@
-import 'package:customer_app/modules/trip_info/trip_info_controller.dart';
+import 'package:driver_app/modules/trip_info/trip_info_controller.dart';
 import 'package:get/get.dart';
 
 class TripInfoBinding extends Bindings {

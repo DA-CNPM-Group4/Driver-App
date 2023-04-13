@@ -20,6 +20,8 @@ import 'package:driver_app/modules/otp/otp_view.dart';
 import 'package:driver_app/modules/otp/otp_binding.dart';
 import 'package:driver_app/modules/splash/splash_view.dart';
 import 'package:driver_app/modules/splash/splash_binding.dart';
+import 'package:driver_app/modules/trip_detail/trip_detail_binding.dart';
+import 'package:driver_app/modules/trip_detail/trip_detail_view.dart';
 import 'package:driver_app/modules/trip_info/trip_info_binding.dart';
 import 'package:driver_app/modules/trip_info/trip_info_view.dart';
 

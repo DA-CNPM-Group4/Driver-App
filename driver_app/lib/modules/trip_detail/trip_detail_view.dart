@@ -1,3 +1,4 @@
+import 'package:driver_app/modules/request/request_view.dart';
 import 'package:driver_app/modules/trip_detail/trip_detail_controller.dart';
 import 'package:driver_app/modules/trip_detail/widgets/rate_comment.dart';
 import 'package:driver_app/themes/base_style.dart';

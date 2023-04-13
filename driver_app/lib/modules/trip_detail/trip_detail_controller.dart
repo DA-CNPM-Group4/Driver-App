@@ -1,4 +1,4 @@
-import 'package:customer_app/modules/lifecycle_controller.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:get/get.dart';
 
 class TripDetailController extends GetxController {
