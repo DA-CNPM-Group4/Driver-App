@@ -100,7 +100,7 @@ class ChatController extends GetxController {
     });
   }
 
-  Future<void> reset() async {
+  Future<void> resetState() async {
     tripId = null;
     await chatStreamlistener?.cancel();
   }

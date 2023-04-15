@@ -101,7 +101,7 @@ class TripApiService {
     try {
       var body = {'tripId': tripId};
       var response = await APIHandlerImp.instance
-          .get('/Trip/TripFeedback/TripFeedback', body: body);
+          .get('/Trip/TripFeedback/GetTripFeedback', body: body);
       if (response.data["status"]) {
         return TripFeedbackResponse.fromJson(response.data['data']);
       } else {

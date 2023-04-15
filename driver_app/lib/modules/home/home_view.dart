@@ -1,3 +1,4 @@
+import 'package:driver_app/modules/dashboard_page/dashboard_page_controller.dart';
 import 'package:driver_app/modules/home/widgets/dragable_buble_chat.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/cupertino.dart';
@@ -177,7 +178,8 @@ class HomeView extends GetView<HomeController> {
                     initialOffset: const Offset(120, 70),
                     parentKey: controller.parentKey,
                     onPressed: () async {
-                      await controller.openChatScreen();
+                      await Get.find<DashboardPageController>()
+                          .openChatScreen();
                     },
                     child: Container(
                         width: 60,

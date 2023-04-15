@@ -66,7 +66,7 @@ class RequestView extends GetView<RequestController> {
                 child: ElevatedButton(
                   key: const Key("request_view_cancel_request"),
                   onPressed: () {
-                    Get.back(result: {"accept": false});
+                    controller.handleUnaccept();
                   },
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.white),

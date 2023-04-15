@@ -52,17 +52,49 @@ class TripDetailView extends GetView<TripDetailController> {
                           style: BaseTextStyle.heading2(fontSize: 20)),
                       const SizedBox(height: 12),
                       Obx(
-                        () => controller.isRate.value
-                            ? RateAndComment(
-                                feedback: controller.feedback.note,
-                                passengerName: "Sung won",
-                                rating: 3,
+                        () => !controller.isLoading.value
+                            ? Obx(
+                                () => controller.isRate.value
+                                    ? RateAndComment(
+                                        feedback: controller.feedback.note,
+                                        passengerName: "Sung won",
+                                        rating: 3,
+                                      )
+                                    : const Text(
+                                        "Trip currently not rated yet"),
                               )
-                            : const Text("Trip currenly not rated yet"),
+                            : const Center(child: CircularProgressIndicator()),
+                      ),
+                      const SizedBox(
+                        height: 15,
                       ),
                     ],
                   ),
                 ),
+                // Expanded(
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text("Chats History",
+                //           style: BaseTextStyle.heading2(fontSize: 20)),
+                //       const SizedBox(height: 12),
+                //       Obx(
+                //         () => controller.isChatLoaded.value
+                //             ? ListView.builder(
+                //                 itemCount: controller.chatHistory?.length ?? 0,
+                //                 itemBuilder: (context, index) {
+                //                   var message = controller.chatHistory![index];
+                //                   return ChatMessageWidget(
+                //                     text: message.text,
+                //                     chatMessageType: message.chatMessageType,
+                //                   );
+                //                 },
+                //               )
+                //             : Container(),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ]),
         ),
       ),
@@ -93,7 +125,7 @@ class TripDetailView extends GetView<TripDetailController> {
                           fit: BoxFit.cover),
                     ),
                   ),
-                  Text(controller.driver?.value?.name ?? "",
+                  Text(controller.driver.value?.name ?? "",
                       style: BaseTextStyle.heading2(fontSize: 12)),
                 ],
               ),
@@ -109,7 +141,7 @@ class TripDetailView extends GetView<TripDetailController> {
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    controller.driver?.value?.phone ?? "",
+                    controller.driver.value?.phone ?? "",
                     style: BaseTextStyle.heading2(fontSize: 15),
                   ),
                 ],

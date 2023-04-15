@@ -91,7 +91,6 @@ class ProfileContainer extends StatelessWidget {
         child: chatMessageType == ChatMessageType.driver
             ? Image.asset(
                 "assets/icons/face_icon.png",
-                color: Colors.white,
                 scale: 1.5,
               )
             : const Icon(

@@ -1,3 +1,4 @@
+import 'package:driver_app/Data/models/chat_message/chat_message.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'get_chatmessage_history_response.g.dart';
 
@@ -15,6 +16,19 @@ class ChatMessageHistoryResponseBody {
       _$ChatMessageHistoryResponseBodyFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatMessageHistoryResponseBodyToJson(this);
+
+  List<ChatMessage>? toChatMessage(String myId) {
+    messages?.sort((d1, d2) =>
+        DateTime.parse(d1.sendTime).compareTo(DateTime.parse(d2.sendTime)));
+
+    return messages
+        ?.map((e) => ChatMessage(
+            text: e.message,
+            chatMessageType: e.tripId != myId
+                ? ChatMessageType.passenger
+                : ChatMessageType.driver))
+        .toList();
+  }
 }
 
 @JsonSerializable()

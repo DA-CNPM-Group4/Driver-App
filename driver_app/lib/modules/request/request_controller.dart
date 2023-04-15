@@ -31,13 +31,25 @@ class RequestController extends GetxController {
           await DriverAPIService.tripApi.acceptTripRequest(requestBody);
 
       Get.back(result: {
-        "accept": true,
+        "success": true,
+        "notify": true,
         "tripId": tripId,
       });
     } catch (e) {
-      Get.back(result: {"accept": false});
+      Get.back(result: {
+        "success": false,
+        "notify": true,
+        "message": "You late or Passenger just cancel request"
+      });
     }
     EasyLoading.dismiss();
+  }
+
+  void handleUnaccept() {
+    Get.back(result: {
+      "success": false,
+      "notify": false,
+    });
   }
 
   @override
@@ -59,7 +71,11 @@ class RequestController extends GetxController {
         }
         if (count.value <= 0) {
           timer.cancel();
-          Get.back(result: {"accept": false});
+          Get.back(result: {
+            "success": false,
+            "notify": true,
+            "message": "Request Timeout"
+          });
         } else {
           count.value--;
         }

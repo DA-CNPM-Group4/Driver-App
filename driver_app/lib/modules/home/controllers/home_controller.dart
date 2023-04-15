@@ -12,7 +12,6 @@ import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/Data/services/firebase_realtime_service.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/core/constants/common_object.dart';
-import 'package:driver_app/modules/chat/chat_controller.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_controller.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
@@ -24,7 +23,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:driver_app/modules/home/controllers/confirm_order.dart';
-import 'package:driver_app/modules/income/income_controller.dart';
 
 import '../../../data/network_handler.dart';
 import '../../../routes/app_routes.dart';
@@ -32,8 +30,6 @@ import '../../../routes/app_routes.dart';
 class HomeController extends GetxController {
   final LifeCycleController lifeCycleController =
       Get.find<LifeCycleController>();
-  final incomeController = Get.find<IncomeController>();
-  final chatController = Get.find<ChatController>();
 
   final GlobalKey parentKey = GlobalKey();
 
@@ -86,44 +82,51 @@ class HomeController extends GetxController {
             return;
           }
 
-          var result = await Get.toNamed(Routes.REQUEST, arguments: {
+          await Get.toNamed(Routes.REQUEST, arguments: {
             'requestId': event.snapshot.key,
             "trip": request,
+          })?.then((value) async {
+            final bool isSucess = value['success'];
+
+            if (!isSucess) {
+              final bool isNotify = value['notify'];
+              if (isNotify) {
+                final String message = value['message'];
+                showSnackBar("Request", message, second: 5);
+              }
+              return;
+            }
+
+            if (isSucess) {
+              listenRequestAgent?.pause();
+
+              isAcceptedTrip.value = true;
+              String tripId = value["tripId"];
+
+              await Get.find<DashboardPageController>()
+                  .initChat(request.PassengerId ?? "fake-passenger-id", tripId);
+
+              RealtimePassengerInfo passengerInfo =
+                  await handleReadPassenger(request);
+
+              await drawRoute(
+                  from: PositionPoint(
+                      address: "",
+                      latitude: currentDriverPosition['latitude'],
+                      longitude: currentDriverPosition['longitude']),
+                  to: PositionPoint(
+                      address: "",
+                      latitude: currentDestinationPostion['latitude'],
+                      longitude: currentDestinationPostion['longitude']));
+
+              insertOverlay(
+                context: context,
+                trip: request,
+                passenger: passengerInfo,
+                tripId: tripId,
+              );
+            }
           });
-
-          if (result['accept'] == false) {
-            showSnackBar("Failed", "You Late! Or Passenger just cancel request",
-                second: 5);
-          }
-
-          if (result['accept'] == true) {
-            listenRequestAgent?.pause();
-
-            isAcceptedTrip.value = true;
-            String tripId = result["tripId"];
-
-            chatController.initChat(
-                request.PassengerId ?? "test-trip-id", tripId);
-            RealtimePassengerInfo passengerInfo =
-                await handleReadPassenger(request);
-
-            await drawRoute(
-                from: PositionPoint(
-                    address: "",
-                    latitude: currentDriverPosition['latitude'],
-                    longitude: currentDriverPosition['longitude']),
-                to: PositionPoint(
-                    address: "",
-                    latitude: currentDestinationPostion['latitude'],
-                    longitude: currentDestinationPostion['longitude']));
-
-            insertOverlay(
-              context: context,
-              trip: request,
-              passenger: passengerInfo,
-              tripId: tripId,
-            );
-          }
         }
       });
     } catch (e) {
@@ -170,7 +173,7 @@ class HomeController extends GetxController {
         showSnackBar("Completed Trip Failed", e.toString());
       }
       isLoading.value = false;
-      await reset();
+      await Get.find<DashboardPageController>().resetState();
     } else {
       showSnackBar("Completed Trip Failed",
           "you have to carry passengers to nearly 10m");
@@ -219,7 +222,7 @@ class HomeController extends GetxController {
     }
     isLoading.value = false;
 
-    await reset();
+    await Get.find<DashboardPageController>().resetState();
   }
 
   void assignTripRemovedListener(String tripId) {
@@ -229,7 +232,7 @@ class HomeController extends GetxController {
 
     listenTripAgent = firebaseRequestRef.onChildRemoved.listen((event) async {
       await listenPassengerLocationAgent?.cancel();
-      await reset();
+      await Get.find<DashboardPageController>().resetState();
       showSnackBar("Oops", "The trip was canceld");
     });
   }
@@ -243,7 +246,7 @@ class HomeController extends GetxController {
     currentDestinationPostion['address'] = trip.Destination;
     currentDestinationPostion['latitude'] = trip.LatDesAddr;
     currentDestinationPostion['longitude'] = trip.LongDesAddr;
-    drawDestination(trip);
+    _drawDestinationMarker(trip);
 
     await drawRoute(
         from: PositionPoint(
@@ -275,33 +278,69 @@ class HomeController extends GetxController {
         currentDestinationPostion['longitude'] = location.long;
         currentDestinationPostion['address'] = location.address;
 
-        markers[const MarkerId("1")] = Marker(
-            markerId: const MarkerId("1"),
-            infoWindow: const InfoWindow(title: "Passenger Location"),
-            position: LatLng(location.lat, location.long));
+        drawMarker(
+          markerId: "1",
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          title: "Passenger Location",
+          latLng: LatLng(location.lat, location.long),
+        );
+
+        // markers[const MarkerId("1")] = Marker(
+        //     markerId: const MarkerId("1"),
+        //     infoWindow: const InfoWindow(title: "Passenger Location"),
+        //     position: LatLng(location.lat, location.long));
       });
     } else {
       currentDestinationPostion['latitude'] = request.LatStartAddr;
       currentDestinationPostion['longitude'] = request.LongStartAddr;
       currentDestinationPostion['address'] = request.StartAddress;
 
-      markers[const MarkerId("1")] = Marker(
-        markerId: const MarkerId("1"),
-        infoWindow: const InfoWindow(title: "Passenger Location"),
-        position: LatLng(request.LatStartAddr, request.LongStartAddr),
+      drawMarker(
+        markerId: "1",
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        title: "Passenger Location",
+        latLng: LatLng(request.LatStartAddr, request.LongStartAddr),
       );
+      // markers[const MarkerId("1")] = Marker(
+      //   markerId: const MarkerId("1"),
+      //   infoWindow: const InfoWindow(title: "Passenger Location"),
+      //   position: LatLng(request.LatStartAddr, request.LongStartAddr),
+      // );
     }
   }
 
-  void drawDestination(RealtimeTripRequest tripRequest) {
-    markers[const MarkerId("1")] = Marker(
-        markerId: const MarkerId("1"),
+  void _drawDestinationMarker(RealtimeTripRequest tripRequest) {
+    drawMarker(
+        markerId: "1",
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        infoWindow: const InfoWindow(title: "Destination"),
-        position: LatLng(
+        title: "Destination",
+        latLng: LatLng(
           tripRequest.LatDesAddr,
           tripRequest.LongDesAddr,
         ));
+    // markers[const MarkerId("1")] = Marker(
+    //     markerId: const MarkerId("1"),
+    //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    //     infoWindow: const InfoWindow(title: "Destination"),
+    //     position: LatLng(
+    //       tripRequest.LatDesAddr,
+    //       tripRequest.LongDesAddr,
+    //     ));
+  }
+
+  void drawMarker({
+    required String markerId,
+    required BitmapDescriptor icon,
+    required String title,
+    required LatLng latLng,
+  }) {
+    MarkerId id = MarkerId(markerId);
+    markers[id] = Marker(
+      markerId: id,
+      icon: icon,
+      infoWindow: InfoWindow(title: title),
+      position: latLng,
+    );
   }
 
   drawRoute({PositionPoint? from, PositionPoint? to}) async {
@@ -328,7 +367,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> reset() async {
+  Future<void> resetState() async {
     polylinePoints.clear();
     polyline.refresh();
     markers.clear();
@@ -338,7 +377,6 @@ class HomeController extends GetxController {
     listenRequestAgent?.resume();
     isAcceptedTrip.value = false;
     isPickupPassenger.value = false;
-    await chatController.reset();
   }
 
   @override
@@ -384,12 +422,19 @@ class HomeController extends GetxController {
     if (isDriverActive.value) {
       try {
         await changeActiveMode(context);
-      } catch (_) {}
+      } catch (_) {
+        showSnackBar("Error", "Enable To Active");
+      }
     } else {
       listenRequestAgent?.pause();
       await disableRealtimeLocator();
     }
     isLoading.value = false;
+  }
+
+  Future<void> disableRealtimeLocator() async {
+    await gpsStreamSubscription?.cancel();
+    await FireBaseRealtimeService.instance.deleteDriverNode(driver.accountId);
   }
 
   Future<void> enableRealtimeLocator() async {
@@ -429,24 +474,8 @@ class HomeController extends GetxController {
     });
   }
 
-  Future<void> disableRealtimeLocator() async {
-    await gpsStreamSubscription?.cancel();
-    await FireBaseRealtimeService.instance.deleteDriverNode(driver.accountId);
-  }
-
   Future<void> setDriverInfo() async {
-    var location = await DeviceLocationService.instance.getCurrentPosition();
-    currentDriverPosition.value = {
-      "latitude": location.latitude,
-      "longitude": location.longitude,
-      'address': await DeviceLocationService.instance.getAddressFromLatLang(
-          latitude: location.latitude, longitude: location.longitude)
-    };
-
-    var realtimeLocation = RealtimeLocation(
-        lat: currentDriverPosition['latitude'],
-        long: currentDriverPosition['longitude'],
-        address: currentDriverPosition['address']);
+    RealtimeLocation realtimeLocation = await getDriverRealtimeLocation();
 
     lifeCycleController.realtimeDriver = RealtimeDriver(
       info: RealtimeDriverInfo(
@@ -464,17 +493,24 @@ class HomeController extends GetxController {
         .setDriverNode(driver.accountId, lifeCycleController.realtimeDriver);
   }
 
-  bool checkCompleteTripCondition() {
-    return true;
+  Future<RealtimeLocation> getDriverRealtimeLocation() async {
+    var location = await DeviceLocationService.instance.getCurrentPosition();
+    currentDriverPosition.value = {
+      "latitude": location.latitude,
+      "longitude": location.longitude,
+      'address': await DeviceLocationService.instance.getAddressFromLatLang(
+          latitude: location.latitude, longitude: location.longitude)
+    };
+
+    var realtimeLocation = RealtimeLocation(
+        lat: currentDriverPosition['latitude'],
+        long: currentDriverPosition['longitude'],
+        address: currentDriverPosition['address']);
+    return realtimeLocation;
   }
 
-  Future<void> openChatScreen() async {
-    overlayEntry?.remove();
-    await Get.toNamed(Routes.CHAT)?.then((value) {
-      if (overlayEntry != null) {
-        overlayState?.insert(overlayEntry!);
-      }
-    });
+  bool checkCompleteTripCondition() {
+    return true;
   }
 
   void removeOverlay() {

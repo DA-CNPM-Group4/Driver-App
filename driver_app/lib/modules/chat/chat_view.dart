@@ -116,8 +116,8 @@ class ChatView extends GetView<ChatController> {
                 color: Colors.white,
                 onPressed: () async {
                   await controller.addMessage();
-                  Future.delayed(const Duration(milliseconds: 50))
-                      .then((value) => _scrollDown());
+                  // Future.delayed(const Duration(milliseconds: 50))
+                  //     .then((value) => _scrollDown());
                 }),
       ),
     );
