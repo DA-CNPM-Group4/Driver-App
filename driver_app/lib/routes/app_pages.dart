@@ -108,7 +108,7 @@ class AppPages {
         name: Paths.DASHBOARD_PAGE,
         page: () => const DashboardPageView(),
         binding: DashboardPageBinding(),
-        bindings: [HomeBinding(), IncomeBinding()]),
+        bindings: [HomeBinding(), IncomeBinding(), ChatBinding()]),
     GetPage(
       name: Paths.INCOME,
       page: () => const IncomeView(),

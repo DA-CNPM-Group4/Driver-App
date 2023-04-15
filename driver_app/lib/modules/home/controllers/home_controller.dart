@@ -12,6 +12,8 @@ import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/Data/services/firebase_realtime_service.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/core/constants/common_object.dart';
+import 'package:driver_app/modules/chat/chat_controller.dart';
+import 'package:driver_app/modules/dashboard_page/dashboard_page_controller.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 
@@ -24,18 +26,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:driver_app/modules/home/controllers/confirm_order.dart';
 import 'package:driver_app/modules/income/income_controller.dart';
 
-import '../../../data/Maps.dart';
 import '../../../data/network_handler.dart';
 import '../../../routes/app_routes.dart';
 
 class HomeController extends GetxController {
   final LifeCycleController lifeCycleController =
       Get.find<LifeCycleController>();
+  final incomeController = Get.find<IncomeController>();
+  final chatController = Get.find<ChatController>();
+
+  final GlobalKey parentKey = GlobalKey();
 
   late DriverEntity driver;
   late VehicleEntity vehicle;
-
-  var incomeController = Get.find<IncomeController>();
 
   StreamSubscription<Position>? gpsStreamSubscription;
   StreamSubscription? listenRequestAgent;
@@ -44,6 +47,7 @@ class HomeController extends GetxController {
 
   var isDriverActive = false.obs;
   var isAcceptedTrip = false.obs;
+  var isPickupPassenger = false.obs;
 
   var isLoading = false.obs;
   var isMapLoaded = false.obs;
@@ -98,6 +102,8 @@ class HomeController extends GetxController {
             isAcceptedTrip.value = true;
             String tripId = result["tripId"];
 
+            chatController.initChat(
+                request.PassengerId ?? "test-trip-id", tripId);
             RealtimePassengerInfo passengerInfo =
                 await handleReadPassenger(request);
 
@@ -145,28 +151,30 @@ class HomeController extends GetxController {
           await handleCancleTrip(tripId);
         },
         onTrip: () async {
-          if (checkCompleteTripCondition()) {
-            isLoading.value = true;
-            await removeTripRemovedListener();
-
-            try {
-              await DriverAPIService.tripApi.completeTrip(tripId);
-              showSnackBar("Success", "The trip was completed");
-            } catch (e) {
-              showSnackBar("Completed Trip Failed", e.toString());
-            }
-            isLoading.value = false;
-            overlayEntry!.remove();
-            reset();
-          } else {
-            showSnackBar("Completed Trip Failed",
-                "you have to carry passengers to nearly 10m");
-          }
+          await handleOntrip(tripId);
         },
       );
     });
+    overlayState?.insert(overlayEntry!);
+  }
 
-    overlayState!.insert(overlayEntry!);
+  Future<void> handleOntrip(String tripId) async {
+    if (checkCompleteTripCondition()) {
+      isLoading.value = true;
+      await listenTripAgent?.cancel();
+
+      try {
+        await DriverAPIService.tripApi.completeTrip(tripId);
+        showSnackBar("Success", "The trip was completed");
+      } catch (e) {
+        showSnackBar("Completed Trip Failed", e.toString());
+      }
+      isLoading.value = false;
+      await reset();
+    } else {
+      showSnackBar("Completed Trip Failed",
+          "you have to carry passengers to nearly 10m");
+    }
   }
 
   Future<bool> handleRequestTimeout(
@@ -203,13 +211,15 @@ class HomeController extends GetxController {
     try {
       isLoading.value = true;
       await listenPassengerLocationAgent?.cancel();
+      await listenTripAgent?.cancel();
+
       await DriverAPIService.tripApi.cancelTrip(tripId);
     } catch (e) {
       showSnackBar("Trip Canceled", "The trip was canceled");
     }
     isLoading.value = false;
-    overlayEntry!.remove();
-    reset();
+
+    await reset();
   }
 
   void assignTripRemovedListener(String tripId) {
@@ -218,21 +228,17 @@ class HomeController extends GetxController {
         .child(tripId);
 
     listenTripAgent = firebaseRequestRef.onChildRemoved.listen((event) async {
-      overlayEntry!.remove();
       await listenPassengerLocationAgent?.cancel();
-      reset();
+      await reset();
       showSnackBar("Oops", "The trip was canceld");
     });
-  }
-
-  Future<void> removeTripRemovedListener() async {
-    await listenTripAgent?.cancel();
   }
 
   Future<void> changeToPickPassengerState(
       String tripId, RealtimeTripRequest trip) async {
     await DriverAPIService.tripApi.pickPassenger(tripId);
     await listenPassengerLocationAgent?.cancel();
+    isPickupPassenger.value = true;
 
     currentDestinationPostion['address'] = trip.Destination;
     currentDestinationPostion['latitude'] = trip.LatDesAddr;
@@ -280,9 +286,10 @@ class HomeController extends GetxController {
       currentDestinationPostion['address'] = request.StartAddress;
 
       markers[const MarkerId("1")] = Marker(
-          markerId: const MarkerId("1"),
-          infoWindow: const InfoWindow(title: "Passenger Location"),
-          position: LatLng(request.LatStartAddr, request.LongStartAddr));
+        markerId: const MarkerId("1"),
+        infoWindow: const InfoWindow(title: "Passenger Location"),
+        position: LatLng(request.LatStartAddr, request.LongStartAddr),
+      );
     }
   }
 
@@ -321,15 +328,17 @@ class HomeController extends GetxController {
     }
   }
 
-  void reset() {
+  Future<void> reset() async {
     polylinePoints.clear();
     polyline.refresh();
     markers.clear();
     markers.refresh();
 
+    removeOverlay();
     listenRequestAgent?.resume();
-
     isAcceptedTrip.value = false;
+    isPickupPassenger.value = false;
+    await chatController.reset();
   }
 
   @override
@@ -457,5 +466,19 @@ class HomeController extends GetxController {
 
   bool checkCompleteTripCondition() {
     return true;
+  }
+
+  Future<void> openChatScreen() async {
+    overlayEntry?.remove();
+    await Get.toNamed(Routes.CHAT)?.then((value) {
+      if (overlayEntry != null) {
+        overlayState?.insert(overlayEntry!);
+      }
+    });
+  }
+
+  void removeOverlay() {
+    overlayEntry?.remove();
+    overlayEntry?.dispose();
   }
 }

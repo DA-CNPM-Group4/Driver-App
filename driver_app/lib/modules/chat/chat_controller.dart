@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:driver_app/Data/models/chat_message/chat_message.dart';
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/realtime_models/firestore_chat.dart';
 import 'package:driver_app/Data/models/realtime_models/firestore_message.dart';
 import 'package:driver_app/Data/services/firestore_database_service.dart';
+import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +18,9 @@ class ChatController extends GetxController {
   final LifeCycleController lifeCycleController =
       Get.find<LifeCycleController>();
   final isLoading = false.obs;
+
   late final DriverEntity driverInfo;
+  String? tripId;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController textController = TextEditingController();
@@ -23,13 +28,12 @@ class ChatController extends GetxController {
 
   RxList<ChatMessage> messages = <ChatMessage>[].obs;
   late Stream<QuerySnapshot<Map<String, dynamic>>> chatStreamController;
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? chatStreamlistener;
 
   @override
   void onInit() async {
     super.onInit();
     driverInfo = await lifeCycleController.getDriver;
-
-    await initChat();
   }
 
   String? messageValidator(String value) {
@@ -53,8 +57,12 @@ class ChatController extends GetxController {
         senderName: driverInfo.name,
         date: Utils.currentDateTime);
     try {
-      await FireStoreDatabaseService.instance
-          .sendMessage(data: newMessage, tripId: "test-trip-id");
+      if (tripId == null) {
+        throw const UnexpectedException();
+      } else {
+        await FireStoreDatabaseService.instance
+            .sendMessage(data: newMessage, tripId: tripId!);
+      }
     } catch (e) {
       showSnackBar("Error", "Cant send message");
     } finally {
@@ -63,17 +71,19 @@ class ChatController extends GetxController {
     }
   }
 
-  Future<void> initChat() async {
+  Future<void> initChat(String passengerId, String newTripId) async {
+    tripId = newTripId;
+    messages.clear();
     FireStoreDatabaseService.instance.createChat(
         data: FirestoreChatModel(
           driverId: driverInfo.accountId,
-          passengerId: "test-passenger-id",
+          passengerId: passengerId,
         ),
-        tripId: "test-trip-id");
+        tripId: newTripId);
     chatStreamController =
-        FireStoreDatabaseService.instance.getChatStream(tripId: "test-trip-id");
+        FireStoreDatabaseService.instance.getChatStream(tripId: newTripId);
 
-    chatStreamController.listen((event) {
+    chatStreamlistener = chatStreamController.listen((event) {
       for (var docAdd in event.docChanges) {
         if (docAdd.type == DocumentChangeType.added) {
           final chat = FirestoreMessageModel.fromJson(docAdd.doc.data()!);
@@ -88,5 +98,14 @@ class ChatController extends GetxController {
         }
       }
     });
+  }
+
+  Future<void> reset() async {
+    tripId = null;
+    await chatStreamlistener?.cancel();
+  }
+
+  void popBack() {
+    Get.back();
   }
 }

@@ -1,3 +1,5 @@
+import 'package:driver_app/core/constants/enum.dart';
+import 'package:driver_app/core/utils/enum_extension.dart';
 import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/modules/edit_profile/widgets/avatar_circle.dart';
@@ -11,20 +13,6 @@ class SessionItem extends StatelessWidget {
   const SessionItem({Key? key, required this.session}) : super(key: key);
 
   final TripResponse session;
-
-  Text handleTripStatus() {
-    if (session.tripStatus == "Finished") {
-      return Text(
-        session.tripStatus, //Replace with driver name
-        style: BaseTextStyle.heading2(fontSize: 16, color: Colors.green),
-      );
-    } else {
-      return Text(
-        session.tripStatus, //Replace with driver name
-        style: BaseTextStyle.heading2(fontSize: 16, color: Colors.red),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +44,8 @@ class SessionItem extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
-                      child: handleTripStatus(),
+                      child: TripStatus.fromString(session.tripStatus)
+                          .toTextTripsInfo(),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
@@ -88,7 +77,7 @@ class SessionItem extends StatelessWidget {
                                 width: 20),
                           ),
                           Text(
-                            " ${Utils.dateTimeToTime(session.createdTime)} - ${Utils.dateTimeToTime(DateTime.parse(session.completeTime.toString()))}", //Replace with trip create time and end time
+                            " ${Utils.dateTimeToTime(session.createdTime)} - ${Utils.dateTimeToTime(session.completeTime)}", //Replace with trip create time and end time
                             style: const TextStyle(fontSize: 13),
                           ),
                         ],

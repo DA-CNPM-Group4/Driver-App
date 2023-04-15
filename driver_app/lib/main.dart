@@ -17,8 +17,6 @@ void main() async {
   await setup();
   runApp(GetMaterialApp(
     title: "Application",
-    // home: const TestUpdateLocation(),
-    // initialRoute: AppPages.INITIAL,
     initialRoute: AppPages.INITIAL,
     getPages: AppPages.routes,
     theme: baseTheme(),

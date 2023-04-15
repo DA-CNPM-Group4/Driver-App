@@ -12,16 +12,16 @@ class Utils {
     return formatter.format(now);
   }
 
-  static String dateTimeFullTime(DateTime time) {
-    return dmyhmFormatter.format(time);
+  static String dateTimeFullTime(DateTime? time) {
+    return time == null ? "" : dmyhmFormatter.format(time);
   }
 
-  static String dateTimeToDate(DateTime time) {
-    return dmyFormatter.format(time);
+  static String dateTimeToDate(DateTime? time) {
+    return time == null ? "" : dmyFormatter.format(time);
   }
 
-  static String dateTimeToTime(DateTime time) {
-    return hsFormatter.format(time);
+  static String dateTimeToTime(DateTime? time) {
+    return time == null ? "" : hsFormatter.format(time);
   }
 }
 

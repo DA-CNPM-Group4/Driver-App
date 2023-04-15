@@ -5,8 +5,6 @@ import 'package:driver_app/Data/models/local_entity/wallet.dart';
 import 'package:get/get.dart';
 
 class IncomeController extends GetxController {
-  final count = 0.obs;
-
   var isLoading = false.obs;
   Wallet? wallet;
   var isClicked = false.obs;
@@ -90,6 +88,4 @@ class IncomeController extends GetxController {
   //     },
   //   );
   // }
-
-  void increment() => count.value++;
 }

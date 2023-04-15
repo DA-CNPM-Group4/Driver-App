@@ -5,6 +5,25 @@ import 'package:get/get.dart';
 
 import 'chat_controller.dart';
 
+class ChatPage extends StatefulWidget {
+  const ChatPage({Key? key}) : super(key: key);
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return const ChatView();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+
 class ChatView extends GetView<ChatController> {
   const ChatView({Key? key}) : super(key: key);
 
@@ -23,7 +42,7 @@ class ChatView extends GetView<ChatController> {
                   color: Colors.black,
                 ),
                 onPressed: () {
-                  Get.back();
+                  controller.popBack();
                 },
               ),
               title: Text(

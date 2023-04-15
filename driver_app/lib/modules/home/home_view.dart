@@ -1,3 +1,4 @@
+import 'package:driver_app/modules/home/widgets/dragable_buble_chat.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class HomeView extends GetView<HomeController> {
 
     return Scaffold(
       body: Stack(
+        key: controller.parentKey,
         children: [
           Obx(
             () => controller.isMapLoaded.value
@@ -167,7 +169,27 @@ class HomeView extends GetView<HomeController> {
                     }),
               ),
             ),
-          )
+          ),
+          Obx(
+            () => controller.isAcceptedTrip.value &&
+                    !controller.isPickupPassenger.value
+                ? DraggableFloatingActionButton(
+                    initialOffset: const Offset(120, 70),
+                    parentKey: controller.parentKey,
+                    onPressed: () async {
+                      await controller.openChatScreen();
+                    },
+                    child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: const ShapeDecoration(
+                          shape: CircleBorder(),
+                          color: Color.fromARGB(255, 18, 190, 69),
+                        ),
+                        child: const Icon(Icons.chat_bubble)),
+                  )
+                : Container(),
+          ),
         ],
       ),
     );

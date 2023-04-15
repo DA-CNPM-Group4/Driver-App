@@ -1,3 +1,5 @@
+import 'package:driver_app/core/constants/enum.dart';
+import 'package:driver_app/core/utils/enum_extension.dart';
 import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/modules/request/request_view.dart';
 import 'package:driver_app/modules/trip_detail/trip_detail_controller.dart';
@@ -230,11 +232,8 @@ class TripDetailView extends GetView<TripDetailController> {
                 text: "Status: ",
                 style: BaseTextStyle.heading3(fontSize: 18),
               ),
-              TextSpan(
-                text: "Done", //Replace with trip status
-                style:
-                    BaseTextStyle.heading2(fontSize: 18, color: Colors.green),
-              ),
+              TripStatus.fromString(controller.trip.tripStatus)
+                  .toTextTripDetail(),
             ],
           ),
         ),
@@ -269,9 +268,8 @@ class TripDetailView extends GetView<TripDetailController> {
                 ),
               ),
               TextSpan(
-                text: Utils.dateTimeToTime(DateTime.parse(controller
-                    .trip.completeTime
-                    .toString())), //Replace with trip time
+                text: Utils.dateTimeToTime(
+                    controller.trip.completeTime), //Replace with trip time
                 style: BaseTextStyle.heading3(fontSize: 18),
               ),
             ],

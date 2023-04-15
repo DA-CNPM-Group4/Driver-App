@@ -1,3 +1,4 @@
+import 'package:driver_app/modules/chat/chat_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,7 @@ class DashboardPageView extends GetView<DashboardPageController> {
           children: const [
             HomeView(),
             IncomeView(),
+            ChatView(),
           ],
         ),
       ),
