@@ -16,10 +16,10 @@ class TripDetailController extends GetxController {
   late TripResponse trip;
   late TripFeedbackResponse feedback;
   late List<ChatMessage>? chatHistory;
-  var isLoading = false.obs;
 
-  RxBool isRate = false.obs;
-  RxBool isChatLoaded = false.obs;
+  final RxBool isLoading = false.obs;
+  final RxBool isRate = false.obs;
+  final RxBool isChatLoaded = false.obs;
 
   int star = 2;
   @override
