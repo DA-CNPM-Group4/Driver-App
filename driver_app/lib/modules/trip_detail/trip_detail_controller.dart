@@ -4,8 +4,6 @@ import 'package:driver_app/Data/models/requests/trip_feedback_response.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class TripDetailController extends GetxController {

@@ -151,9 +151,10 @@ class TripApiService {
     }
   }
 
-  Future<double> getInComeRequest(
+  Future<int> getInComeRequest(
       {required GetIncomeRequestBody requestBody}) async {
     try {
+      print(requestBody.toJson());
       requestBody.driverId = await APIHandlerImp.instance.getIdentity();
       var response = await APIHandlerImp.instance.get(
         '/Trip/Trip/GetIncome',

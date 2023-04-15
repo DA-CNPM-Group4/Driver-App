@@ -4,7 +4,6 @@ import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/modules/edit_profile/widgets/avatar_circle.dart';
 import 'package:driver_app/routes/app_routes.dart';
-import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';

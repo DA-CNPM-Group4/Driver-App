@@ -1,91 +1,43 @@
-import 'dart:async';
-
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
-import 'package:driver_app/Data/models/local_entity/wallet.dart';
+import 'package:driver_app/Data/models/requests/get_income_request.dart';
+import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/utils/utils.dart';
+import 'package:driver_app/modules/lifecycle_controller.dart';
+import 'package:driver_app/modules/utils_widget/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class IncomeController extends GetxController {
   var isLoading = false.obs;
-  Wallet? wallet;
-  var isClicked = false.obs;
-  var start = 30.obs;
-  Timer? timer;
-  var error = ''.obs;
-  var buttonLoading = false.obs;
-  DriverEntity? driverEntity;
+  final lifeCycleController = Get.find<LifeCycleController>();
+
+  DateTime from = DateTime.now();
+  DateTime to = DateTime.now();
+  RxInt income = 0.obs;
+  late DriverEntity driverEntity;
 
   @override
   void onInit() async {
     super.onInit();
     isLoading.value = true;
-    // await getWallet();
+    driverEntity = await lifeCycleController.getDriver;
     isLoading.value = false;
   }
 
-  // Future<void> getWallet() async {
-  //   isLoading.value = true;
-  //   var response_1 = await apiHandlerImp.get("driver/getWallet", {});
-  //   try {
-  //     wallet = Wallet.fromJson(response_1.data["data"]);
-  //   } catch (e) {
-  //     wallet = Wallet.fromJson(response_1.data["data"]);
-  //   }
-  //   isLoading.value = false;
-  // }
-
-  // sendOTP() async {
-  //   var response =
-  //       await apiHandlerImp.put({"username": driverEntity!.phone!}, "sendOTP");
-  // }
-
-  // validateOTP(TextEditingController otpController,
-  //     TextEditingController moneyController, bool type) async {
-  //   buttonLoading.value = true;
-  //   var response = await apiHandlerImp.put(
-  //       {"username": driverEntity!.phone!, "otp": otpController.text},
-  //       "validateOTP");
-  //   if (response.data["status"]) {
-  //     var response_1 = await apiHandlerImp
-  //         .put({"money": moneyController.text}, "driver/withdraw");
-  //     if (response_1.data["status"]) {
-  //       isLoading.value = true;
-  //       if (type) {
-  //         wallet!.balance =
-  //             wallet!.balance! + double.parse(moneyController.text);
-  //       } else {
-  //         wallet!.balance =
-  //             wallet!.balance! - double.parse(moneyController.text);
-  //       }
-  //       Get.back();
-  //       Get.snackbar("Success", "Your order was success",
-  //           backgroundColor: Colors.grey[100]);
-  //       isLoading.value = false;
-  //     } else {
-  //       Get.snackbar("Fail", "Balance is inefficient",
-  //           backgroundColor: Colors.grey[100]);
-  //     }
-  //   } else {
-  //     Get.snackbar("Fail", "OTP was wrong, try again",
-  //         backgroundColor: Colors.grey[100]);
-  //   }
-  //   buttonLoading.value = false;
-  // }
-
-  // Future<void> startTimer() async {
-  //   isClicked.value = true;
-  //   const oneSec = Duration(seconds: 1);
-  //   await sendOTP();
-  //   timer = Timer.periodic(
-  //     oneSec,
-  //     (Timer timer) {
-  //       if (start.value == 0) {
-  //         start.value = 30;
-  //         isClicked.value = false;
-  //         timer.cancel();
-  //       } else {
-  //         start.value -= 1;
-  //       }
-  //     },
-  //   );
-  // }
+  Future<void> getRevenue() async {
+    isLoading.value = true;
+    try {
+      income.value = await DriverAPIService.tripApi.getInComeRequest(
+        requestBody: GetIncomeRequestBody(
+          from: Utils.moneyDateFormatter(from),
+          to: Utils.moneyDateFormatter(to),
+        ),
+      );
+      debugPrint(income.value.toString());
+    } catch (e) {
+      debugPrint(e.toString());
+      showSnackBar("Error", e.toString());
+    }
+    isLoading.value = false;
+  }
 }

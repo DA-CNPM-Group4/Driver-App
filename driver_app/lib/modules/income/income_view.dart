@@ -61,9 +61,13 @@ class IncomeView extends GetView<IncomeController> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("0 đ",
-                                    style:
-                                        BaseTextStyle.heading2(fontSize: 16)),
+                                Obx(
+                                  () => !controller.isLoading.value
+                                      ? Text("${controller.income.value} đ",
+                                          style: BaseTextStyle.heading2(
+                                              fontSize: 16))
+                                      : const CircularProgressIndicator(),
+                                ),
                                 h_20,
                                 Text(
                                   "0 complete order today",
@@ -76,8 +80,10 @@ class IncomeView extends GetView<IncomeController> {
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green,
                                     shape: const StadiumBorder()),
-                                onPressed: () {},
-                                child: const Text("Detail"))
+                                onPressed: () async {
+                                  await controller.getRevenue();
+                                },
+                                child: const Text("Refresh"))
                           ],
                         )
                       ],
@@ -150,7 +156,7 @@ class IncomeView extends GetView<IncomeController> {
                                 ),
                                 h_10,
                                 Text(
-                                  "Transaction history",
+                                  "Trips History",
                                   style: BaseTextStyle.heading1(
                                       fontSize: 14, color: Colors.green),
                                 ),
@@ -204,88 +210,69 @@ class IncomeView extends GetView<IncomeController> {
                 topRight: Radius.circular(16),
               )),
           child: Scaffold(
-              appBar: AppBar(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.black,
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+              centerTitle: true,
+              title: Text(
+                type ? "Recharge" : "Withdraw",
+                style: BaseTextStyle.heading2(fontSize: 18),
+              ),
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 22),
+                  Text(
+                    "Money",
+                    style: BaseTextStyle.body2(fontSize: 16),
                   ),
-                  onPressed: () {
-                    Get.back();
-                  },
-                ),
-                centerTitle: true,
-                title: Text(
-                  type ? "Recharge" : "Withdraw",
-                  style: BaseTextStyle.heading2(fontSize: 18),
-                ),
+                  TextFormField(
+                      controller: moneyController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: const InputDecoration(
+                        hintText: 'e.g 50000',
+                      )),
+                  h,
+                  Text(
+                    "OTP",
+                    style: BaseTextStyle.body2(fontSize: 16),
+                  ),
+                  h,
+                  Pinput(
+                    length: 6,
+                    controller: otpController,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                        onPressed: () {}, child: const Text("Resend")),
+                  ),
+                ],
               ),
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 22),
-                    Text(
-                      "Money",
-                      style: BaseTextStyle.body2(fontSize: 16),
-                    ),
-                    TextFormField(
-                        controller: moneyController,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        decoration: const InputDecoration(
-                          hintText: 'e.g 50000',
-                        )),
-                    h,
-                    Text(
-                      "OTP",
-                      style: BaseTextStyle.body2(fontSize: 16),
-                    ),
-                    h,
-                    Pinput(
-                      length: 6,
-                      controller: otpController,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Obx(
-                        () => ElevatedButton(
-                            // onPressed: controller.isClicked.value
-                            //     ? null
-                            //     : () async {
-                            //         await controller.startTimer();
-                            //       },
-                            onPressed: () {},
-                            child: controller.isClicked.value
-                                ? Text(
-                                    "${controller.start.value}s",
-                                    style: const TextStyle(fontSize: 20),
-                                  )
-                                : const Text("Resend")),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              resizeToAvoidBottomInset: false,
-              bottomSheet: SizedBox(
-                  width: double.infinity,
-                  height: 60,
-                  child: Obx(
-                    () => ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green),
-                        onPressed: () {},
-                        child: controller.buttonLoading.value
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : const Text("Confirm")),
-                  ))),
+            ),
+            resizeToAvoidBottomInset: false,
+            bottomSheet: SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  onPressed: () {},
+                  child: const Text("Confirm")),
+            ),
+          ),
         ));
   }
 }
