@@ -134,7 +134,6 @@ class LoginView extends GetView<LoginController> {
                     child: Obx(
                       () => TextFormField(
                         key: const Key("login_phone_field"),
-                        keyboardType: TextInputType.number,
                         controller: controller.phoneNumberController,
                         validator: (value) =>
                             controller.phoneNumberValidator(value!),
