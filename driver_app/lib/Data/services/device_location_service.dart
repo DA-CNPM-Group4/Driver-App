@@ -38,7 +38,8 @@ class DeviceLocationService {
   }
 
   Future<Map<String, dynamic>> getCurrentPositionAsMap() async {
-    if (await requestPermission()) {
+    bool canAccessLocation = await requestPermission();
+    if (canAccessLocation) {
       final position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       return {"latitude": position.latitude, "longitude": position.longitude};
