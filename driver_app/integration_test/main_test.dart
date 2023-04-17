@@ -12,6 +12,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:dio/dio.dart';
+
+const String IPv4Address = "192.168.1.5";
 
 void main() async {
   BackendEnviroment.setTestHost("http://10.0.2.2:8001/api");
@@ -26,16 +29,40 @@ void main() async {
   await Hive.openBox("box");
 
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  group('Wait for a trip |', () {
-    testWidgets("Login flow |", (WidgetTester tester) async {
+  group("Test Driver Trip Flow", () {
+    testWidgets("Test Driver Trip Flow....", (WidgetTester tester) async {
       // Initialize the app
       await _initApp(tester);
 
-      // Navigate to the login screen
+      // Navigate from Welcome to Login screen
       await _navigateFromWelcomeToLogin(tester);
 
-      // Log in with email and password
+      // Login with email and password
       await _loginWithEmailAndPassword(tester);
+
+      // Send a request (fake)
+      sendTripRequest();
+
+      // Wait to receive request and show dialog
+      await _testReceiveRequestAndShowDialog(tester: tester);
+
+      // Driver cancel request
+      await _testCancelRequestAndVerifyDialogDisappear(tester: tester);
+
+      // Send a request (fake)
+      sendTripRequest();
+
+      // Wait to receive request and show dialog
+      await _testReceiveRequestAndShowDialog(tester: tester);
+
+      // Driver accept request
+      await _testAcceptRequest(tester: tester);
+
+      // Driver pick passenger
+      await _testPickedPassengerButton(tester: tester);
+
+      // Driver complete trip
+      await _testCompletedTripButton(tester: tester);
     });
   });
 }
@@ -72,26 +99,39 @@ Future<void> _loginWithEmailAndPassword(WidgetTester tester) async {
   await tester.enterText(emailFinder, 'changkho6313@gmail.com');
   await tester.enterText(phoneFinder, '123456333');
   await tester.tap(find.byKey(const Key('login_login_btn')));
-  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await tester.pumpAndSettle();
+  // await tester.pump(const Duration(seconds: 1));
 
   final passwordFinder = find.byKey(const Key("password_login_password_field"));
   await tester.enterText(passwordFinder, '123456');
   await tester.tap(find.byKey(const Key('password_login_login_btn')));
-  await tester.pumpAndSettle(const Duration(seconds: 1));
+  await tester.pumpAndSettle(const Duration(seconds: 2));
 
   final activeToggleFinder = find.byKey(const Key('home_active_inactive_btn'));
   await tester.tap(activeToggleFinder);
-  await tester.pumpAndSettle(const Duration(seconds: 10));
+  await tester.pumpAndSettle(const Duration(seconds: 1));
+  // await tester.pump(const Duration(seconds: 6));
+}
 
-  // First request
-  await _testReceiveRequestAndShowDialog(tester: tester);
-  await _testCancelRequestAndVerifyDialogDisappear(tester: tester);
+Future<bool> _waitForCustomerRequest(
+    WidgetTester tester, int waitingTime) async {
+  bool requestFound = false;
 
-  // Second request
-  await _testReceiveRequestAndShowDialog(tester: tester);
-  await _testAcceptRequest(tester: tester);
-  await _testPickedPassengerButton(tester: tester);
-  await _testCompletedTripButton(tester: tester);
+  for (int i = 0; i < waitingTime; i++) {
+    await tester.pump(const Duration(seconds: 1));
+    if (find
+        .byKey(const Key("request_view_cancel_request"))
+        .evaluate()
+        .isNotEmpty &&
+        find
+            .byKey(const Key("request_view_accept_request"))
+            .evaluate()
+            .isNotEmpty) {
+      requestFound = true;
+      break;
+    }
+  }
+  return requestFound;
 }
 
 Future<bool> _testReceiveRequestAndShowDialog({
@@ -109,19 +149,45 @@ Future<bool> _testReceiveRequestAndShowDialog({
   return customerRequestReceived;
 }
 
+Future<void> _testAcceptRequest({
+  required WidgetTester tester,
+}) async {
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(
+    find.byKey(const Key('request_view_accept_request')),
+    findsOneWidget,
+    reason: "No request received",
+  );
+
+  await tester.tap(find.byKey(const Key('request_view_accept_request')));
+  await tester.pumpAndSettle(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(
+    find.byKey(const Key('request_view_accept_request')),
+    findsNothing,
+    reason: "Clicked accept_request button but its still visible",
+  );
+}
+
 Future<void> _testPickedPassengerButton({
   required WidgetTester tester,
 }) async {
+  await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
   expect(
     find.byKey(const Key('confirm_order_picked_passenger')),
     findsOneWidget,
     reason: "No picked_passenger button received",
   );
 
-  await tester.pump(const Duration(seconds: 2));
-
   await tester.tap(find.byKey(const Key('confirm_order_picked_passenger')));
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
 
   expect(
     find.byKey(const Key('confirm_order_picked_passenger')),
@@ -134,41 +200,26 @@ Future<void> _testCompletedTripButton({
   required WidgetTester tester,
 }) async {
   await tester.pump(const Duration(seconds: 2));
+
   expect(
     find.byKey(const Key('confirm_order_complete_trip')),
     findsOneWidget,
     reason:
-        "Clicked picked_passenger button but can not find complete trip button",
+    "Clicked picked_passenger button but can not find complete trip button",
   );
 
   await tester.tap(find.byKey(const Key('confirm_order_complete_trip')));
-  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+
 
   expect(
     find.byKey(const Key('confirm_order_complete_trip')),
     findsNothing,
     reason: "Clicked complete_trip button but it still visible",
-  );
-}
-
-Future<void> _testAcceptRequest({
-  required WidgetTester tester,
-}) async {
-  expect(
-    find.byKey(const Key('request_view_accept_request')),
-    findsOneWidget,
-    reason: "No request received",
-  );
-
-  await tester.pump(const Duration(seconds: 2));
-
-  await tester.tap(find.byKey(const Key('request_view_accept_request')));
-  await tester.pumpAndSettle(const Duration(seconds: 5));
-
-  expect(
-    find.byKey(const Key('request_view_accept_request')),
-    findsNothing,
-    reason: "Clicked accept_request button but its still visible",
   );
 }
 
@@ -181,7 +232,10 @@ Future<void> _testCancelRequestAndVerifyDialogDisappear({
     reason: "No request received",
   );
 
-  await tester.pump(const Duration(seconds: 2));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 1));
 
   await tester.tap(find.byKey(const Key('request_view_cancel_request')));
   await tester.pumpAndSettle();
@@ -193,23 +247,39 @@ Future<void> _testCancelRequestAndVerifyDialogDisappear({
   );
 }
 
-Future<bool> _waitForCustomerRequest(
-    WidgetTester tester, int waitingTime) async {
-  bool requestFound = false;
+Future<void> sendTripRequest() async {
+  try {
+    final dio = Dio();
+    const url = "http://$IPv4Address:8001/api/Trip/TripRequest/SendRequest";
+    final data = {
+      "PassengerId":"d2b17392-b52e-4205-cf32-08db3f18272a",
+      "StaffId": "00000000-0000-0000-0000-000000000000",
+      "RequestStatus": "FindingDriver",
+      "PassengerNote":"Fast!!!",
+      "Distance": 2.0,
+      "Destination":"10 Đinh Tiên Hoàng, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+      "LatDesAddr": 10.78573657763354,
+      "LongDesAddr": 106.70259905373288,
+      "StartAddress": "227 Đ. Nguyễn Văn Cừ, Quận 5, Thành phố Hồ Chí Minh, Vietnam",
+      "LatStartAddr": 10.762835,
+      "LongStartAddr": 106.6824817,
+      "PassengerPhone": "123456111",
+      "Price":45923,
+      "VehicleType":"Motorbike"
+    };
 
-  for (int i = 0; i < waitingTime; i++) {
-    await tester.pump(const Duration(seconds: 1));
-    if (find
-            .byKey(const Key("request_view_cancel_request"))
-            .evaluate()
-            .isNotEmpty &&
-        find
-            .byKey(const Key("request_view_accept_request"))
-            .evaluate()
-            .isNotEmpty) {
-      requestFound = true;
-      break;
-    }
+    final headers = {
+      "x-api-key": "ApplicationKey",
+    };
+
+    dio.options.headers.addAll(headers);
+    dio.post(
+      url,
+      data: data,
+    ).then((value) {
+      print(value.toString());
+    });
+  } on DioError catch (e) {
+    print("Error sending request: $e");
   }
-  return requestFound;
 }
