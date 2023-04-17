@@ -1,10 +1,12 @@
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
+import 'package:driver_app/Data/models/requests/get_completed_trip_response.dart';
 import 'package:driver_app/Data/models/requests/get_income_request.dart';
 import 'package:driver_app/Data/models/requests/trip_feedback_response.dart';
 import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
+import 'package:driver_app/core/utils/utils.dart';
 
 class TripApiService {
   Future<String> acceptTripRequest(AcceptTripRequestBody body) async {
@@ -134,6 +136,29 @@ class TripApiService {
     }
   }
 
+  Future<GetCompletedTripResponse> getDriverCompletedTrips(
+      {required DateTime from, required DateTime to}) async {
+    try {
+      var driverId = await APIHandlerImp.instance.getIdentity();
+      var body = {
+        'driverId': driverId,
+        "from": Utils.moneyDateFormatter(from),
+        "to": Utils.moneyDateFormatter(to),
+      };
+
+      var response = await APIHandlerImp.instance
+          .get('/Trip/Trip/GetCompletedTrips', body: body);
+      if (response.data["status"]) {
+        return GetCompletedTripResponse.fromJson(response.data['data']);
+      } else {
+        return Future.error(response.data['message']);
+      }
+    } catch (e) {
+      return Future.error(UnexpectedException(
+          context: "get-trips-info", debugMessage: e.toString()));
+    }
+  }
+
   Future<void> cancelRequest({required String requestId}) async {
     try {
       var body = {"requestId": requestId};
@@ -154,11 +179,13 @@ class TripApiService {
   Future<int> getInComeRequest(
       {required GetIncomeRequestBody requestBody}) async {
     try {
-      requestBody.driverId = await APIHandlerImp.instance.getIdentity();
+      var driverId = await APIHandlerImp.instance.getIdentity();
+      requestBody.driverId = driverId.toString();
       var response = await APIHandlerImp.instance.get(
         '/Trip/Trip/GetIncome',
         body: requestBody.toJson(),
       );
+
       if (response.data["status"]) {
         return response.data['data'];
       } else {

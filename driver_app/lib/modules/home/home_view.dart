@@ -163,8 +163,9 @@ class HomeView extends GetView<HomeController> {
                       controller.googleMapController.animateCamera(
                           CameraUpdate.newCameraPosition(CameraPosition(
                         target: LatLng(
-                            controller.currentDriverPosition["latitude"],
-                            controller.currentDriverPosition["longitude"]),
+                            controller.currentDriverPosition.value["latitude"],
+                            controller
+                                .currentDriverPosition.value["longitude"]),
                         zoom: 14.44,
                       )));
                     }),
