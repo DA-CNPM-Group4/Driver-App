@@ -129,7 +129,7 @@ class IncomeView extends GetView<IncomeController> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                method(type: false, textTheme: textTheme);
+                                // method(type: false, textTheme: textTheme);
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,

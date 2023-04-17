@@ -25,6 +25,9 @@ class IncomeController extends GetxController {
   }
 
   Future<void> getRevenue() async {
+    from = DateTime.now();
+    to = DateTime.now();
+
     isLoading.value = true;
     try {
       income.value = await DriverAPIService.tripApi.getInComeRequest(
@@ -33,7 +36,6 @@ class IncomeController extends GetxController {
           to: Utils.moneyDateFormatter(to),
         ),
       );
-      debugPrint(income.value.toString());
     } catch (e) {
       debugPrint(e.toString());
       showSnackBar("Error", e.toString());

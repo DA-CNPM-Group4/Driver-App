@@ -7,7 +7,7 @@ class Utils {
   static final dmyFormatter = DateFormat('dd/MM/yyyy');
   static final hsFormatter = DateFormat("HH:mm");
 
-  static final moneyFormatter = DateFormat('MM-dd-yyyy');
+  static final moneyFormatter = DateFormat('dd/MM/yyyy');
 
   static String get currentDateTime {
     final DateTime now = DateTime.now();

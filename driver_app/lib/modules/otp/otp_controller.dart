@@ -48,7 +48,10 @@ class OtpController extends GetxController {
         lifeCycleController.isActiveOTP
             ? "Active Account Successfully"
             : "Reset Password Sucessfully");
-    Get.offAllNamed(Routes.WELCOME);
+
+    lifeCycleController.isActiveOTP
+        ? Get.offAllNamed(Routes.SET_UP_PROFILE)
+        : Get.offAllNamed(Routes.WELCOME);
     return;
   }
 
