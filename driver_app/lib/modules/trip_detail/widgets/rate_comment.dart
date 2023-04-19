@@ -8,11 +8,13 @@ class RateAndComment extends StatelessWidget {
     required this.feedback,
     required this.passengerName,
     required this.rating,
+    required this.ignoreGestures,
   });
 
   final String feedback;
   final String passengerName;
   final int rating;
+  final bool ignoreGestures;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -50,6 +52,7 @@ class RateAndComment extends StatelessWidget {
             RatingBar.builder(
               initialRating: rating.toDouble(),
               minRating: 1,
+              ignoreGestures: ignoreGestures,
               direction: Axis.horizontal,
               allowHalfRating: false,
               itemCount: 5,

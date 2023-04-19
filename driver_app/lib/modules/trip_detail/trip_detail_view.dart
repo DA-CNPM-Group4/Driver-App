@@ -1,3 +1,4 @@
+import 'package:driver_app/Data/common/chat_message_widget.dart';
 import 'package:driver_app/core/constants/enum.dart';
 import 'package:driver_app/core/utils/enum_extension.dart';
 import 'package:driver_app/core/utils/utils.dart';
@@ -29,7 +30,7 @@ class TripDetailView extends GetView<TripDetailController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: size.height,
+          height: size.height + 100,
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 22),
           child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -56,6 +57,7 @@ class TripDetailView extends GetView<TripDetailController> {
                             ? Obx(
                                 () => controller.isRate.value
                                     ? RateAndComment(
+                                        ignoreGestures: true,
                                         feedback: controller.feedback.note,
                                         passengerName: "Sung won",
                                         rating: 3,
@@ -71,30 +73,28 @@ class TripDetailView extends GetView<TripDetailController> {
                     ],
                   ),
                 ),
-                // Expanded(
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Text("Chats History",
-                //           style: BaseTextStyle.heading2(fontSize: 20)),
-                //       const SizedBox(height: 12),
-                //       Obx(
-                //         () => controller.isChatLoaded.value
-                //             ? ListView.builder(
-                //                 itemCount: controller.chatHistory?.length ?? 0,
-                //                 itemBuilder: (context, index) {
-                //                   var message = controller.chatHistory![index];
-                //                   return ChatMessageWidget(
-                //                     text: message.text,
-                //                     chatMessageType: message.chatMessageType,
-                //                   );
-                //                 },
-                //               )
-                //             : Container(),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Chats History",
+                        style: BaseTextStyle.heading2(fontSize: 20)),
+                    const SizedBox(height: 12),
+                    Obx(
+                      () => controller.isChatLoaded.value
+                          ? ListView.builder(
+                              itemCount: controller.chatHistory?.length ?? 0,
+                              itemBuilder: (context, index) {
+                                var message = controller.chatHistory![index];
+                                return ChatMessageWidget(
+                                  text: message.text,
+                                  chatMessageType: message.chatMessageType,
+                                );
+                              },
+                            )
+                          : Container(),
+                    ),
+                  ],
+                ),
               ]),
         ),
       ),
@@ -308,6 +308,22 @@ class TripDetailView extends GetView<TripDetailController> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildListMessage() {
+    return Obx(
+      () => ListView.builder(
+        itemCount: controller.chatHistory?.length,
+        controller: controller.scrollController,
+        itemBuilder: (context, index) {
+          var message = controller.chatHistory![index];
+          return ChatMessageWidget(
+            text: message.text,
+            chatMessageType: message.chatMessageType,
+          );
+        },
+      ),
     );
   }
 }
