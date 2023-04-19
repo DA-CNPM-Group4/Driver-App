@@ -16,16 +16,17 @@ class ForgotPasswordController extends GetxController {
   TextEditingController emailController = TextEditingController();
 
   Future<void> sendResetPasswordOTP() async {
-    isLoading.value = true;
     final isValid = formKey.currentState!.validate();
-    if (!isValid) {
-      isLoading.value = false;
+    if (!isValid || isLoading.value) {
+      return;
     }
+    isLoading.value = true;
+
     try {
       lifeCycleController.email = emailController.text;
       await DriverAPIService.authApi
           .requestResetPassword(lifeCycleController.email);
-
+      showSnackBar("Success", "Check your email to get reset password code");
       toOTPPage();
     } catch (e) {
       showSnackBar("Error", e.toString());

@@ -39,28 +39,33 @@ class OtpController extends GetxController {
         await DriverAPIService.authApi.resetPassword(lifeCycleController.email,
             passwordController.text, otpController.text);
       }
+      isLoading.value = false;
+      showSnackBar(
+          "Success",
+          lifeCycleController.isActiveOTP
+              ? "Active Account Successfully"
+              : "Reset Password Sucessfully");
+
+      lifeCycleController.isActiveOTP
+          ? Get.offAllNamed(Routes.SET_UP_PROFILE)
+          : Get.offAllNamed(Routes.WELCOME);
+      return;
     } catch (e) {
       showSnackBar("Error", e.toString());
     }
-    isLoading.value = false;
-    showSnackBar(
-        "Success",
-        lifeCycleController.isActiveOTP
-            ? "Active Account Successfully"
-            : "Reset Password Sucessfully");
-
-    lifeCycleController.isActiveOTP
-        ? Get.offAllNamed(Routes.SET_UP_PROFILE)
-        : Get.offAllNamed(Routes.WELCOME);
-    return;
   }
 
   Future<void> startTimer() async {
     isLoading2.value = true;
     try {
       await handleSendOTP();
+      showSnackBar(
+          "Success",
+          lifeCycleController.isActiveOTP
+              ? "Check your email to active account"
+              : "check your email to get reset password code");
     } catch (e) {
-      showSnackBar("Error", e.toString());
+      showSnackBar("Failed", e.toString());
     } finally {
       isLoading2.value = false;
     }
