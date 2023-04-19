@@ -18,6 +18,7 @@ import 'package:driver_app/modules/lifecycle_controller.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -78,7 +79,7 @@ class HomeController extends GetxController {
           final data = Map<String, dynamic>.from(event.snapshot.value as Map);
           var request = RealtimeTripRequest.fromJson(data);
 
-          if (await handleRequestTimeout(request, event.snapshot.key ?? "")) {
+          if (await handleAcceptRequest(request, event.snapshot.key ?? "")) {
             return;
           }
 
@@ -163,24 +164,28 @@ class HomeController extends GetxController {
 
   Future<void> handleOntrip(String tripId) async {
     if (checkCompleteTripCondition()) {
-      isLoading.value = true;
       await listenTripAgent?.cancel();
-
       try {
+        EasyLoading.show();
+        isLoading.value = true;
+
         await DriverAPIService.tripApi.completeTrip(tripId);
         showSnackBar("Success", "The trip was completed");
       } catch (e) {
-        showSnackBar("Completed Trip Failed", e.toString());
+        debugPrint(e.toString());
+        showSnackBar("Completed Trip Failed", "The trip was completed");
+      } finally {
+        EasyLoading.dismiss();
+        isLoading.value = false;
+        await Get.find<DashboardPageController>().resetState();
       }
-      isLoading.value = false;
-      await Get.find<DashboardPageController>().resetState();
     } else {
       showSnackBar("Completed Trip Failed",
           "you have to carry passengers to nearly 10m");
     }
   }
 
-  Future<bool> handleRequestTimeout(
+  Future<bool> handleAcceptRequest(
       RealtimeTripRequest request, String requestId) async {
     DateTime requestDate = DateTime.parse(request.CreatedTime);
     var waitingTime = DateTime.now().difference(requestDate).inSeconds;
@@ -188,7 +193,7 @@ class HomeController extends GetxController {
       try {
         await DriverAPIService.tripApi.cancelRequest(requestId: requestId);
       } catch (e) {
-        //
+        showSnackBar("Error", e.toString());
       }
       return true;
     } else {
@@ -212,17 +217,18 @@ class HomeController extends GetxController {
 
   Future<void> handleCancleTrip(String tripId) async {
     try {
-      isLoading.value = true;
+      EasyLoading.show();
       await listenPassengerLocationAgent?.cancel();
       await listenTripAgent?.cancel();
 
       await DriverAPIService.tripApi.cancelTrip(tripId);
-    } catch (e) {
       showSnackBar("Trip Canceled", "The trip was canceled");
+    } catch (e) {
+      showSnackBar("Trip Canceled Failed", "The trip was canceled");
+    } finally {
+      EasyLoading.dismiss();
+      await Get.find<DashboardPageController>().resetState();
     }
-    isLoading.value = false;
-
-    await Get.find<DashboardPageController>().resetState();
   }
 
   void assignTripRemovedListener(String tripId) {
@@ -239,7 +245,16 @@ class HomeController extends GetxController {
 
   Future<void> changeToPickPassengerState(
       String tripId, RealtimeTripRequest trip) async {
-    await DriverAPIService.tripApi.pickPassenger(tripId);
+    try {
+      EasyLoading.show();
+      await DriverAPIService.tripApi.pickPassenger(tripId);
+    } catch (e) {
+      showSnackBar("Failed",
+          "Failed to pickup passenger but process must be continuing");
+      debugPrint(e.toString());
+    } finally {
+      EasyLoading.dismiss();
+    }
     await listenPassengerLocationAgent?.cancel();
     isPickupPassenger.value = true;
 
