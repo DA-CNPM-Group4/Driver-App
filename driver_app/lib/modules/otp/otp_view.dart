@@ -63,7 +63,7 @@ class OtpView extends GetView<OtpController> {
                 const SizedBox(height: 12),
                 Center(
                   child: Form(
-                    key: controller.formKey,
+                    key: controller.otpFormKey,
                     child: Pinput(
                       length: 6,
                       controller: controller.otpController,

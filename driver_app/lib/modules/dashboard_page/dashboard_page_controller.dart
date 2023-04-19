@@ -9,6 +9,8 @@ class DashboardPageController extends GetxController {
   late final ChatController chatController;
   late final HomeController homeController;
 
+  RxInt newMessage = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -31,6 +33,7 @@ class DashboardPageController extends GetxController {
   }
 
   Future<void> resetState() async {
+    newMessage.value = 0;
     homeController.resetState();
     chatController.resetState();
   }

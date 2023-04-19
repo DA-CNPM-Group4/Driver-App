@@ -8,6 +8,7 @@ import 'package:driver_app/Data/models/realtime_models/firestore_message.dart';
 import 'package:driver_app/Data/services/firestore_database_service.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:driver_app/core/utils/utils.dart';
+import 'package:driver_app/modules/dashboard_page/dashboard_page_controller.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ import '../lifecycle_controller.dart';
 class ChatController extends GetxController {
   final LifeCycleController lifeCycleController =
       Get.find<LifeCycleController>();
+
   final isLoading = false.obs;
 
   late final DriverEntity driverInfo;
@@ -83,7 +85,7 @@ class ChatController extends GetxController {
     chatStreamController =
         FireStoreDatabaseService.instance.getChatStream(tripId: newTripId);
 
-    chatStreamlistener = chatStreamController.listen((event) {
+    chatStreamlistener = chatStreamController.listen((event) async {
       for (var docAdd in event.docChanges) {
         if (docAdd.type == DocumentChangeType.added) {
           final chat = FirestoreMessageModel.fromJson(docAdd.doc.data()!);
@@ -95,6 +97,7 @@ class ChatController extends GetxController {
                   : ChatMessageType.driver,
             ),
           );
+          Get.find<DashboardPageController>().newMessage.value++;
         }
       }
     });

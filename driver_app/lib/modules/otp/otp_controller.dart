@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class OtpController extends GetxController {
   final lifeCycleController = Get.find<LifeCycleController>();
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
 
   TextEditingController otpController = TextEditingController();
@@ -24,14 +24,20 @@ class OtpController extends GetxController {
   var isClicked = true.obs;
 
   Future<void> confirmOTP() async {
-    isLoading.value = true;
-    final isValid = formKey.currentState!.validate();
-    if (!isValid) {
+    final isOTPValid = otpFormKey.currentState!.validate();
+    if (!lifeCycleController.isActiveOTP) {
+      if (!passwordFormKey.currentState!.validate()) {
+        return;
+      }
+    }
+    if (!isOTPValid) {
       return;
     }
-    formKey.currentState!.save();
+    otpFormKey.currentState?.save();
+    passwordFormKey.currentState?.save();
 
     try {
+      isLoading.value = true;
       if (lifeCycleController.isActiveOTP) {
         await DriverAPIService.authApi
             .activeAccountByOTP(lifeCycleController.email, otpController.text);
