@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
@@ -39,11 +40,14 @@ class OtpController extends GetxController {
     try {
       isLoading.value = true;
       if (lifeCycleController.isActiveOTP) {
-        await DriverAPIService.authApi
-            .activeAccountByOTP(lifeCycleController.email, otpController.text);
+        await DriverAPIService.authApi.activeAccountByOTP(
+            lifeCycleController.preLoginedState.email, otpController.text);
       } else {
-        await DriverAPIService.authApi.resetPassword(lifeCycleController.email,
-            passwordController.text, otpController.text);
+        await DriverAPIService.authApi.resetPassword(
+          lifeCycleController.preLoginedState.email,
+          passwordController.text,
+          otpController.text,
+        );
       }
       isLoading.value = false;
       showSnackBar(
@@ -53,7 +57,9 @@ class OtpController extends GetxController {
               : "Reset Password Sucessfully");
 
       lifeCycleController.isActiveOTP
-          ? Get.offAllNamed(Routes.SET_UP_PROFILE)
+          ? BackendEnviroment.checkV2Comunication()
+              ? Get.offAllNamed(Routes.WELCOME) // or vehicle register
+              : Get.offAllNamed(Routes.SET_UP_PROFILE)
           : Get.offAllNamed(Routes.WELCOME);
       return;
     } catch (e) {
@@ -81,9 +87,10 @@ class OtpController extends GetxController {
     isLoading2.value = true;
     if (lifeCycleController.isActiveOTP) {
       DriverAPIService.authApi
-          .requestActiveAccountOTP(lifeCycleController.email);
+          .requestActiveAccountOTP(lifeCycleController.preLoginedState.email);
     } else {
-      DriverAPIService.authApi.requestResetPassword(lifeCycleController.email);
+      DriverAPIService.authApi
+          .requestResetPassword(lifeCycleController.preLoginedState.email);
     }
     isLoading2.value = false;
   }

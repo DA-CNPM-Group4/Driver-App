@@ -38,8 +38,8 @@ class PasswordLoginController extends GetxController {
     isLoading.value = true;
     try {
       var requestBody = LoginDriverRequestBody(
-        email: lifeCycleController.email,
-        phone: lifeCycleController.phone,
+        email: lifeCycleController.preLoginedState.email,
+        phone: lifeCycleController.preLoginedState.phone,
         password: passwordController.text,
       );
       await DriverAPIService.authApi.login(body: requestBody);
@@ -82,7 +82,7 @@ class PasswordLoginController extends GetxController {
   Future<void> handleSendActiveAccountOTP() async {
     lifeCycleController.isActiveOTP = true;
     await DriverAPIService.authApi
-        .requestActiveAccountOTP(lifeCycleController.email);
+        .requestActiveAccountOTP(lifeCycleController.preLoginedState.email);
     Get.toNamed(Routes.OTP);
   }
 }

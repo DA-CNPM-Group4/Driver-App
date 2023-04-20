@@ -1,3 +1,4 @@
+import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +50,14 @@ class RegisterController extends GetxController {
     emailFormKey.currentState!.save();
     isLoading.value = false;
 
-    lifeCycleController.setAuthFieldInfo(
-        phoneNumberController.text, emailController.text);
-    Get.toNamed(Routes.PASSWORD_REGISTER);
+    lifeCycleController.preLoginedState.setField(
+      phone: phoneNumberController.text,
+      email: emailController.text,
+    );
+    if (BackendEnviroment.checkV2Comunication()) {
+      Get.toNamed(Routes.SET_UP_PROFILE);
+    } else {
+      Get.toNamed(Routes.PASSWORD_REGISTER);
+    }
   }
 }

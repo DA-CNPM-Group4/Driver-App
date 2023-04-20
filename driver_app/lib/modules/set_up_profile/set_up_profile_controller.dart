@@ -1,5 +1,6 @@
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
@@ -90,50 +91,37 @@ class SetUpProfileController extends GetxController {
   TextEditingController addressController = TextEditingController();
 
   Future<void> validateAndSave() async {
-    isLoading.value = true;
     final isValid = formKey.currentState!.validate();
     if (!isValid) {
-      isLoading.value = false;
       return;
     }
+    isLoading.value = true;
 
-    // var response = await apiHandlerImp.post({
-    //   "phoneNumber": phoneNumberController.text,
-    //   "email": emailController.text,
-    //   "driverName": nameController.text,
-    //   "gender": defaultGender.value ? "Male" : "Female",
-    //   "driverAddress": addressController.text,
-    //   "citizenId": idController.text,
-    //   "driverLicenseId": driverLicenseController.text
-    // }, "driver/checkDriverInfo");
-
-    // if (!response.data["status"]) {
-    //   print(response.data["data"]);
-    //   isLoading.value = false;
-    //   return false;
-    // }
-
-    var body = CreateDriverRequestBody(
-      Address: addressController.text,
-      AverageRate: 0,
-      NumberOfRate: 0,
-      NumberOfTrip: 0,
-      Email: lifeCycleController.email,
-      Gender: defaultGender.value,
-      IdentityNumber: idController.text,
-      Name: nameController.text,
-      Phone: lifeCycleController.phone,
+    lifeCycleController.preLoginedState.setField(
+      name: nameController.text,
+      identityNumber: idController.text,
+      address: addressController.text,
+      gender: defaultGender.value,
     );
 
+    if (BackendEnviroment.checkV2Comunication()) {
+      Get.toNamed(Routes.PASSWORD_REGISTER);
+    } else {
+      await _handleCreateInfo(
+          lifeCycleController.preLoginedState.toCreateDriverRequestBody());
+    }
+
+    isLoading.value = false;
+    return;
+  }
+
+  Future<void> _handleCreateInfo(CreateDriverRequestBody body) async {
     try {
       await DriverAPIService.createDriverInfo(body: body);
       isLoading.value = false;
       Get.toNamed(Routes.VEHICLE_REGISTRATION);
     } catch (e) {
-      showSnackBar("Oh no", e.toString());
+      showSnackBar("Error", e.toString());
     }
-
-    isLoading.value = false;
-    return;
   }
 }

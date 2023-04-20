@@ -69,8 +69,10 @@ class LoginController extends GetxController {
         : phoneFormKey.currentState!.save();
     isLoading.value = false;
 
-    lifeCycleController.setAuthFieldInfo(
-        phoneNumberController.text, emailController.text);
+    lifeCycleController.preLoginedState.setField(
+      phone: phoneNumberController.text,
+      email: emailController.text,
+    );
     Get.toNamed(Routes.PASSWORD_LOGIN);
   }
 

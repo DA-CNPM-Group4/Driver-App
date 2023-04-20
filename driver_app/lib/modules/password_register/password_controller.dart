@@ -1,5 +1,6 @@
 import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
@@ -32,15 +33,20 @@ class PasswordController extends GetxController {
   }
 
   Future<void> registerDriver() async {
-    var body = RegisterDriverRequestBody(
-        email: lifeCycleController.email,
-        phone: lifeCycleController.phone,
-        password: passwordController.text,
-        name: lifeCycleController.email);
-
     try {
       isLoading.value = true;
-      await DriverAPIService.authApi.register(body);
+
+      if (BackendEnviroment.checkV2Comunication()) {
+        await DriverAPIService.authApi.registerV2(lifeCycleController
+            .preLoginedState
+            .toRegisterRequestBodyV2(passwordController.text));
+      } else {
+        await DriverAPIService.authApi.register(
+          lifeCycleController.preLoginedState
+              .toRegisterRequestBodyV1(passwordController.text),
+        );
+      }
+
       Get.offAllNamed(Routes.WELCOME);
       showSnackBar("Register Sucess", "Please Sign In To Setup Your Profile");
     } catch (e) {

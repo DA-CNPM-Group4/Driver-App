@@ -23,9 +23,9 @@ class ForgotPasswordController extends GetxController {
     isLoading.value = true;
 
     try {
-      lifeCycleController.email = emailController.text;
+      lifeCycleController.preLoginedState.email = emailController.text;
       await DriverAPIService.authApi
-          .requestResetPassword(lifeCycleController.email);
+          .requestResetPassword(lifeCycleController.preLoginedState.email);
       showSnackBar("Success", "Check your email to get reset password code");
       toOTPPage();
     } catch (e) {
@@ -37,7 +37,7 @@ class ForgotPasswordController extends GetxController {
 
   void toOTPPage() {
     lifeCycleController.isActiveOTP = false;
-    lifeCycleController.email = emailController.text;
+    lifeCycleController.preLoginedState.email = emailController.text;
     Get.toNamed(Routes.OTP);
   }
 
