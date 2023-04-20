@@ -2,7 +2,9 @@ import 'package:driver_app/core/constants/enum.dart';
 
 class BackendEnviroment {
   static String host = "https://dacnpmbe11.azurewebsites.net/api";
-  static ComunicationMode mode = ComunicationMode.ClientDoShit;
+  static String graphqlHost = 'https://dacnpmbe11.azurewebsites/graphql';
+
+  static ComunicationMode mode = ComunicationMode.ClientDoLogic;
 
   static bool isPoor = true;
 
@@ -10,8 +12,10 @@ class BackendEnviroment {
     assert(() {
       if (isUseEmulator) {
         host = "http://10.0.2.2:8001/api";
+        graphqlHost = "http://10.0.2.2:8001/graphql";
       } else {
         host = "http://192.168.50.251:8001/api";
+        graphqlHost = "http://192.168.1.8:8001/graphql";
       }
       return true;
     }());
@@ -19,7 +23,7 @@ class BackendEnviroment {
 
   static bool checkV2Comunication() {
     {
-      return mode == ComunicationMode.BackDoShit;
+      return mode == ComunicationMode.BackDoLogic;
     }
   }
 
