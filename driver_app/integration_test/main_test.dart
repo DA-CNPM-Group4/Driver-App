@@ -120,9 +120,9 @@ Future<bool> _waitForCustomerRequest(
   for (int i = 0; i < waitingTime; i++) {
     await tester.pump(const Duration(seconds: 1));
     if (find
-        .byKey(const Key("request_view_cancel_request"))
-        .evaluate()
-        .isNotEmpty &&
+            .byKey(const Key("request_view_cancel_request"))
+            .evaluate()
+            .isNotEmpty &&
         find
             .byKey(const Key("request_view_accept_request"))
             .evaluate()
@@ -205,7 +205,7 @@ Future<void> _testCompletedTripButton({
     find.byKey(const Key('confirm_order_complete_trip')),
     findsOneWidget,
     reason:
-    "Clicked picked_passenger button but can not find complete trip button",
+        "Clicked picked_passenger button but can not find complete trip button",
   );
 
   await tester.tap(find.byKey(const Key('confirm_order_complete_trip')));
@@ -214,7 +214,6 @@ Future<void> _testCompletedTripButton({
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
-
 
   expect(
     find.byKey(const Key('confirm_order_complete_trip')),
@@ -252,20 +251,22 @@ Future<void> sendTripRequest() async {
     final dio = Dio();
     const url = "http://$IPv4Address:8001/api/Trip/TripRequest/SendRequest";
     final data = {
-      "PassengerId":"d2b17392-b52e-4205-cf32-08db3f18272a",
+      "PassengerId": "d2b17392-b52e-4205-cf32-08db3f18272a",
       "StaffId": "00000000-0000-0000-0000-000000000000",
       "RequestStatus": "FindingDriver",
-      "PassengerNote":"Fast!!!",
+      "PassengerNote": "Fast!!!",
       "Distance": 2.0,
-      "Destination":"10 Đinh Tiên Hoàng, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
+      "Destination":
+          "10 Đinh Tiên Hoàng, Quận 1, Thành phố Hồ Chí Minh, Vietnam",
       "LatDesAddr": 10.78573657763354,
       "LongDesAddr": 106.70259905373288,
-      "StartAddress": "227 Đ. Nguyễn Văn Cừ, Quận 5, Thành phố Hồ Chí Minh, Vietnam",
+      "StartAddress":
+          "227 Đ. Nguyễn Văn Cừ, Quận 5, Thành phố Hồ Chí Minh, Vietnam",
       "LatStartAddr": 10.762835,
       "LongStartAddr": 106.6824817,
       "PassengerPhone": "123456111",
-      "Price":45923,
-      "VehicleType":"Motorbike"
+      "Price": 45923,
+      "VehicleType": "Motorbike"
     };
 
     final headers = {
@@ -273,13 +274,15 @@ Future<void> sendTripRequest() async {
     };
 
     dio.options.headers.addAll(headers);
-    dio.post(
+    dio
+        .post(
       url,
       data: data,
-    ).then((value) {
-      print(value.toString());
+    )
+        .then((value) {
+      debugPrint(value.toString());
     });
   } on DioError catch (e) {
-    print("Error sending request: $e");
+    debugPrint("Error sending request: $e");
   }
 }

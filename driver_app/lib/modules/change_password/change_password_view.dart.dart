@@ -31,7 +31,7 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
             },
           ),
           title: Text(
-            "Update Information",
+            "Change Password",
             style: BaseTextStyle.heading2(fontSize: 20),
           ),
           elevation: 1,
@@ -47,6 +47,13 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                   const SizedBox(height: 24),
                   Text(
                     "Please fill required fields below to change password",
+                    style: BaseTextStyle.heading2(fontSize: 20),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    "Please fill your old password",
                     style: BaseTextStyle.heading2(fontSize: 16),
                   ),
                   h_10,
@@ -57,6 +64,12 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                     decoration: const InputDecoration(
                         hintText: 'Enter your old password'),
                   ),
+                  h_10,
+                  Text(
+                    "Please fill your new password",
+                    style: BaseTextStyle.heading2(fontSize: 16),
+                  ),
+                  h_10,
                   TextFormField(
                     controller: controller.newPasswordController,
                     validator: (value) => controller.passwordValidator(value!),

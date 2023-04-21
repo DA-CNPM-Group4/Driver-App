@@ -119,7 +119,7 @@ class SetUpProfileController extends GetxController {
     try {
       await DriverAPIService.createDriverInfo(body: body);
       isLoading.value = false;
-      Get.toNamed(Routes.VEHICLE_REGISTRATION);
+      Get.offNamed(Routes.VEHICLE_REGISTRATION);
     } catch (e) {
       showSnackBar("Error", e.toString());
     }
