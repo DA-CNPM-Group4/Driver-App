@@ -4,7 +4,7 @@ import 'package:driver_app/Data/models/requests/login_response.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:dio/dio.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:driver_app/core/utils/secure_storage.dart';
 
 abstract class APIHandlerInterface {
   Future<Response> get(String endpoint, {Map<String, dynamic>? query});
@@ -26,7 +26,6 @@ abstract class APIHandlerInterface {
 
 class APIHandlerImp implements APIHandlerInterface {
   static late final String host;
-  static late final FlutterSecureStorage _storage;
   static late final Dio client;
 
   static final APIHandlerImp _singleton = APIHandlerImp._internal();
@@ -38,7 +37,6 @@ class APIHandlerImp implements APIHandlerInterface {
 
   APIHandlerImp._internal() {
     host = BackendEnviroment.host;
-    _storage = const FlutterSecureStorage();
     client = Dio();
   }
 
@@ -154,36 +152,36 @@ class APIHandlerImp implements APIHandlerInterface {
 
   @override
   Future<String?> getAccessToken() async {
-    return await _storage.read(key: "accessToken");
+    return await SecureStorage.storage.read(key: "accessToken");
   }
 
   @override
   Future<void> storeAccessToken(String token) async {
-    return await _storage.write(key: "accessToken", value: token);
+    return await SecureStorage.storage.write(key: "accessToken", value: token);
   }
 
   @override
   Future<String?> getRefreshToken() async {
-    return await _storage.read(key: "refreshToken");
+    return await SecureStorage.storage.read(key: "refreshToken");
   }
 
   @override
   Future<void> storeRefreshToken(String token) async {
-    await _storage.write(key: "token", value: token);
+    await SecureStorage.storage.write(key: "token", value: token);
   }
 
   @override
   Future<void> storeIdentity(String id) async {
-    await _storage.write(key: "id", value: id);
+    await SecureStorage.storage.write(key: "id", value: id);
   }
 
   @override
   Future<String?> getIdentity() async {
-    return await _storage.read(key: "id");
+    return SecureStorage.storage.read(key: "id");
   }
 
   @override
   Future<void> deleteToken() async {
-    await _storage.deleteAll();
+    await SecureStorage.storage.deleteAll();
   }
 }

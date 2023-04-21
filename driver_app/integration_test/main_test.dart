@@ -17,7 +17,7 @@ import 'package:dio/dio.dart';
 const String IPv4Address = "192.168.1.5";
 
 void main() async {
-  BackendEnviroment.setTestHost("http://10.0.2.2:8001/api");
+  BackendEnviroment.checkDevelopmentMode(isUseEmulator: true);
 
   WidgetsFlutterBinding.ensureInitialized();
 

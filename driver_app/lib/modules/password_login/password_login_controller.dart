@@ -45,13 +45,15 @@ class PasswordLoginController extends GetxController {
       await DriverAPIService.authApi.login(body: requestBody);
     } on IBussinessException catch (e) {
       if (e is AccountNotActiveException) {
-        showSnackBar("Active Account", "Check your Email To Get OTP");
-        await handleSendActiveAccountOTP();
+        // TODO: UNCOMMENT AFTER BACKEND FIX BUG
+
+        // await handleSendActiveAccountOTP();
       } else {
         showSnackBar("Login Failed", e.toString());
       }
       isLoading.value = false;
-      return;
+      // TODO: UNCOMMENT AFTER BACKEND FIX BUG
+      // return;
     }
     try {
       DriverEntity driverInfo = await DriverAPIService.getDriverInfo();
@@ -81,8 +83,13 @@ class PasswordLoginController extends GetxController {
 
   Future<void> handleSendActiveAccountOTP() async {
     lifeCycleController.isActiveOTP = true;
-    await DriverAPIService.authApi
-        .requestActiveAccountOTP(lifeCycleController.preLoginedState.email);
-    Get.toNamed(Routes.OTP);
+    try {
+      await DriverAPIService.authApi
+          .requestActiveAccountOTP(lifeCycleController.preLoginedState.email);
+      showSnackBar("Active Account", "Check your Email To Get OTP");
+      Get.toNamed(Routes.OTP);
+    } catch (e) {
+      showSnackBar("Error", e.toString());
+    }
   }
 }

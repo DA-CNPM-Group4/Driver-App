@@ -1,4 +1,3 @@
-import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/services/driver_api_service.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
