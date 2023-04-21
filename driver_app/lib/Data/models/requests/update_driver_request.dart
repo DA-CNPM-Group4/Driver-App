@@ -21,6 +21,8 @@ class UpdateDriverRequestBody {
     required this.Address,
     required this.Gender,
     required this.Name,
+    this.Phone,
+    this.Email,
   });
 
   factory UpdateDriverRequestBody.fromJson(Map<String, dynamic> json) =>

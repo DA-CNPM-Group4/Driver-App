@@ -177,7 +177,7 @@ class LoginRegisterState {
 
   RegisterDriverRequestBody toRegisterRequestBodyV1(String password) {
     return RegisterDriverRequestBody(
-        email: email, phone: phone, password: password, name: email);
+        email: email, phone: phone, password: password, name: name);
   }
 
   RegisterDriverRequestBodyV2 toRegisterRequestBodyV2(String password) {
@@ -185,7 +185,7 @@ class LoginRegisterState {
         email: email,
         phone: phone,
         password: password,
-        name: email,
+        name: name,
         address: address,
         gender: gender,
         identityNumber: identityNumber);

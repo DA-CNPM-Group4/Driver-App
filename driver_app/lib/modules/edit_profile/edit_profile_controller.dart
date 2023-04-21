@@ -32,17 +32,19 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> validateAndSave() async {
-    isLoading.value = true;
     final isValid = formKey.currentState!.validate();
     if (!isValid) {
-      isLoading.value = false;
+      return;
     }
+    isLoading.value = true;
 
     var body = UpdateDriverRequestBody(
       Address: addressController.text,
       Gender: gender.value,
       IdentityNumber: identityController.text,
       Name: nameController.text,
+      Email: driver?.email,
+      Phone: driver?.phone,
     );
 
     try {

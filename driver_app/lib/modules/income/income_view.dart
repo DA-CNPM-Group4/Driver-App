@@ -12,7 +12,6 @@ class IncomeView extends GetView<IncomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     const h_20 = SizedBox(
       height: 20,
     );
