@@ -32,8 +32,8 @@ class IncomeController extends GetxController {
     try {
       income.value = await DriverAPIService.tripApi.getInComeRequest(
         requestBody: GetIncomeRequestBody(
-          from: Utils.moneyDateFormatter(from),
-          to: Utils.moneyDateFormatter(to),
+          from: Utils.dateTimeToDate(from),
+          to: Utils.dateTimeToDate(to),
         ),
       );
     } catch (e) {

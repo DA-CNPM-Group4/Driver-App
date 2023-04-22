@@ -2,6 +2,7 @@ import 'package:driver_app/modules/chat/chat_controller.dart';
 import 'package:driver_app/modules/home/controllers/home_controller.dart';
 import 'package:driver_app/modules/income/income_controller.dart';
 import 'package:driver_app/routes/app_routes.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DashboardPageController extends GetxController {
@@ -17,6 +18,10 @@ class DashboardPageController extends GetxController {
     incomeController = Get.find<IncomeController>();
     homeController = Get.find<HomeController>();
     chatController = Get.find<ChatController>();
+
+    Get.routing.obs.listen((route) {
+      debugPrint(route.current);
+    });
   }
 
   Future<void> openChatScreen() async {

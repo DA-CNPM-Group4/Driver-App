@@ -142,8 +142,8 @@ class TripApiService {
       var driverId = await APIHandlerImp.instance.getIdentity();
       var body = {
         'driverId': driverId,
-        "from": Utils.moneyDateFormatter(from),
-        "to": Utils.moneyDateFormatter(to),
+        "from": Utils.dateTimeToDate(from),
+        "to": Utils.dateTimeToDate(to),
       };
 
       var response = await APIHandlerImp.instance

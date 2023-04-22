@@ -17,6 +17,7 @@ class TripDetailController extends GetxController {
   late Rxn<DriverEntity> driver;
   late DriverEntity _driverEntity;
 
+  Map<String, dynamic>? passengerInfo;
   late TripResponse trip;
   late TripFeedbackResponse feedback;
   List<ChatMessage>? chatHistory;
@@ -34,28 +35,32 @@ class TripDetailController extends GetxController {
 
     driver = await lifeCycleController.getRXDriver;
     _driverEntity = await lifeCycleController.getDriver;
+
+    try {
+      passengerInfo = await GraphQLService.infoGraphQLService
+          .getPassengerInfo(trip.passengerId);
+
+      debugPrint(passengerInfo.toString());
+    } catch (e) {
+      showSnackBar("Failed to get passenger info", e.toString());
+    }
+
     try {
       feedback = await DriverAPIService.tripApi.getTripFeedback(trip.tripId);
       isRate.value = true;
     } catch (e) {
       isRate.value = false;
     }
+
     try {
       var chatLog =
           await DriverAPIService.chatAPI.getChatLog(tripId: trip.tripId);
       chatHistory = chatLog.toChatMessage(_driverEntity.accountId);
+
+      debugPrint(chatHistory?.length.toString() ?? "0");
       isChatLoaded.value = true;
     } catch (e) {
       isChatLoaded.value = false;
-    }
-
-    try {
-      var passengerInfo = await GraphQLService.infoGraphQLService
-          .getPassengerInfo(trip.passengerId);
-
-      debugPrint(passengerInfo.toString());
-    } catch (e) {
-      showSnackBar("Error", e.toString());
     }
     isLoading.value = false;
   }

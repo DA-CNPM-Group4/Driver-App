@@ -73,28 +73,28 @@ class TripDetailView extends GetView<TripDetailController> {
                     ],
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Chats History",
-                        style: BaseTextStyle.heading2(fontSize: 20)),
-                    const SizedBox(height: 12),
-                    Obx(
-                      () => controller.isChatLoaded.value
-                          ? ListView.builder(
-                              itemCount: controller.chatHistory?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                var message = controller.chatHistory![index];
-                                return ChatMessageWidget(
-                                  text: message.text,
-                                  chatMessageType: message.chatMessageType,
-                                );
-                              },
-                            )
-                          : Container(),
-                    ),
-                  ],
-                ),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Text("Chats History",
+                //         style: BaseTextStyle.heading2(fontSize: 20)),
+                //     const SizedBox(height: 12),
+                //     Obx(
+                //       () => controller.isChatLoaded.value
+                //           ? ListView.builder(
+                //               itemCount: controller.chatHistory?.length ?? 0,
+                //               itemBuilder: (context, index) {
+                //                 var message = controller.chatHistory![index];
+                //                 return ChatMessageWidget(
+                //                   text: message.text,
+                //                   chatMessageType: message.chatMessageType,
+                //                 );
+                //               },
+                //             )
+                //           : Container(),
+                //     ),
+                //   ],
+                // ),
               ]),
         ),
       ),
@@ -125,8 +125,10 @@ class TripDetailView extends GetView<TripDetailController> {
                           fit: BoxFit.cover),
                     ),
                   ),
-                  Text(controller.driver.value?.name ?? "",
-                      style: BaseTextStyle.heading2(fontSize: 12)),
+                  Text(
+                    controller.passengerInfo?['name'] ?? "Undefined",
+                    style: BaseTextStyle.heading2(fontSize: 12),
+                  ),
                 ],
               ),
               const Spacer(),
@@ -136,12 +138,12 @@ class TripDetailView extends GetView<TripDetailController> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "Phone", //Replace with vehicle name
+                    "Phone",
                     style: BaseTextStyle.heading3(
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    controller.driver.value?.phone ?? "",
+                    controller.passengerInfo?['phone'] ?? "Undefined",
                     style: BaseTextStyle.heading2(fontSize: 15),
                   ),
                 ],

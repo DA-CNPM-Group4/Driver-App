@@ -26,7 +26,11 @@ class GeneralAPIService {
               const AccountNotActiveException("This Account is not actived"));
         }
       } else {
-        return Future.error(IBussinessException(response.data['message']));
+        return Future.error(IBussinessException(
+          response.data['message'],
+          debugMessage: response.data['message'],
+          place: "Login",
+        ));
       }
     } catch (e) {
       return Future.error(

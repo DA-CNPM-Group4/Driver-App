@@ -19,7 +19,7 @@ class DashboardPageView extends GetView<DashboardPageController> {
           children: const [
             HomeView(),
             IncomeView(),
-            ChatView(),
+            // ChatView(),
           ],
         ),
       ),

@@ -188,8 +188,9 @@ class HomeController extends GetxController {
   Future<bool> handleAcceptRequest(
       RealtimeTripRequest request, String requestId) async {
     DateTime requestDate = DateTime.parse(request.CreatedTime);
-    var waitingTime = DateTime.now().difference(requestDate).inSeconds;
-    if (waitingTime > 30 + 40) {
+
+    var waitingTime = DateTime.now().difference(requestDate).inSeconds - 60;
+    if (waitingTime > 60 * 5) {
       try {
         await DriverAPIService.tripApi.cancelRequest(requestId: requestId);
       } catch (e) {
