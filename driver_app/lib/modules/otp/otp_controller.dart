@@ -39,17 +39,23 @@ class OtpController extends GetxController {
 
     try {
       isLoading.value = true;
-      if (lifeCycleController.isActiveOTP) {
-        await DriverAPIService.authApi.activeAccountByOTP(
-            lifeCycleController.preLoginedState.email, otpController.text);
-      } else {
-        await DriverAPIService.authApi.resetPassword(
-          lifeCycleController.preLoginedState.email,
-          passwordController.text,
-          otpController.text,
-        );
+      try {
+        if (lifeCycleController.isActiveOTP) {
+          await DriverAPIService.authApi.activeAccountByOTP(
+              lifeCycleController.preLoginedState.email, otpController.text);
+        } else {
+          await DriverAPIService.authApi.resetPassword(
+            lifeCycleController.preLoginedState.email,
+            passwordController.text,
+            otpController.text,
+          );
+        }
+      } catch (e) {
+        isLoading.value = false;
+        showSnackBar("Error", e.toString());
+        return;
       }
-      isLoading.value = false;
+
       showSnackBar(
           "Success",
           lifeCycleController.isActiveOTP

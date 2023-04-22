@@ -120,6 +120,7 @@ class LifeCycleController extends SuperController {
 
   void _resetState({bool isCallAPI = false}) {
     preLoginedState.reset();
+    isloginByGoogle = false;
     _driver = null;
     _vehicle = null;
     _rxDriver.value = null;

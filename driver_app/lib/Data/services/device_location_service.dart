@@ -1,4 +1,5 @@
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -66,10 +67,14 @@ class DeviceLocationService {
 
   Future<String> getAddressFromLatLang(
       {required double latitude, required double longitude}) async {
-    List<Placemark> placemark =
-        await placemarkFromCoordinates(latitude, longitude);
-    Placemark place = placemark[0];
-    return '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}';
+    try {
+      List<Placemark> placemark =
+          await placemarkFromCoordinates(latitude, longitude);
+      Placemark place = placemark[0];
+      return '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}';
+    } on PlatformException catch (_) {
+      return "???";
+    }
   }
 
   Future<bool> requestPermission() async {

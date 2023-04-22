@@ -23,7 +23,6 @@ class LoginController extends GetxController {
 
   Future<void> validateAndSave() async {
     isLoading.value = true;
-    lifeCycleController.isloginByGoogle = false;
 
     //.. if using phone and email
     if (!phoneFormKey.currentState!.validate() &&
@@ -55,6 +54,7 @@ class LoginController extends GetxController {
       phone: phoneNumberController.text,
       email: emailController.text,
     );
+    lifeCycleController.isloginByGoogle = false;
     Get.toNamed(Routes.PASSWORD_LOGIN);
   }
 
@@ -67,7 +67,6 @@ class LoginController extends GetxController {
 
     // handle google login
     try {
-      lifeCycleController.isloginByGoogle = true;
       await DriverAPIService.authApi.loginByGoogle();
     } on CancelActionException catch (_) {
       isLoading.value = false;
@@ -77,6 +76,8 @@ class LoginController extends GetxController {
       isLoading.value = false;
       return;
     }
+
+    lifeCycleController.isloginByGoogle = true;
 
     try {
       DriverEntity driverInfo = await DriverAPIService.getDriverInfo();
