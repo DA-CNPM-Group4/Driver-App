@@ -1,4 +1,3 @@
-import 'package:driver_app/modules/chat/chat_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

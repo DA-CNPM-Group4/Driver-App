@@ -128,7 +128,7 @@ class IncomeView extends GetView<IncomeController> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                // method(type: false, textTheme: textTheme);
+                                // method(type: false, textTheme: TextTheme());
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -146,20 +146,23 @@ class IncomeView extends GetView<IncomeController> {
                                 ],
                               ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.schedule_rounded,
-                                  color: Colors.green,
-                                ),
-                                h_10,
-                                Text(
-                                  "Trips History",
-                                  style: BaseTextStyle.heading1(
-                                      fontSize: 14, color: Colors.green),
-                                ),
-                              ],
+                            GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.schedule_rounded,
+                                    color: Colors.green,
+                                  ),
+                                  h_10,
+                                  Text(
+                                    "Trips History",
+                                    style: BaseTextStyle.heading1(
+                                        fontSize: 14, color: Colors.green),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         )

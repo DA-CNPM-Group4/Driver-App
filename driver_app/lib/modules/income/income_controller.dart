@@ -11,8 +11,9 @@ class IncomeController extends GetxController {
   var isLoading = false.obs;
   final lifeCycleController = Get.find<LifeCycleController>();
 
-  DateTime from = DateTime.now();
-  DateTime to = DateTime.now();
+  final from = DateTime.now().obs;
+  final to = DateTime.now().obs;
+
   RxInt income = 0.obs;
   late DriverEntity driverEntity;
 
@@ -24,22 +25,57 @@ class IncomeController extends GetxController {
     isLoading.value = false;
   }
 
+  bool disableDate(DateTime day) {
+    if ((day.isAfter(DateTime.now().subtract(const Duration(days: 365))) &&
+        day.isBefore(DateTime.now().add(const Duration(days: 0))))) {
+      return true;
+    }
+    return false;
+  }
+
   Future<void> getRevenue() async {
-    from = DateTime.now();
-    to = DateTime.now();
+    await chooseDate(from);
+    to.value = DateTime.now();
 
     isLoading.value = true;
     try {
-      income.value = await DriverAPIService.tripApi.getInComeRequest(
-        requestBody: GetIncomeRequestBody(
-          from: Utils.dateTimeToDate(from),
-          to: Utils.dateTimeToDate(to),
-        ),
+      var result = await DriverAPIService.tripApi.getDriverCompletedTrips(
+        from: from.value,
+        to: to.value,
       );
+      income.value = result.totalIncome;
+      // income.value = await DriverAPIService.tripApi.getInComeRequest(
+      //   requestBody: GetIncomeRequestBody(
+      //     from: Utils.dateTimeToDate(from.value),
+      //     to: Utils.dateTimeToDate(to.value),
+      //   ),
+      // );
     } catch (e) {
       debugPrint(e.toString());
       showSnackBar("Error", e.toString());
     }
     isLoading.value = false;
+  }
+
+  chooseDate(Rx<DateTime> time) async {
+    DateTime? pickedDate = await showDatePicker(
+        context: Get.context!,
+        initialDate: time.value,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2024),
+        //initialEntryMode: DatePickerEntryMode.input,
+        // initialDatePickerMode: DatePickerMode.year,
+        helpText: 'Select DOB',
+        cancelText: 'Close',
+        confirmText: 'Confirm',
+        errorFormatText: 'Enter valid date',
+        errorInvalidText: 'Enter valid date range',
+        fieldLabelText: 'DOB',
+        fieldHintText: 'Month/Date/Year',
+        selectableDayPredicate: disableDate);
+    if (pickedDate != null && pickedDate != time.value) {
+      time.value = pickedDate;
+      debugPrint(Utils.dateTimeToDate(time.value));
+    }
   }
 }

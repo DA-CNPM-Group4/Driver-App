@@ -58,7 +58,8 @@ class SetUpProfileController extends GetxController {
       gender: defaultGender.value,
     );
 
-    if (BackendEnviroment.checkV2Comunication()) {
+    if (BackendEnviroment.checkV2Comunication() &&
+        !lifeCycleController.isloginByGoogle) {
       Get.toNamed(Routes.PASSWORD_REGISTER);
     } else {
       await _handleCreateInfo(

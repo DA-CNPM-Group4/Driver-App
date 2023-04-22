@@ -7,6 +7,7 @@ import 'package:driver_app/Data/providers/api_provider.dart';
 import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:driver_app/core/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class TripApiService {
   Future<String> acceptTripRequest(AcceptTripRequestBody body) async {
@@ -146,6 +147,7 @@ class TripApiService {
         "to": Utils.dateTimeToDate(to),
       };
 
+      debugPrint(body.toString());
       var response = await APIHandlerImp.instance
           .get('/Trip/Trip/GetCompletedTrips', body: body);
       if (response.data["status"]) {
