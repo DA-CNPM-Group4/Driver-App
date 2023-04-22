@@ -31,6 +31,12 @@ class TripNotFoundException extends IBussinessException {
       : super(message, debugMessage: "Trip $tripId not found", place: place);
 }
 
+class CancelActionException extends IBussinessException {
+  const CancelActionException(
+      {String? message = "Cancel action", String? debugMessage, String? place})
+      : super(message, debugMessage: debugMessage, place: place);
+}
+
 class PassengerNotFoundException extends IBussinessException {
   const PassengerNotFoundException(
       {String? message = "Passenger Not Found",

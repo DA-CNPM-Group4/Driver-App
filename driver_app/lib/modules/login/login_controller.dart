@@ -69,6 +69,9 @@ class LoginController extends GetxController {
     try {
       lifeCycleController.isloginByGoogle = true;
       await DriverAPIService.authApi.loginByGoogle();
+    } on CancelActionException catch (_) {
+      isLoading.value = false;
+      return;
     } catch (e) {
       showSnackBar("Sign in", e.toString());
       isLoading.value = false;

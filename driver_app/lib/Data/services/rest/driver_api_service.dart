@@ -12,6 +12,7 @@ import 'package:driver_app/Data/providers/api_provider.dart';
 
 class DriverAPIService {
   static GeneralAPIService authApi = GeneralAPIService();
+
   static TripApiService tripApi = TripApiService();
   static ChatAPIService chatAPI = ChatAPIService();
 

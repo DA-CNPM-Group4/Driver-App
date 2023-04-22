@@ -8,6 +8,7 @@ import 'package:driver_app/core/exceptions/bussiness_exception.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GeneralAPIService {
@@ -35,9 +36,11 @@ class GeneralAPIService {
 
   Future<void> loginByGoogle() async {
     try {
+      await GoogleSignIn().signOut();
+    } catch (_) {}
+    try {
       // begin sign in process
 
-      await GoogleSignIn().signOut();
       final GoogleSignInAccount? gUser = await GoogleSignIn(
         scopes: [
           'https://www.googleapis.com/auth/userinfo.email',
@@ -45,8 +48,12 @@ class GeneralAPIService {
         ],
       ).signIn();
 
+      if (gUser == null) {
+        return Future.error(
+            const CancelActionException(message: "Cancel Google Signin"));
+      }
       // obtain auth detail from request
-      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
       // create a new credential for user
       final credential = GoogleAuthProvider.credential(
@@ -64,6 +71,7 @@ class GeneralAPIService {
       await _storeAllIdentity(responseBody);
 
       // await FirebaseAuth.instance.signInWithCredential(credential);
+    } on PlatformException catch (_) {
     } catch (e) {
       return Future.error(UnexpectedException(
           context: "Google Login", debugMessage: e.toString()));
