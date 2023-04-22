@@ -198,4 +198,64 @@ class TripApiService {
           context: "Trip-GetIncome", debugMessage: e.toString()));
     }
   }
+
+  Future<List<TripResponse>> getDriverTripsPaging(
+      {required int pageSize, required int pageNum}) async {
+    try {
+      var driverId = await APIHandlerImp.instance.getIdentity();
+      var requestBody = {
+        "driverId": driverId,
+        "pageSize": pageSize,
+        "pageNum": pageNum,
+      };
+      var response = await APIHandlerImp.instance.get(
+        '/Trip/Trip/GetDriverTripPageing',
+        body: requestBody,
+      );
+      if (response.data["status"]) {
+        var listTripJson = response.data['data'] as List;
+        return listTripJson
+            .map((tripJson) => TripResponse.fromJson(tripJson))
+            .toList();
+      } else {
+        return Future.error(IBussinessException(
+          response.data['message'],
+          place: "getDriverTripsPaging",
+          debugMessage: response.data['message'],
+        ));
+      }
+    } catch (e) {
+      return Future.error(
+        UnexpectedException(
+            context: "getDriverTripsPaging", debugMessage: e.toString()),
+      );
+    }
+  }
+
+  Future<int> getDriverTripsTotalPage({required int pageSize}) async {
+    try {
+      var driverId = await APIHandlerImp.instance.getIdentity();
+      var requestBody = {
+        "driverId": driverId,
+        "pageSize": pageSize,
+      };
+      var response = await APIHandlerImp.instance.get(
+        '/Trip/Trip/GetDriverTripTotalPages',
+        body: requestBody,
+      );
+
+      if (response.data["status"]) {
+        return response.data['data'];
+      } else {
+        return Future.error(IBussinessException(
+          response.data['message'],
+          place: "getDriverTripsTotalPage",
+          debugMessage: response.data['message'],
+        ));
+      }
+    } catch (e) {
+      return Future.error(UnexpectedException(
+          context: "getDriverTripsTotalPage", debugMessage: e.toString()));
+    }
+  }
 }
