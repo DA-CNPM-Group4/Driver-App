@@ -85,6 +85,7 @@ class LoginController extends GetxController {
       if (driverInfo.haveVehicleRegistered != true) {
         showSnackBar(
             "Register Vehicle", "You Need Setup Vehicle Before Driving");
+
         Get.toNamed(Routes.VEHICLE_REGISTRATION);
         return;
       }
@@ -94,15 +95,14 @@ class LoginController extends GetxController {
 
       Get.offNamedUntil(
           Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
-      // Get.offNamedUntil(Routes.CHAT, ModalRoute.withName(Routes.CHAT));
     } on IBussinessException catch (_) {
-      // handle get driver info (delete after backend fix)
-
       showSnackBar(
           "Setup Driver Info", "You Need Setup Driver Info Before Driving");
+
       Get.toNamed(Routes.SET_UP_PROFILE);
     } catch (e) {
       showSnackBar("Error", e.toString());
+
       await lifeCycleController.logout();
     }
     isLoading.value = false;

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:driver_app/Data/models/realtime_models/realtime_driver.dart';
 import 'package:driver_app/Data/models/realtime_models/realtime_location.dart';
 import 'package:driver_app/Data/services/device_location_service.dart';
-import 'package:driver_app/Data/services/firebase_realtime_service.dart';
+import 'package:driver_app/Data/services/firebase/firebase_realtime_service.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 

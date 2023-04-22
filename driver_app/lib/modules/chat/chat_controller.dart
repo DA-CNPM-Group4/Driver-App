@@ -5,7 +5,7 @@ import 'package:driver_app/Data/models/chat_message/chat_message.dart';
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/realtime_models/firestore_chat.dart';
 import 'package:driver_app/Data/models/realtime_models/firestore_message.dart';
-import 'package:driver_app/Data/services/firestore_database_service.dart';
+import 'package:driver_app/Data/services/firebase/firestore_database_service.dart';
 import 'package:driver_app/core/exceptions/unexpected_exception.dart';
 import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/modules/dashboard_page/dashboard_page_controller.dart';

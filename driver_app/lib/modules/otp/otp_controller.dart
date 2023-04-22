@@ -58,7 +58,8 @@ class OtpController extends GetxController {
 
       lifeCycleController.isActiveOTP
           ? BackendEnviroment.checkV2Comunication()
-              ? Get.offAllNamed(Routes.WELCOME) // or vehicle register
+              ? Get.offAllNamed(
+                  Routes.VEHICLE_REGISTRATION) // or vehicle register
               : Get.offAllNamed(Routes.SET_UP_PROFILE)
           : Get.offAllNamed(Routes.WELCOME);
       return;
