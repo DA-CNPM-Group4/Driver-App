@@ -120,6 +120,10 @@ class HomeController extends GetxController {
                       latitude: currentDestinationPostion['latitude'],
                       longitude: currentDestinationPostion['longitude']));
 
+              Get.until(
+                  (route) => route.settings.name == Routes.DASHBOARD_PAGE);
+              Get.find<DashboardPageController>().tabIndex(0);
+
               insertOverlay(
                 context: context,
                 trip: request,

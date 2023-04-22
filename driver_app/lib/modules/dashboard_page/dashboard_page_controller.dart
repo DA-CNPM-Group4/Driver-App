@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:driver_app/modules/chat/chat_controller.dart';
 import 'package:driver_app/modules/home/controllers/home_controller.dart';
 import 'package:driver_app/modules/income/income_controller.dart';
@@ -9,7 +11,7 @@ class DashboardPageController extends GetxController {
   late final IncomeController incomeController;
   late final ChatController chatController;
   late final HomeController homeController;
-
+  StreamSubscription<Routing>? routingAgent;
   RxInt newMessage = 0.obs;
 
   @override
@@ -18,10 +20,6 @@ class DashboardPageController extends GetxController {
     incomeController = Get.find<IncomeController>();
     homeController = Get.find<HomeController>();
     chatController = Get.find<ChatController>();
-
-    Get.routing.obs.listen((route) {
-      debugPrint(route.current);
-    });
   }
 
   Future<void> openChatScreen() async {
