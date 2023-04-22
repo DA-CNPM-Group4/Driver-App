@@ -1,7 +1,6 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
-import 'package:driver_app/Data/models/requests/get_income_request.dart';
 import 'package:driver_app/Data/services/rest/driver_api_service.dart';
-import 'package:driver_app/core/utils/utils.dart';
+import 'package:driver_app/modules/income/widgets/pick_date_bottom_sheet.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,8 @@ class IncomeController extends GetxController {
   final to = DateTime.now().obs;
 
   RxInt income = 0.obs;
+  RxInt tripOrderNumber = 0.obs;
+
   late DriverEntity driverEntity;
 
   @override
@@ -25,40 +26,35 @@ class IncomeController extends GetxController {
     isLoading.value = false;
   }
 
-  bool disableDate(DateTime day) {
-    if ((day.isAfter(DateTime.now().subtract(const Duration(days: 365))) &&
-        day.isBefore(DateTime.now().add(const Duration(days: 0))))) {
-      return true;
+  Future<void> calculateRevenue({required TextTheme textTheme}) async {
+    bool? isCaculate = await Get.bottomSheet(
+        isDismissible: false,
+        isScrollControlled: true,
+        PickDateBottomSheet(
+          controller: this,
+        ));
+
+    if (isCaculate != null && isCaculate != false) {
+      isLoading.value = true;
+      try {
+        var result = await DriverAPIService.tripApi.getDriverCompletedTrips(
+          from: from.value,
+          to: to.value,
+        );
+        income.value = result.totalIncome;
+        tripOrderNumber.value = result.total;
+      } catch (e) {
+        debugPrint(e.toString());
+        showSnackBar("Error", e.toString());
+      }
+      isLoading.value = false;
     }
-    return false;
   }
 
-  Future<void> getRevenue() async {
-    await chooseDate(from);
-    to.value = DateTime.now();
+  Future<void> getRevenue() async {}
 
-    isLoading.value = true;
-    try {
-      var result = await DriverAPIService.tripApi.getDriverCompletedTrips(
-        from: from.value,
-        to: to.value,
-      );
-      income.value = result.totalIncome;
-      print(result.trips.length);
-      // income.value = await DriverAPIService.tripApi.getInComeRequest(
-      //   requestBody: GetIncomeRequestBody(
-      //     from: Utils.dateTimeToDate(from.value),
-      //     to: Utils.dateTimeToDate(to.value),
-      //   ),
-      // );
-    } catch (e) {
-      debugPrint(e.toString());
-      showSnackBar("Error", e.toString());
-    }
-    isLoading.value = false;
-  }
-
-  chooseDate(Rx<DateTime> time) async {
+  Future<void> chooseDate(Rx<DateTime> time, String title,
+      {bool Function(DateTime)? predicate}) async {
     DateTime? pickedDate = await showDatePicker(
         context: Get.context!,
         initialDate: time.value,
@@ -66,17 +62,44 @@ class IncomeController extends GetxController {
         lastDate: DateTime(2024),
         //initialEntryMode: DatePickerEntryMode.input,
         // initialDatePickerMode: DatePickerMode.year,
-        helpText: 'Select DOB',
+        helpText: title,
         cancelText: 'Close',
         confirmText: 'Confirm',
         errorFormatText: 'Enter valid date',
         errorInvalidText: 'Enter valid date range',
         fieldLabelText: 'DOB',
         fieldHintText: 'Month/Date/Year',
-        selectableDayPredicate: disableDate);
-    if (pickedDate != null && pickedDate != time.value) {
-      time.value = pickedDate;
-      debugPrint(Utils.dateTimeToDate(time.value));
+        selectableDayPredicate: predicate ?? disableDate);
+    if (pickedDate == null) {
+      return;
     }
+    if (pickedDate != time.value) {
+      time.value = pickedDate;
+      return;
+    }
+  }
+
+  bool disableDateFrom(DateTime day) {
+    if ((day.isAfter(DateTime.now().subtract(const Duration(days: 600))) &&
+        day.isBefore(to.value.add(const Duration(days: 1))))) {
+      return true;
+    }
+    return false;
+  }
+
+  bool disableDateTo(DateTime day) {
+    if ((day.isAfter(from.value.subtract(const Duration(days: 1))) &&
+        day.isBefore(DateTime.now().add(const Duration(days: 0))))) {
+      return true;
+    }
+    return false;
+  }
+
+  bool disableDate(DateTime day) {
+    if ((day.isAfter(DateTime.now().subtract(const Duration(days: 365))) &&
+        day.isBefore(DateTime.now().add(const Duration(days: 0))))) {
+      return true;
+    }
+    return false;
   }
 }

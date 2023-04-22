@@ -19,161 +19,165 @@ class IncomeView extends GetView<IncomeController> {
       height: 10,
     );
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Income',
-            style: BaseTextStyle.heading2(fontSize: 22),
-          ),
+      appBar: AppBar(
+        title: Text(
+          'Income',
+          style: BaseTextStyle.heading2(fontSize: 22),
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Summary of revenue",
-                style: BaseTextStyle.heading2(fontSize: 18),
-              ),
-              h_20,
-              //first card
-              SizedBox(
-                width: Get.width,
-                child: Card(
-                  color: Colors.grey[100],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Summary of revenue",
+              style: BaseTextStyle.heading2(fontSize: 18),
+            ),
+            h_20,
+            //first card
+            SizedBox(
+              width: Get.width,
+              child: Card(
+                color: Colors.grey[100],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Revenue",
+                        style: BaseTextStyle.heading2(fontSize: 16),
+                      ),
+                      h_20,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(
+                                () => !controller.isLoading.value
+                                    ? Text("${controller.income.value} đ",
+                                        style: BaseTextStyle.heading2(
+                                            fontSize: 16))
+                                    : const CircularProgressIndicator(),
+                              ),
+                              h_20,
+                              Obx(() => Text(
+                                    "${controller.tripOrderNumber.value} complete orders",
+                                    style: BaseTextStyle.heading2(
+                                        fontSize: 16, color: Colors.grey),
+                                  ))
+                            ],
+                          ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  shape: const StadiumBorder()),
+                              onPressed: () async {
+                                await controller.getRevenue();
+                              },
+                              child: const Text("Refresh"))
+                        ],
+                      )
+                    ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Today revenue",
-                          style: BaseTextStyle.heading2(fontSize: 16),
-                        ),
-                        h_20,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ),
+            ),
+            h_20,
+            //second card
+            SizedBox(
+              width: Get.width,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                elevation: 3,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Balance",
+                            style: BaseTextStyle.heading2(fontSize: 16),
+                          ),
+                          Obx(() => controller.isLoading.value
+                              ? const CircularProgressIndicator()
+                              : Text(
+                                  "50000",
+                                  // controller.wallet!.balance!.toString(),
+                                  style: BaseTextStyle.heading4(fontSize: 16),
+                                )),
+                        ],
+                      ),
+                      h_20,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // method(type: false, textTheme: TextTheme());
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Obx(
-                                  () => !controller.isLoading.value
-                                      ? Text("${controller.income.value} đ",
-                                          style: BaseTextStyle.heading2(
-                                              fontSize: 16))
-                                      : const CircularProgressIndicator(),
+                                const Icon(
+                                  Icons.arrow_circle_down_sharp,
+                                  color: Colors.green,
                                 ),
-                                h_20,
+                                h_10,
                                 Text(
-                                  "0 complete order today",
-                                  style: BaseTextStyle.heading2(
-                                      fontSize: 16, color: Colors.grey),
-                                )
+                                  "Withdraw to bank",
+                                  style: BaseTextStyle.heading1(
+                                      fontSize: 14, color: Colors.green),
+                                ),
                               ],
                             ),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    shape: const StadiumBorder()),
-                                onPressed: () async {
-                                  await controller.getRevenue();
-                                },
-                                child: const Text("Refresh"))
-                          ],
-                        )
-                      ],
-                    ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await controller.calculateRevenue(
+                                  textTheme: Theme.of(context).textTheme);
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.schedule_rounded,
+                                  color: Colors.green,
+                                ),
+                                h_10,
+                                Text(
+                                  "Trips History",
+                                  style: BaseTextStyle.heading1(
+                                      fontSize: 14, color: Colors.green),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),
-              h_20,
-              //second card
-              SizedBox(
-                width: Get.width,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Balance",
-                              style: BaseTextStyle.heading2(fontSize: 16),
-                            ),
-                            Obx(() => controller.isLoading.value
-                                ? const CircularProgressIndicator()
-                                : Text(
-                                    "50000",
-                                    // controller.wallet!.balance!.toString(),
-                                    style: BaseTextStyle.heading4(fontSize: 16),
-                                  )),
-                          ],
-                        ),
-                        h_20,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                // method(type: false, textTheme: TextTheme());
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.arrow_circle_down_sharp,
-                                    color: Colors.green,
-                                  ),
-                                  h_10,
-                                  Text(
-                                    "Withdraw to bank",
-                                    style: BaseTextStyle.heading1(
-                                        fontSize: 14, color: Colors.green),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.schedule_rounded,
-                                    color: Colors.green,
-                                  ),
-                                  h_10,
-                                  Text(
-                                    "Trips History",
-                                    style: BaseTextStyle.heading1(
-                                        fontSize: 14, color: Colors.green),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ));
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void method({required bool type, required TextTheme textTheme}) async {
