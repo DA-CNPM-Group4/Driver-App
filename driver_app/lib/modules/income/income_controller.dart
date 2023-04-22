@@ -44,6 +44,7 @@ class IncomeController extends GetxController {
         to: to.value,
       );
       income.value = result.totalIncome;
+      print(result.trips.length);
       // income.value = await DriverAPIService.tripApi.getInComeRequest(
       //   requestBody: GetIncomeRequestBody(
       //     from: Utils.dateTimeToDate(from.value),

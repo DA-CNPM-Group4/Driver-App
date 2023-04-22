@@ -42,7 +42,7 @@ class TripDetailController extends GetxController {
 
       debugPrint(passengerInfo.toString());
     } catch (e) {
-      showSnackBar("Failed to get passenger info", e.toString());
+      showSnackBar("Failed", "Failed to get passenger info");
     }
 
     try {
@@ -56,10 +56,12 @@ class TripDetailController extends GetxController {
       var chatLog =
           await DriverAPIService.chatAPI.getChatLog(tripId: trip.tripId);
       chatHistory = chatLog.toChatMessage(_driverEntity.accountId);
-
+      debugPrint("Length");
       debugPrint(chatHistory?.length.toString() ?? "0");
       isChatLoaded.value = true;
     } catch (e) {
+      debugPrint(e.toString());
+
       isChatLoaded.value = false;
     }
     isLoading.value = false;

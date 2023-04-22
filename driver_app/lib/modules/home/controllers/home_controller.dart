@@ -120,9 +120,7 @@ class HomeController extends GetxController {
                       latitude: currentDestinationPostion['latitude'],
                       longitude: currentDestinationPostion['longitude']));
 
-              Get.until(
-                  (route) => route.settings.name == Routes.DASHBOARD_PAGE);
-              Get.find<DashboardPageController>().tabIndex(0);
+              routingHomeTab();
 
               insertOverlay(
                 context: context,
@@ -138,6 +136,13 @@ class HomeController extends GetxController {
       showSnackBar("Error", e.toString());
     }
     isLoading.value = false;
+  }
+
+  void routingHomeTab() {
+    if (Get.routing.current == Routes.DASHBOARD_PAGE) {
+      Get.until((route) => route.settings.name == Routes.DASHBOARD_PAGE);
+    }
+    Get.find<DashboardPageController>().tabIndex(0);
   }
 
   void insertOverlay({
@@ -533,7 +538,9 @@ class HomeController extends GetxController {
   }
 
   void removeOverlay() {
-    overlayEntry?.remove();
-    overlayEntry?.dispose();
+    if (overlayEntry != null) {
+      overlayEntry?.remove();
+      overlayEntry?.dispose();
+    }
   }
 }
