@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
@@ -89,20 +90,22 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                       hint: "e.g. Adit Brahmana",
                       textTheme: textTheme,
                       controller: controller.nameController,
-                      validator: (value) => controller.nameValidator(value!)),
+                      validator: (value) =>
+                          FieldValidator.nameValidator(value!)),
                   h_20,
                   titleAndText(
                       title: "Current Address",
                       hint: "Enter your current address",
                       controller: controller.addressController,
-                      validator: (value) => controller.addressValidator(value!),
+                      validator: (value) =>
+                          FieldValidator.addressValidator(value!),
                       textTheme: textTheme),
                   h_20,
                   titleAndText(
                       title: "Citizen ID",
                       hint: "Enter your citizen ID",
                       controller: controller.idController,
-                      validator: (value) => controller.idValidator(value!),
+                      validator: (value) => FieldValidator.idValidator(value!),
                       textTheme: textTheme),
                   h_20,
                   titleAndText(
@@ -110,7 +113,7 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                       hint: "Enter your driver license ID",
                       controller: controller.driverLicenseController,
                       validator: (value) =>
-                          controller.driverLicenseValidator(value!),
+                          FieldValidator.driverLicenseValidator(value!),
                       textTheme: textTheme),
                 ],
               ),

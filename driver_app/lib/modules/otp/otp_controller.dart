@@ -94,22 +94,4 @@ class OtpController extends GetxController {
     }
     isLoading2.value = false;
   }
-
-  String? validator() {
-    if (otpController.text.isEmpty) {
-      return "OTP can't be empty";
-    } else if (otpController.text.length < 6) {
-      return "Please fill all the numbers";
-    }
-    return null;
-  }
-
-  String? passwordValidator(String value) {
-    if (value.isEmpty) {
-      return "This field is required";
-    } else if (value.length < 6) {
-      return "Password length must be longer than 6 digits";
-    }
-    return null;
-  }
 }

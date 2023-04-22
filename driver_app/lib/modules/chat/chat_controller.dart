@@ -38,13 +38,6 @@ class ChatController extends GetxController {
     driverInfo = await lifeCycleController.getDriver;
   }
 
-  String? messageValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return null;
-  }
-
   Future<void> addMessage() async {
     isLoading.value = true;
     final isValid = formKey.currentState?.validate() ?? false;

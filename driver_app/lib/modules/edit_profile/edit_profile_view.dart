@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/modules/edit_profile/widgets/avatar_circle.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
@@ -124,21 +125,23 @@ class EditProfileView extends GetView<EditProfileController> {
                       hint: "e.g. Adit Brahmana",
                       textTheme: textTheme,
                       controller: controller.nameController,
-                      validator: (value) => controller.nameValidator(value!)),
+                      validator: (value) =>
+                          FieldValidator.nameValidator(value!)),
                   h_20,
                   titleAndText(
                       title: "Identity Number",
                       // Nếu không cho sửa phone thì thay hint value thành driver.phone và thêm thuộc tính enable = false
                       hint: "Enter your Identity number",
                       controller: controller.identityController,
-                      validator: (value) => controller.idValidator(value!),
+                      validator: (value) => FieldValidator.idValidator(value!),
                       textTheme: textTheme),
                   h_20,
                   titleAndText(
                       title: "Current Address",
                       hint: "Enter your current address",
                       controller: controller.addressController,
-                      validator: (value) => controller.addressValidator(value!),
+                      validator: (value) =>
+                          FieldValidator.addressValidator(value!),
                       textTheme: textTheme),
                   h_20,
                   titleAndText(

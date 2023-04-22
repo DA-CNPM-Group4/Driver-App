@@ -1,4 +1,5 @@
 import 'package:driver_app/Data/common/chat_message_widget.dart';
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -82,7 +83,7 @@ class ChatView extends GetView<ChatController> {
         child: Form(
           key: controller.formKey,
           child: TextFormField(
-            validator: (value) => controller.messageValidator(value!),
+            validator: (value) => FieldValidator.messageValidator(value!),
             textCapitalization: TextCapitalization.sentences,
             controller: controller.textController,
             style: const TextStyle(color: Colors.black),

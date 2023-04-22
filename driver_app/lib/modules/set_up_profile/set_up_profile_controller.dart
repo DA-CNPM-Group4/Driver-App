@@ -35,52 +35,6 @@ class SetUpProfileController extends GetxController {
 
   RxBool defaultGender = true.obs;
 
-  String? nameValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return RegExp(r'^[a-z A-Z,.\-]+$',
-                caseSensitive: false, unicode: true, dotAll: true)
-            .hasMatch(value)
-        ? null
-        : "Name can't contains special characters or number";
-  }
-
-  String? phoneNumberValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return value.isPhoneNumber ? null : "You must enter a right phone number";
-  }
-
-  String? emailValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return value.isEmail ? null : "You must enter a right email";
-  }
-
-  String? idValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return value.length >= 12 ? null : "ID length can't be lower than 12";
-  }
-
-  String? driverLicenseValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return value.length >= 12 ? null : "ID length can't be lower than 12";
-  }
-
-  String? addressValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return null;
-  }
-
   var selectedIndex = 0.obs;
 
   TextEditingController nameController = TextEditingController();

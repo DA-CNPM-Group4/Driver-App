@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -100,7 +101,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                       textTheme: textTheme,
                       controller: controller.numberPlateController,
                       validator: (value) =>
-                          controller.numberPlateValidator(value!)),
+                          FieldValidator.numberPlateValidator(value!)),
                   h_20,
                   titleAndText(
                       title: "Vehicle Name",
@@ -108,7 +109,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                       textTheme: textTheme,
                       controller: controller.vehicleNameController,
                       validator: (value) =>
-                          controller.ownerNameValidator(value!)),
+                          FieldValidator.ownerNameValidator(value!)),
                   h_20,
                   titleAndText(
                       title: "Vehicle brand",
@@ -122,7 +123,7 @@ class VehicleRegistrationView extends GetView<VehicleRegistrationController> {
                       },
                       controller: controller.vehicleBrandController,
                       validator: (value) =>
-                          controller.vehicleBrandValidator(value!),
+                          FieldValidator.vehicleBrandValidator(value!),
                       disable: true,
                       icon: Icons.arrow_drop_down),
                   h_20,

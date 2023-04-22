@@ -111,35 +111,6 @@ class VehicleRegistrationController extends GetxController {
   TextEditingController vehicleType = TextEditingController();
   TextEditingController vehicleNameController = TextEditingController();
 
-  String? ownerNameValidator(String value) {
-    if (value.isEmpty) {
-      return "This field must be filled";
-    }
-    return RegExp(r'^[a-z A-Z,.\-]+$',
-                caseSensitive: false, unicode: true, dotAll: true)
-            .hasMatch(value)
-        ? null
-        : "Name can't contains special characters or number";
-  }
-
-  String? numberPlateValidator(String value) {
-    if (value.isEmpty) return "This field must be filled";
-
-    return value.length < 6 ? "Please enter a real number plate" : null;
-  }
-
-  String? vehicleBrandValidator(String value) {
-    if (value.isEmpty) return "This field must be filled";
-
-    return null;
-  }
-
-  String? vehicleTypeValidator(String value) {
-    if (value.isEmpty) return "This field must be filled";
-
-    return null;
-  }
-
   Future<bool> validateAndSave() async {
     isLoading.value = true;
     final isValid = formKey.currentState!.validate();

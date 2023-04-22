@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,8 @@ class LoginView extends GetView<LoginController> {
                       key: const Key("login_email_field"),
                       keyboardType: TextInputType.emailAddress,
                       controller: controller.emailController,
-                      validator: (value) => controller.emailValidator(value!),
+                      validator: (value) =>
+                          FieldValidator.emailValidator(value!),
                       onSaved: (value) {},
                       decoration: InputDecoration(
                         hintText: 'Someemail@Email.com',
@@ -136,7 +138,7 @@ class LoginView extends GetView<LoginController> {
                         key: const Key("login_phone_field"),
                         controller: controller.phoneNumberController,
                         validator: (value) =>
-                            controller.phoneNumberValidator(value!),
+                            FieldValidator.phoneNumberValidator(value!),
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],

@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,7 +56,8 @@ class PasswordView extends GetView<PasswordController> {
                   key: controller.formKey,
                   child: TextFormField(
                     obscureText: true,
-                    validator: (value) => controller.passwordValidator(value!),
+                    validator: (value) =>
+                        FieldValidator.passwordValidator(value!),
                     controller: controller.passwordController,
                     decoration: InputDecoration(
                       hintText: 'Type password right here...',

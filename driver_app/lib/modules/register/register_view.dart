@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,7 +83,7 @@ class RegisterView extends GetView<RegisterController> {
                             controller: controller.phoneNumberController,
                             keyboardType: TextInputType.number,
                             validator: (value) =>
-                                controller.phoneNumberValidator(value!),
+                                FieldValidator.phoneNumberValidator(value!),
                             onSaved: (value) {},
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
@@ -140,7 +141,7 @@ class RegisterView extends GetView<RegisterController> {
                             keyboardType: TextInputType.emailAddress,
                             controller: controller.emailController,
                             validator: (value) =>
-                                controller.emailValidator(value!),
+                                FieldValidator.emailValidator(value!),
                             onSaved: (value) {},
                             decoration: InputDecoration(
                               hintText: 'Someemail@Email.com',

@@ -1,3 +1,4 @@
+import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
@@ -89,7 +90,7 @@ class OtpView extends GetView<OtpController> {
                                 obscureText: true,
                                 controller: controller.passwordController,
                                 validator: (value) =>
-                                    controller.passwordValidator(value!),
+                                    FieldValidator.passwordValidator(value!),
                                 decoration: const InputDecoration(),
                               ),
                             )

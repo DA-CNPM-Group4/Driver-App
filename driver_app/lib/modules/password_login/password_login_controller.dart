@@ -45,15 +45,12 @@ class PasswordLoginController extends GetxController {
       await DriverAPIService.authApi.login(body: requestBody);
     } on IBussinessException catch (e) {
       if (e is AccountNotActiveException) {
-        // TODO: UNCOMMENT AFTER BACKEND FIX BUG
-
-        // await handleSendActiveAccountOTP();
+        await handleSendActiveAccountOTP();
       } else {
         showSnackBar("Login Failed", e.toString());
       }
       isLoading.value = false;
-      // TODO: UNCOMMENT AFTER BACKEND FIX BUG
-      // return;
+      return;
     }
     try {
       DriverEntity driverInfo = await DriverAPIService.getDriverInfo();

@@ -31,7 +31,7 @@ class Utils {
   }
 }
 
-class StringValidator {
+class FieldValidator {
   static String? nameValidator(String value) {
     if (value.isEmpty) {
       return "This field must be filled";
@@ -89,6 +89,49 @@ class StringValidator {
       return "This field is required";
     } else if (!GetUtils.isPhoneNumber(value)) {
       return "This is a valid phone number";
+    }
+    return null;
+  }
+
+  static String? driverLicenseValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
+    }
+    return value.length >= 12 ? null : "ID length can't be lower than 12";
+  }
+
+  static String? ownerNameValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
+    }
+    return RegExp(r'^[a-z A-Z,.\-]+$',
+                caseSensitive: false, unicode: true, dotAll: true)
+            .hasMatch(value)
+        ? null
+        : "Name can't contains special characters or number";
+  }
+
+  static String? numberPlateValidator(String value) {
+    if (value.isEmpty) return "This field must be filled";
+
+    return value.length < 6 ? "Please enter a real number plate" : null;
+  }
+
+  static String? vehicleBrandValidator(String value) {
+    if (value.isEmpty) return "This field must be filled";
+
+    return null;
+  }
+
+  static String? vehicleTypeValidator(String value) {
+    if (value.isEmpty) return "This field must be filled";
+
+    return null;
+  }
+
+  static String? messageValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
     }
     return null;
   }
