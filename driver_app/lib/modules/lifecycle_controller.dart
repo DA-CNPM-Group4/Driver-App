@@ -5,7 +5,7 @@ import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/models/requests/create_driver_request.dart';
 import 'package:driver_app/Data/models/requests/register_driver_request.dart';
 import 'package:driver_app/Data/models/requests/register_driver_request_2.dart';
-import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/Data/services/rest/driver_api_service.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

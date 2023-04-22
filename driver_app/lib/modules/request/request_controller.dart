@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/models/requests/accept_trip_request.dart';
-import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/Data/services/rest/driver_api_service.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';

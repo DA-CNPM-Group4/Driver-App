@@ -8,7 +8,7 @@ import 'package:driver_app/Data/models/realtime_models/realtime_passenger.dart';
 import 'package:driver_app/Data/models/realtime_models/trip_request.dart';
 import 'package:driver_app/Data/providers/firesbase_realtime_provider.dart';
 import 'package:driver_app/Data/services/device_location_service.dart';
-import 'package:driver_app/Data/services/driver_api_service.dart';
+import 'package:driver_app/Data/services/rest/driver_api_service.dart';
 import 'package:driver_app/Data/services/firebase_realtime_service.dart';
 import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/core/constants/common_object.dart';
