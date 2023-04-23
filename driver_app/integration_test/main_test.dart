@@ -1,6 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
-import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/firebase_options.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_pages.dart';
@@ -12,12 +12,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:dio/dio.dart';
 
-const String IPv4Address = "192.168.1.5";
+const String IPv4Address = "172.17.58.72";
 
 void main() async {
-  BackendEnviroment.checkDevelopmentMode(isUseEmulator: true);
+  // BackendEnviroment.checkDevelopmentMode(isUseEmulator: true);
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -29,8 +28,8 @@ void main() async {
   await Hive.openBox("box");
 
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  group("Test Driver Trip Flow", () {
-    testWidgets("Test Driver Trip Flow....", (WidgetTester tester) async {
+  group("Accept a trip | ", () {
+    testWidgets("Accept a trip Flow....", (WidgetTester tester) async {
       // Initialize the app
       await _initApp(tester);
 
@@ -87,25 +86,31 @@ Future<void> _initApp(WidgetTester tester) async {
 }
 
 Future<void> _navigateFromWelcomeToLogin(WidgetTester tester) async {
-  final loginFinder = find.byKey(const Key("welcome_login_btn"));
-  await tester.tap(loginFinder);
+  await tester.tap(find.byKey(const Key("welcome_login_btn")));
   await tester.pumpAndSettle();
+  expect(find.byKey(const Key('welcome_login_btn')), findsNothing);
   expect(find.byKey(const Key('login_email_field')), findsOneWidget);
 }
 
 Future<void> _loginWithEmailAndPassword(WidgetTester tester) async {
-  final emailFinder = find.byKey(const Key('login_email_field'));
-  final phoneFinder = find.byKey(const Key("login_phone_field"));
-  await tester.enterText(emailFinder, 'changkho6313@gmail.com');
-  await tester.enterText(phoneFinder, '123456333');
   await tester.tap(find.byKey(const Key('login_login_btn')));
   await tester.pumpAndSettle();
-  // await tester.pump(const Duration(seconds: 1));
+  expect(find.text("This field must be filled"), findsOneWidget);
+  expect(find.text("This field is required"), findsOneWidget);
 
-  final passwordFinder = find.byKey(const Key("password_login_password_field"));
-  await tester.enterText(passwordFinder, '123456');
+  await tester.enterText(find.byKey(const Key('login_email_field')), 'changkho6310@gmail.com');
+  await tester.enterText(find.byKey(const Key("login_phone_field")), '0938267365');
+  await tester.tap(find.byKey(const Key('login_login_btn')));
+  await tester.pumpAndSettle(const Duration(seconds: 1));
+
+  await tester.tap(find.byKey(const Key('password_login_login_btn')));
+  await tester.pumpAndSettle();
+  expect(find.text("This field must be filled"), findsOneWidget);
+
+  await tester.enterText(find.byKey(const Key("password_login_password_field")), '123456');
   await tester.tap(find.byKey(const Key('password_login_login_btn')));
   await tester.pumpAndSettle(const Duration(seconds: 2));
+  expect(find.byKey(const Key('password_login_login_btn')), findsNothing);
 
   final activeToggleFinder = find.byKey(const Key('home_active_inactive_btn'));
   await tester.tap(activeToggleFinder);
@@ -249,9 +254,10 @@ Future<void> _testCancelRequestAndVerifyDialogDisappear({
 Future<void> sendTripRequest() async {
   try {
     final dio = Dio();
-    const url = "http://$IPv4Address:8001/api/Trip/TripRequest/SendRequest";
+    // const url = "http://$IPv4Address:8001/api/Trip/TripRequest/SendRequest";
+    const url = "https://dacnpmbe.azurewebsites.net/api/Trip/TripRequest/SendRequest";
     final data = {
-      "PassengerId": "d2b17392-b52e-4205-cf32-08db3f18272a",
+      "PassengerId": "67c09099-4100-4b87-8651-fa0c25ddbf15",
       "StaffId": "00000000-0000-0000-0000-000000000000",
       "RequestStatus": "FindingDriver",
       "PassengerNote": "Fast!!!",
