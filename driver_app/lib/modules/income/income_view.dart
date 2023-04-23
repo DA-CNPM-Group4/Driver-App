@@ -80,7 +80,8 @@ class IncomeView extends GetView<IncomeController> {
                                   backgroundColor: Colors.green,
                                   shape: const StadiumBorder()),
                               onPressed: () async {
-                                await controller.getRevenue();
+                                await controller.calculateRevenue(
+                                    textTheme: Theme.of(context).textTheme);
                               },
                               child: const Text("Refresh"))
                         ],
