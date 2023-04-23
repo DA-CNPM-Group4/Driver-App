@@ -123,8 +123,8 @@ class TripInfoView extends GetView<TripInfoController> {
                                     child: ListView.separated(
                                       separatorBuilder: (context, index) =>
                                           const SizedBox(height: 14),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                      // physics:
+                                      //     const NeverScrollableScrollPhysics(),
                                       itemCount: controller.bookedList.length,
                                       itemBuilder: (context, index) =>
                                           Container(

@@ -38,6 +38,12 @@ class ChatController extends GetxController {
     driverInfo = await lifeCycleController.getDriver;
   }
 
+  @override
+  void onClose() async {
+    super.onClose();
+    await resetState();
+  }
+
   Future<void> addMessage() async {
     isLoading.value = true;
     final isValid = formKey.currentState?.validate() ?? false;

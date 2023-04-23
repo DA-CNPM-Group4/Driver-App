@@ -154,19 +154,21 @@ class HomeController extends GetxController {
     assignTripRemovedListener(tripId);
     overlayState = Overlay.of(context);
     overlayEntry = OverlayEntry(builder: (context) {
-      return OrderInformation(
-        passenger: passenger,
-        tripRequest: trip!,
-        onStart: () async {
-          await changeToPickPassengerState(tripId, trip);
-        },
-        onCancel: () async {
-          await handleCancleTrip(tripId);
-        },
-        onTrip: () async {
-          await handleOntrip(tripId);
-        },
-      );
+      return Builder(builder: (context) {
+        return OrderInformation(
+          passenger: passenger,
+          tripRequest: trip!,
+          onStart: () async {
+            await changeToPickPassengerState(tripId, trip);
+          },
+          onCancel: () async {
+            await handleCancleTrip(tripId);
+          },
+          onTrip: () async {
+            await handleOntrip(tripId);
+          },
+        );
+      });
     });
     overlayState?.insert(overlayEntry!);
   }
@@ -250,6 +252,7 @@ class HomeController extends GetxController {
       await listenPassengerLocationAgent?.cancel();
       await Get.find<DashboardPageController>().resetState();
       showSnackBar("Oops", "The trip was canceld");
+      listenTripAgent?.cancel();
     });
   }
 
@@ -436,6 +439,12 @@ class HomeController extends GetxController {
   @override
   void onClose() async {
     await disableRealtimeLocator();
+    debugPrint("Home Onclose Start");
+
+    gpsStreamSubscription?.cancel();
+    listenRequestAgent?.cancel();
+    listenTripAgent?.cancel();
+    listenPassengerLocationAgent?.cancel();
     super.onClose();
   }
 
