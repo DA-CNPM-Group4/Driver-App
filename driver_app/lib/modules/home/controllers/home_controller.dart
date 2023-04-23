@@ -121,7 +121,6 @@ class HomeController extends GetxController {
                       longitude: currentDestinationPostion['longitude']));
 
               routingHomeTab();
-
               insertOverlay(
                 context: context,
                 trip: request,
