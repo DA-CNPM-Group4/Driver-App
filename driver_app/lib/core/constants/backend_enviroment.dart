@@ -12,7 +12,7 @@ class BackendEnviroment {
       if (isUseEmulator) {
         host = "http://10.0.2.2:8001/api";
       } else {
-        host = "http://192.168.1.4:8001/api";
+        host = "http://192.168.50.251:8001/api";
       }
       graphQLEnviroment.checkDevelopmentMode();
       return true;

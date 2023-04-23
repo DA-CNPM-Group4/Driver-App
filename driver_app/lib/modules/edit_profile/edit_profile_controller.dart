@@ -4,13 +4,17 @@ import 'package:driver_app/Data/services/rest/driver_api_service.dart';
 import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pinput/pinput.dart';
 
 class EditProfileController extends GetxController {
   final LifeCycleController lifeCycleController =
       Get.find<LifeCycleController>();
   DriverEntity? driver;
+  final ImagePicker _picker = ImagePicker();
+  XFile? uploadImage;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var isLoading = false.obs;
@@ -57,5 +61,47 @@ class EditProfileController extends GetxController {
     }
 
     isLoading.value = false;
+  }
+
+  String? nameValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
+    }
+    return RegExp(r'^[a-z A-Z,.\-]+$',
+                caseSensitive: false, unicode: true, dotAll: true)
+            .hasMatch(value)
+        ? null
+        : "Name can't contains special characters or number";
+  }
+
+  String? phoneNumberValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
+    }
+    return value.isPhoneNumber ? null : "You must enter a right phone number";
+  }
+
+  String? idValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
+    }
+    return value.length >= 12 ? null : "ID length can't be lower than 12";
+  }
+
+  String? addressValidator(String value) {
+    if (value.isEmpty) {
+      return "This field must be filled";
+    }
+    return null;
+  }
+
+  Future takePhoto(ImageSource source) async {
+    try {
+      final pickedFile = await _picker.pickImage(source: source);
+      if (pickedFile == null) return;
+      uploadImage = pickedFile;
+    } on PlatformException catch (e) {
+      debugPrint('Failed to pick image: ${e.message}');
+    }
   }
 }

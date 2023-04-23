@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:driver_app/core/utils/utils.dart';
 import 'package:driver_app/modules/edit_profile/widgets/avatar_circle.dart';
+import 'package:driver_app/modules/edit_profile/widgets/custom_modal_sheet.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'edit_profile_controller.dart';
 
@@ -55,18 +59,40 @@ class EditProfileView extends GetView<EditProfileController> {
                           margin: const EdgeInsets.only(bottom: 10),
                           height: 90,
                           width: 90,
-                          child: const CircleAvatar(
-                            child: AvatarCircle(
-                                width: 180,
-                                height: 180,
-                                source: "assets/icons/profile_icon.png"),
+                          child: CircleAvatar(
+                            child: controller.uploadImage != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(1000),
+                                    child: Image.file(
+                                      controller.uploadImage as File,
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : const AvatarCircle(
+                                    width: 200,
+                                    height: 200,
+                                    source: "assets/icons/profile_icon.png"),
                           ),
                         ),
                         Positioned(
                           bottom: 10,
                           right: 0,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              CustomModalSheet.buildChoosePhotoBottom(
+                                context: context,
+                                onTappedCamera: () {
+                                  controller.takePhoto(ImageSource.camera);
+                                  Navigator.of(context).pop();
+                                },
+                                onTappedGallery: () {
+                                  controller.takePhoto(ImageSource.gallery);
+                                  Navigator.of(context).pop();
+                                },
+                              );
+                            },
                             child: CircleAvatar(
                               backgroundColor: Colors.grey[300],
                               radius: 15,

@@ -30,7 +30,7 @@ class TripDetailView extends GetView<TripDetailController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: size.height + 100,
+          height: size.height + 60,
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 22),
           child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -69,6 +69,25 @@ class TripDetailView extends GetView<TripDetailController> {
                       ),
                       const SizedBox(
                         height: 15,
+                      ),
+                      Text("Chats History",
+                          style: BaseTextStyle.heading2(fontSize: 20)),
+                      const SizedBox(height: 12),
+                      Obx(
+                        () => controller.isChatLoaded.value
+                            ? ListView.builder(
+                                itemCount: controller.chatHistory?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  var message = controller.chatHistory![index];
+                                  return ChatMessageWidget(
+                                    text: message.text,
+                                    chatMessageType: message.chatMessageType,
+                                  );
+                                },
+                              )
+                            : Container(
+                                child: Text("None"),
+                              ),
                       ),
                     ],
                   ),
