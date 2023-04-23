@@ -15,7 +15,7 @@ class TripApiService {
       var identity = await APIHandlerImp.instance.getIdentity();
       body.driverId = body.driverId ?? identity;
       var response = await APIHandlerImp.instance
-          .post(body.toJson(), '/Trip/Trip/AcceptRequest');
+          .post(body.toJson(), '/Trip/Trip/AcceptRequest', useToken: true);
       if (response.data["status"]) {
         return response.data['data'];
       } else {
@@ -32,8 +32,11 @@ class TripApiService {
     try {
       var body = {'tripId': tripId};
 
-      var response =
-          await APIHandlerImp.instance.post(body, '/Trip/Trip/CancelTrip');
+      var response = await APIHandlerImp.instance.post(
+        body,
+        '/Trip/Trip/CancelTrip',
+        useToken: true,
+      );
       if (response.data["status"]) {
         return response.data['data'];
       } else {
@@ -51,6 +54,7 @@ class TripApiService {
       var response = await APIHandlerImp.instance.post(
         body,
         '/Trip/Trip/PickedPassenger',
+        useToken: true,
       );
       if (response.data["status"]) {
         return response.data['data'];
@@ -69,6 +73,7 @@ class TripApiService {
       var response = await APIHandlerImp.instance.post(
         body,
         '/Trip/Trip/FinishTrip',
+        useToken: true,
       );
       if (response.data["status"]) {
         // return response.data['data'];
@@ -88,6 +93,7 @@ class TripApiService {
       var response = await APIHandlerImp.instance.get(
         '/Trip/Trip/GetCurrentTrip',
         body: body,
+        useToken: true,
       );
       if (response.data["status"]) {
         return TripResponse.fromJson(response.data['data']);
@@ -103,8 +109,11 @@ class TripApiService {
   Future<TripFeedbackResponse> getTripFeedback(String tripId) async {
     try {
       var body = {'tripId': tripId};
-      var response = await APIHandlerImp.instance
-          .get('/Trip/TripFeedback/GetTripFeedback', body: body);
+      var response = await APIHandlerImp.instance.get(
+        '/Trip/TripFeedback/GetTripFeedback',
+        body: body,
+        useToken: true,
+      );
       if (response.data["status"]) {
         return TripFeedbackResponse.fromJson(response.data['data']);
       } else {
@@ -121,8 +130,11 @@ class TripApiService {
       var driverId = await APIHandlerImp.instance.getIdentity();
       var body = {'driverId': driverId};
 
-      var response = await APIHandlerImp.instance
-          .get('/Trip/Trip/GetDriverTrips', body: body);
+      var response = await APIHandlerImp.instance.get(
+        '/Trip/Trip/GetDriverTrips',
+        body: body,
+        useToken: true,
+      );
       if (response.data["status"]) {
         var listTripJson = response.data['data'] as List;
         return listTripJson
@@ -148,8 +160,11 @@ class TripApiService {
       };
 
       debugPrint(body.toString());
-      var response = await APIHandlerImp.instance
-          .get('/Trip/Trip/GetCompletedTrips', body: body);
+      var response = await APIHandlerImp.instance.get(
+        '/Trip/Trip/GetCompletedTrips',
+        body: body,
+        useToken: true,
+      );
       if (response.data["status"]) {
         return GetCompletedTripResponse.fromJson(response.data['data']);
       } else {
@@ -167,6 +182,7 @@ class TripApiService {
       var response = await APIHandlerImp.instance.post(
         body,
         '/Trip/TripRequest/CancelRequest',
+        useToken: true,
       );
       if (response.data["status"]) {
       } else {
@@ -186,6 +202,7 @@ class TripApiService {
       var response = await APIHandlerImp.instance.get(
         '/Trip/Trip/GetIncome',
         body: requestBody.toJson(),
+        useToken: true,
       );
 
       if (response.data["status"]) {
@@ -211,6 +228,7 @@ class TripApiService {
       var response = await APIHandlerImp.instance.get(
         '/Trip/Trip/GetDriverTripPageing',
         body: requestBody,
+        useToken: true,
       );
       if (response.data["status"]) {
         var listTripJson = response.data['data'] as List;
@@ -242,6 +260,7 @@ class TripApiService {
       var response = await APIHandlerImp.instance.get(
         '/Trip/Trip/GetDriverTripTotalPages',
         body: requestBody,
+        useToken: true,
       );
 
       if (response.data["status"]) {
