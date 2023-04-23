@@ -13,22 +13,64 @@ class TripInfoController extends GetxController {
   late DriverEntity driverEntity;
 
   RxBool isLoading = false.obs;
-  RxBool isLoadMore = false.obs;
-  ScrollController scrollController = ScrollController();
   final bookedList = <TripResponse>[].obs;
+
+  RxBool isLoadMore = false.obs;
+  final int pageSize = 1;
+  late final int maxPage;
+  int currentPage = 1;
 
   @override
   void onInit() async {
-    super.onInit();
     driverEntity = await lifeCycleController.getDriver;
+
     isLoading.value = true;
 
+    await _getTotalPageSize();
+    await _loadinitialTrip();
+
+    isLoading.value = false;
+    super.onInit();
+  }
+
+  Future<void> _loadinitialTrip() async {
     try {
-      bookedList.value = await DriverAPIService.tripApi.getDriverTrips();
+      // bookedList.value = await DriverAPIService.tripApi.getDriverTrips();
+
+      bookedList.value = await DriverAPIService.tripApi
+          .getDriverTripsPaging(pageNum: currentPage, pageSize: pageSize);
     } catch (e) {
       showSnackBar("Error", "Failed to fetch trips history");
     }
+  }
 
-    isLoading.value = false;
+  Future<void> _getTotalPageSize() async {
+    try {
+      maxPage = await DriverAPIService.tripApi
+          .getDriverTripsTotalPage(pageSize: pageSize);
+      debugPrint("Max Page: ${maxPage.toString()}");
+    } catch (e) {
+      maxPage = 1;
+      debugPrint(e.toString());
+    }
+  }
+
+  loadMoreTrip() async {
+    if (currentPage >= maxPage) {
+      return;
+    }
+    try {
+      isLoadMore.value = true;
+      currentPage++;
+      final newTrips = await DriverAPIService.tripApi
+          .getDriverTripsPaging(pageSize: pageSize, pageNum: currentPage);
+      bookedList.addAll(newTrips);
+    } catch (e) {
+      currentPage--;
+      debugPrint(e.toString());
+      showSnackBar("Failed", "Failed to load more trip");
+    } finally {
+      isLoadMore.value = false;
+    }
   }
 }

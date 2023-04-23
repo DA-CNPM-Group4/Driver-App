@@ -13,7 +13,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  BackendEnviroment.checkDevelopmentMode();
+  // BackendEnviroment.checkDevelopmentMode();
   await setup();
   runApp(GetMaterialApp(
     title: "Application",
