@@ -95,9 +95,7 @@ class TripDetailView extends GetView<TripDetailController> {
                                       },
                                     ),
                                   )
-                                : Container(
-                                    child: const Text("None"),
-                                  )
+                                : const Text("None")
                             : const Center(
                                 child: CircularProgressIndicator(),
                               ),
@@ -342,22 +340,6 @@ class TripDetailView extends GetView<TripDetailController> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildListMessage() {
-    return Obx(
-      () => ListView.builder(
-        itemCount: controller.chatHistory?.length,
-        controller: controller.scrollController,
-        itemBuilder: (context, index) {
-          var message = controller.chatHistory![index];
-          return ChatMessageWidget(
-            text: message.text,
-            chatMessageType: message.chatMessageType,
-          );
-        },
-      ),
     );
   }
 }

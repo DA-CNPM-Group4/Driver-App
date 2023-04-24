@@ -124,13 +124,6 @@ class ChatView extends GetView<ChatController> {
     );
   }
 
-  void _scrollDown() {
-    controller.scrollController.animateTo(
-        controller.scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut);
-  }
-
   Widget _buildListMessage() {
     return Obx(
       () => ListView.builder(
