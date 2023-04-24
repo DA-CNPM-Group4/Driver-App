@@ -63,6 +63,9 @@ class HomeController extends GetxController {
   OverlayEntry? overlayEntry;
   OverlayState? overlayState;
 
+  final double fixAcceptDistance = 100;
+  double? goalDistance;
+
   Future<void> changeActiveMode(BuildContext context) async {
     isLoading.value = true;
     try {
@@ -79,7 +82,7 @@ class HomeController extends GetxController {
           final data = Map<String, dynamic>.from(event.snapshot.value as Map);
           var request = RealtimeTripRequest.fromJson(data);
 
-          if (await handleAcceptRequest(request, event.snapshot.key ?? "")) {
+          if (!await handleAcceptRequest(request, event.snapshot.key ?? "")) {
             return;
           }
 
@@ -110,15 +113,15 @@ class HomeController extends GetxController {
               RealtimePassengerInfo passengerInfo =
                   await handleReadPassenger(request);
 
-              await drawRoute(
-                  from: PositionPoint(
-                      address: "",
-                      latitude: currentDriverPosition['latitude'],
-                      longitude: currentDriverPosition['longitude']),
-                  to: PositionPoint(
-                      address: "",
-                      latitude: currentDestinationPostion['latitude'],
-                      longitude: currentDestinationPostion['longitude']));
+              // await drawRoute(
+              //     from: PositionPoint(
+              //         address: "",
+              //         latitude: currentDriverPosition['latitude'],
+              //         longitude: currentDriverPosition['longitude']),
+              //     to: PositionPoint(
+              //         address: "",
+              //         latitude: currentDestinationPostion['latitude'],
+              //         longitude: currentDestinationPostion['longitude']));
 
               routingHomeTab();
               insertOverlay(
@@ -199,16 +202,33 @@ class HomeController extends GetxController {
       RealtimeTripRequest request, String requestId) async {
     DateTime requestDate = DateTime.parse(request.CreatedTime);
 
+    double goalDistance = await drawRoute(
+            from: PositionPoint(
+                address: currentDriverPosition['address'],
+                latitude: currentDriverPosition['latitude'],
+                longitude: currentDriverPosition['longitude']),
+            to: PositionPoint(
+                address: request.StartAddress,
+                latitude: request.LatStartAddr,
+                longitude: request.LongStartAddr)) ??
+        0;
+
+    if (goalDistance > fixAcceptDistance ||
+        vehicle.vehicleType != request.VehicleType) {
+      debugPrint("LOG: Request don't avaiable for this driver");
+      return false;
+    }
+
     var waitingTime = DateTime.now().difference(requestDate).inSeconds - 60;
-    if (waitingTime > 60 * 5) {
+    if (waitingTime > 60 * 10) {
       try {
         await DriverAPIService.tripApi.cancelRequest(requestId: requestId);
       } catch (e) {
-        showSnackBar("Error", e.toString());
+        debugPrint("API: $e");
       }
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   }
 
@@ -251,7 +271,7 @@ class HomeController extends GetxController {
       await listenPassengerLocationAgent?.cancel();
       await Get.find<DashboardPageController>().resetState();
       showSnackBar("Oops", "The trip was canceld");
-      listenTripAgent?.cancel();
+      await listenTripAgent?.cancel();
     });
   }
 
@@ -303,7 +323,7 @@ class HomeController extends GetxController {
 
         currentDestinationPostion['latitude'] = location.lat;
         currentDestinationPostion['longitude'] = location.long;
-        currentDestinationPostion['address'] = location.address;
+        currentDestinationPostion['address'] = request.StartAddress;
 
         drawMarker(
           markerId: "1",
@@ -388,7 +408,11 @@ class HomeController extends GetxController {
         polylinePoints.add(LatLng(point.latitude, point.longitude));
       }
       polyline.refresh();
+
+      return response["result"]["routes"][0]["legs"][0]["distance"]['value'] /
+          1000;
     } catch (e) {
+      debugPrint("Error: Failed to draw route");
       Future.error(e.toString());
     }
   }
@@ -440,10 +464,10 @@ class HomeController extends GetxController {
     await disableRealtimeLocator();
     debugPrint("Home Onclose Start");
 
-    gpsStreamSubscription?.cancel();
-    listenRequestAgent?.cancel();
-    listenTripAgent?.cancel();
-    listenPassengerLocationAgent?.cancel();
+    await gpsStreamSubscription?.cancel();
+    await listenRequestAgent?.cancel();
+    await listenTripAgent?.cancel();
+    await listenPassengerLocationAgent?.cancel();
     super.onClose();
   }
 
