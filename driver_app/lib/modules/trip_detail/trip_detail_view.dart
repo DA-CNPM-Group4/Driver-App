@@ -74,7 +74,8 @@ class TripDetailView extends GetView<TripDetailController> {
                             ? controller.isHaveChatLog.value
                                 ? Container(
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 154, 147, 147),
+                                      color: const Color.fromARGB(
+                                          255, 154, 147, 147),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     height: size.width,
