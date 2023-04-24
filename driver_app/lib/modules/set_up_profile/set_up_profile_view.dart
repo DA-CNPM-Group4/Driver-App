@@ -93,6 +93,16 @@ class SetUpProfileView extends GetView<SetUpProfileController> {
                       validator: (value) =>
                           FieldValidator.nameValidator(value!)),
                   h_20,
+                  controller.lifeCycleController.preLoginedState.isloginByGoogle
+                      ? titleAndText(
+                          title: "Phone Number",
+                          hint: "e.g. 090808***",
+                          textTheme: textTheme,
+                          controller: controller.phoneNumberController,
+                          validator: (value) =>
+                              FieldValidator.phoneNumberValidator(value!))
+                      : Container(),
+                  h_20,
                   titleAndText(
                       title: "Current Address",
                       hint: "Enter your current address",

@@ -57,8 +57,12 @@ class SetUpProfileController extends GetxController {
       address: addressController.text,
       gender: defaultGender.value,
     );
+
+    if (lifeCycleController.preLoginedState.isloginByGoogle) {
+      lifeCycleController.preLoginedState.phone = phoneNumberController.text;
+    }
     if (BackendEnviroment.checkV2Comunication() &&
-        !lifeCycleController.isloginByGoogle) {
+        !lifeCycleController.preLoginedState.isloginByGoogle) {
       Get.toNamed(Routes.PASSWORD_REGISTER);
     } else {
       await _handleCreateInfo(

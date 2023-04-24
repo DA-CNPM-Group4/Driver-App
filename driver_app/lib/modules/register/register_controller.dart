@@ -32,7 +32,7 @@ class RegisterController extends GetxController {
     emailFormKey.currentState!.save();
     isLoading.value = false;
 
-    lifeCycleController.isloginByGoogle = false;
+    lifeCycleController.preLoginedState.isloginByGoogle = false;
     lifeCycleController.preLoginedState.setField(
       phone: phoneNumberController.text,
       email: emailController.text,

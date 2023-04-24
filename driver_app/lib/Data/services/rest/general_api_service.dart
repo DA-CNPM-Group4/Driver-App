@@ -38,13 +38,11 @@ class GeneralAPIService {
     }
   }
 
-  Future<void> loginByGoogle() async {
+  Future<String> loginByGoogle() async {
     try {
       await GoogleSignIn().signOut();
     } catch (_) {}
     try {
-      // begin sign in process
-
       final GoogleSignInAccount? gUser = await GoogleSignIn(
         scopes: [
           'https://www.googleapis.com/auth/userinfo.email',
@@ -72,10 +70,13 @@ class GeneralAPIService {
           .post(body, "/Authentication/LoginWithGoogle");
 
       var responseBody = LoginResponseBody.fromJson(response.data['data']);
+
       await _storeAllIdentity(responseBody);
 
-      // await FirebaseAuth.instance.signInWithCredential(credential);
-    } on PlatformException catch (_) {
+      return gUser.email;
+    } on PlatformException catch (e) {
+      return Future.error(UnexpectedException(
+          context: "Google Login", debugMessage: e.toString()));
     } catch (e) {
       return Future.error(UnexpectedException(
           context: "Google Login", debugMessage: e.toString()));

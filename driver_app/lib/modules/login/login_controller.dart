@@ -54,7 +54,7 @@ class LoginController extends GetxController {
       phone: phoneNumberController.text,
       email: emailController.text,
     );
-    lifeCycleController.isloginByGoogle = false;
+    lifeCycleController.preLoginedState.isloginByGoogle = false;
     Get.toNamed(Routes.PASSWORD_LOGIN);
   }
 
@@ -67,7 +67,9 @@ class LoginController extends GetxController {
 
     // handle google login
     try {
-      await DriverAPIService.authApi.loginByGoogle();
+      final String googleEmail = await DriverAPIService.authApi.loginByGoogle();
+      lifeCycleController.preLoginedState.isloginByGoogle = true;
+      lifeCycleController.preLoginedState.googleEmail = googleEmail;
     } on CancelActionException catch (_) {
       isLoading.value = false;
       return;
@@ -76,8 +78,6 @@ class LoginController extends GetxController {
       isLoading.value = false;
       return;
     }
-
-    lifeCycleController.isloginByGoogle = true;
 
     try {
       DriverEntity driverInfo = await DriverAPIService.getDriverInfo();

@@ -106,7 +106,8 @@ class UserView extends GetView<UserController> {
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
                       Builder(builder: (context) {
-                        if (!controller.lifeCycleController.isloginByGoogle) {
+                        if (!controller.lifeCycleController.preLoginedState
+                            .isloginByGoogle) {
                           return ListTile(
                             onTap: () {
                               controller.goToChangePasswordView();

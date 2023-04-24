@@ -26,9 +26,6 @@ class LifeCycleController extends SuperController {
 
   // only use before signed in app
   LoginRegisterState preLoginedState = LoginRegisterState();
-
-  bool isloginByGoogle = false;
-
   // todo: refactor to enum
   bool isActiveOTP = true;
 
@@ -120,7 +117,6 @@ class LifeCycleController extends SuperController {
 
   void _resetState({bool isCallAPI = false}) {
     preLoginedState.reset();
-    isloginByGoogle = false;
     _driver = null;
     _vehicle = null;
     _rxDriver.value = null;
@@ -145,6 +141,8 @@ class LoginRegisterState {
   String name = "";
   String identityNumber = "";
   bool gender = false;
+  String? googleEmail;
+  bool isloginByGoogle = false;
 
   void setField({
     String? phone,
@@ -163,7 +161,7 @@ class LoginRegisterState {
   }
 
   CreateDriverRequestBody toCreateDriverRequestBody() {
-    return CreateDriverRequestBody(
+    final result = CreateDriverRequestBody(
       Address: address,
       AverageRate: 0,
       NumberOfRate: 0,
@@ -174,11 +172,17 @@ class LoginRegisterState {
       Name: name,
       Phone: phone,
     );
+
+    if (isloginByGoogle) {
+      result.Email = googleEmail!;
+    }
+    return result;
   }
 
   RegisterDriverRequestBody toRegisterRequestBodyV1(String password) {
-    return RegisterDriverRequestBody(
+    var result = RegisterDriverRequestBody(
         email: email, phone: phone, password: password, name: name);
+    return result;
   }
 
   RegisterDriverRequestBodyV2 toRegisterRequestBodyV2(String password) {
@@ -193,6 +197,8 @@ class LoginRegisterState {
   }
 
   void reset() {
+    isloginByGoogle = false;
+    googleEmail = null;
     phone = "";
     email = "";
     address = "";
