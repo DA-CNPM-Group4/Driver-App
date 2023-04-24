@@ -1,10 +1,18 @@
+import 'package:driver_app/modules/utils_widget/widgets.dart';
 import 'package:driver_app/routes/app_routes.dart';
 import 'package:get/get.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 
-class WelcomeView extends StatelessWidget {
+class WelcomeView extends StatefulWidget {
   const WelcomeView({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomeView> createState() => _WelcomeViewState();
+}
+
+class _WelcomeViewState extends State<WelcomeView> {
+  int tapNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +49,20 @@ class WelcomeView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: heightSafeArea * 0.3,
-                    child: Image.asset('assets/images/banner.png'),
+                  GestureDetector(
+                    onTap: () async {
+                      tapNumber++;
+                      debugPrint(tapNumber.toString());
+                      if (tapNumber >= 10) {
+                        debugPrint("here");
+                        tapNumber = 0;
+                        await openInputStringBottomSheet();
+                      }
+                    },
+                    child: SizedBox(
+                      height: heightSafeArea * 0.3,
+                      child: Image.asset('assets/images/banner.png'),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
