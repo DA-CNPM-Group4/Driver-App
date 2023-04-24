@@ -12,11 +12,6 @@ class ChatMessageHistoryResponseBody {
   ChatMessageHistoryResponseBody(
       {this.tripId, this.driverId, this.passengerId, this.messages});
 
-  factory ChatMessageHistoryResponseBody.fromJson(Map<String, dynamic> json) =>
-      _$ChatMessageHistoryResponseBodyFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ChatMessageHistoryResponseBodyToJson(this);
-
   List<ChatMessage>? toChatMessage(String myId) {
     messages?.sort((d1, d2) =>
         DateTime.parse(d1.sendTime).compareTo(DateTime.parse(d2.sendTime)));
@@ -24,11 +19,16 @@ class ChatMessageHistoryResponseBody {
     return messages
         ?.map((e) => ChatMessage(
             text: e.message,
-            chatMessageType: e.tripId != myId
+            chatMessageType: e.senderId != myId
                 ? ChatMessageType.passenger
                 : ChatMessageType.driver))
         .toList();
   }
+
+  factory ChatMessageHistoryResponseBody.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageHistoryResponseBodyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChatMessageHistoryResponseBodyToJson(this);
 }
 
 @JsonSerializable()
@@ -37,10 +37,12 @@ class ChatMessageResponseBody {
   final String message;
   final String? senderName;
   final String sendTime;
+  final String senderId;
 
   ChatMessageResponseBody({
     this.tripId,
     required this.message,
+    required this.senderId,
     required this.senderName,
     required this.sendTime,
   });

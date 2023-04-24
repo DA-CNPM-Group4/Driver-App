@@ -36,8 +36,11 @@ class TripDetailController extends GetxController {
     driver = await lifeCycleController.getRXDriver;
     _driverEntity = await lifeCycleController.getDriver;
 
+    isLoadinginfo.value = true;
+    isLoadingFeedback.value = true;
+    isLoadingChatHistory.value = true;
+
     try {
-      isLoadinginfo.value = true;
       passengerInfo = await GraphQLService.infoGraphQLService
           .getPassengerInfo(trip.passengerId);
 
@@ -49,7 +52,6 @@ class TripDetailController extends GetxController {
     }
 
     try {
-      isLoadingFeedback.value = true;
       feedback = await DriverAPIService.tripApi.getTripFeedback(trip.tripId);
       isRate.value = true;
     } catch (e) {
@@ -59,7 +61,6 @@ class TripDetailController extends GetxController {
     }
 
     try {
-      isLoadingChatHistory.value = true;
       var chatLog =
           await DriverAPIService.chatAPI.getChatLog(tripId: trip.tripId);
       chatHistory = chatLog.toChatMessage(_driverEntity.accountId);
