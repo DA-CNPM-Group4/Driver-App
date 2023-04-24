@@ -142,8 +142,7 @@ class HomeController extends GetxController {
 
   void routingHomeTab() {
     if (Get.routing.current != Routes.DASHBOARD_PAGE) {
-      Get.offNamedUntil(
-          Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
+      Get.until((route) => Get.currentRoute == Routes.DASHBOARD_PAGE);
     }
     Get.find<DashboardPageController>().tabIndex(0);
   }
