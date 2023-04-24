@@ -113,15 +113,15 @@ class HomeController extends GetxController {
               RealtimePassengerInfo passengerInfo =
                   await handleReadPassenger(request);
 
-              // await drawRoute(
-              //     from: PositionPoint(
-              //         address: "",
-              //         latitude: currentDriverPosition['latitude'],
-              //         longitude: currentDriverPosition['longitude']),
-              //     to: PositionPoint(
-              //         address: "",
-              //         latitude: currentDestinationPostion['latitude'],
-              //         longitude: currentDestinationPostion['longitude']));
+              await drawRoute(
+                  from: PositionPoint(
+                      address: "",
+                      latitude: currentDriverPosition['latitude'],
+                      longitude: currentDriverPosition['longitude']),
+                  to: PositionPoint(
+                      address: "",
+                      latitude: currentDestinationPostion['latitude'],
+                      longitude: currentDestinationPostion['longitude']));
 
               routingHomeTab();
               insertOverlay(
@@ -141,8 +141,9 @@ class HomeController extends GetxController {
   }
 
   void routingHomeTab() {
-    if (Get.routing.current == Routes.DASHBOARD_PAGE) {
-      Get.until((route) => route.settings.name == Routes.DASHBOARD_PAGE);
+    if (Get.routing.current != Routes.DASHBOARD_PAGE) {
+      Get.offNamedUntil(
+          Routes.DASHBOARD_PAGE, ModalRoute.withName(Routes.HOME));
     }
     Get.find<DashboardPageController>().tabIndex(0);
   }
@@ -210,7 +211,8 @@ class HomeController extends GetxController {
             to: PositionPoint(
                 address: request.StartAddress,
                 latitude: request.LatStartAddr,
-                longitude: request.LongStartAddr)) ??
+                longitude: request.LongStartAddr),
+            isDrawRoute: false) ??
         0;
 
     if (goalDistance > fixAcceptDistance ||
@@ -390,7 +392,11 @@ class HomeController extends GetxController {
     );
   }
 
-  drawRoute({PositionPoint? from, PositionPoint? to}) async {
+  drawRoute({
+    PositionPoint? from,
+    PositionPoint? to,
+    bool isDrawRoute = true,
+  }) async {
     polylinePoints.clear();
     var start = "${from?.latitude},${from?.longitude}";
     var end = "${to?.latitude},${to?.longitude}";
@@ -402,12 +408,14 @@ class HomeController extends GetxController {
     };
     try {
       var response = await NetworkHandler.getWithQuery('route', query);
-      searchResult = PolylinePoints()
-          .decodePolyline(response["result"]["routes"][0]["overviewPolyline"]);
-      for (var point in searchResult) {
-        polylinePoints.add(LatLng(point.latitude, point.longitude));
+      if (isDrawRoute) {
+        searchResult = PolylinePoints().decodePolyline(
+            response["result"]["routes"][0]["overviewPolyline"]);
+        for (var point in searchResult) {
+          polylinePoints.add(LatLng(point.latitude, point.longitude));
+        }
+        polyline.refresh();
       }
-      polyline.refresh();
 
       return response["result"]["routes"][0]["legs"][0]["distance"]['value'] /
           1000;
@@ -516,7 +524,7 @@ class HomeController extends GetxController {
       );
 
       if (isAcceptedTrip.value && !BackendEnviroment.isPoor) {
-        drawRoute(
+        await drawRoute(
           from: PositionPoint(
               address: address,
               latitude: location.latitude,

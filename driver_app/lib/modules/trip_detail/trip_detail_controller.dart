@@ -40,6 +40,8 @@ class TripDetailController extends GetxController {
     isLoadingFeedback.value = true;
     isLoadingChatHistory.value = true;
 
+    debugPrint("Trip Detail of ${trip.tripId}");
+
     try {
       passengerInfo = await GraphQLService.infoGraphQLService
           .getPassengerInfo(trip.passengerId);
