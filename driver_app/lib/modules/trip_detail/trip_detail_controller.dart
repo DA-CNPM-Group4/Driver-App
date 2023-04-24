@@ -22,48 +22,55 @@ class TripDetailController extends GetxController {
   late TripFeedbackResponse feedback;
   List<ChatMessage>? chatHistory;
 
-  final RxBool isLoading = false.obs;
+  final RxBool isLoadinginfo = false.obs;
+  final RxBool isLoadingFeedback = false.obs;
   final RxBool isRate = false.obs;
-  final RxBool isChatLoaded = false.obs;
+  final RxBool isLoadingChatHistory = false.obs;
+  final RxBool isHaveChatLog = false.obs;
 
-  int star = 2;
   @override
   void onInit() async {
     super.onInit();
-    isLoading.value = true;
     trip = Get.arguments as TripResponse;
 
     driver = await lifeCycleController.getRXDriver;
     _driverEntity = await lifeCycleController.getDriver;
 
     try {
+      isLoadinginfo.value = true;
       passengerInfo = await GraphQLService.infoGraphQLService
           .getPassengerInfo(trip.passengerId);
 
       debugPrint(passengerInfo.toString());
     } catch (e) {
       showSnackBar("Failed", "Failed to get passenger info");
+    } finally {
+      isLoadinginfo.value = false;
     }
 
     try {
+      isLoadingFeedback.value = true;
       feedback = await DriverAPIService.tripApi.getTripFeedback(trip.tripId);
       isRate.value = true;
     } catch (e) {
       isRate.value = false;
+    } finally {
+      isLoadingFeedback.value = false;
     }
 
     try {
+      isLoadingChatHistory.value = true;
       var chatLog =
           await DriverAPIService.chatAPI.getChatLog(tripId: trip.tripId);
       chatHistory = chatLog.toChatMessage(_driverEntity.accountId);
       debugPrint("Length");
       debugPrint(chatHistory?.length.toString() ?? "0");
-      isChatLoaded.value = true;
+      isHaveChatLog.value = true;
     } catch (e) {
       debugPrint(e.toString());
-
-      isChatLoaded.value = false;
+      isHaveChatLog.value = false;
+    } finally {
+      isLoadingChatHistory.value = false;
     }
-    isLoading.value = false;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
 import 'package:driver_app/Data/models/local_entity/vehicle_entity.dart';
+import 'package:driver_app/core/constants/backend_enviroment.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
 import 'package:driver_app/routes/app_pages.dart';
 import 'package:driver_app/themes/base_style.dart';
@@ -12,7 +13,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  // BackendEnviroment.checkDevelopmentMode();
+  BackendEnviroment.checkDevelopmentMode();
   await setup();
   runApp(GetMaterialApp(
     title: "Application",

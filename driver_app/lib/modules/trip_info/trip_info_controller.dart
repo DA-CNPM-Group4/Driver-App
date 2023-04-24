@@ -39,6 +39,7 @@ class TripInfoController extends GetxController {
 
       bookedList.value = await DriverAPIService.tripApi
           .getDriverTripsPaging(pageNum: currentPage, pageSize: pageSize);
+      debugPrint("Load Init");
     } catch (e) {
       showSnackBar("Error", "Failed to fetch trips history");
     }
@@ -65,6 +66,7 @@ class TripInfoController extends GetxController {
       final newTrips = await DriverAPIService.tripApi
           .getDriverTripsPaging(pageSize: pageSize, pageNum: currentPage);
       bookedList.addAll(newTrips);
+      debugPrint("Load More");
     } catch (e) {
       currentPage--;
       debugPrint(e.toString());

@@ -1,6 +1,8 @@
+import 'package:driver_app/modules/trip_info/widgets/session_item.dart';
 import 'package:driver_app/themes/base_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
@@ -174,7 +176,60 @@ class IncomeView extends GetView<IncomeController> {
                   ),
                 ),
               ),
-            )
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Obx(
+              () => controller.isLoading.value
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : controller.trips.isEmpty
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/ic_empty.svg",
+                                  width: 200,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 20),
+                                  child: Text(
+                                    "You don't have any booking history",
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          height: Get.height * 1,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 14),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: controller.trips.length,
+                                  itemBuilder: (context, index) => Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: SessionItem(
+                                      session: controller.trips[index],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+            ),
           ],
         ),
       ),

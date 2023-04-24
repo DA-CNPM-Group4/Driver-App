@@ -30,13 +30,12 @@ class TripDetailView extends GetView<TripDetailController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: size.height + 60,
           margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 22),
           child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(() => controller.isLoading.value
+                Obx(() => controller.isLoadinginfo.value
                     ? const Center(child: CircularProgressIndicator())
                     : _buildDriverInfo()),
                 const SizedBox(height: 18),
@@ -53,18 +52,15 @@ class TripDetailView extends GetView<TripDetailController> {
                           style: BaseTextStyle.heading2(fontSize: 20)),
                       const SizedBox(height: 12),
                       Obx(
-                        () => !controller.isLoading.value
-                            ? Obx(
-                                () => controller.isRate.value
-                                    ? RateAndComment(
-                                        ignoreGestures: true,
-                                        feedback: controller.feedback.note,
-                                        passengerName: "Sung won",
-                                        rating: 3,
-                                      )
-                                    : const Text(
-                                        "Trip currently not rated yet"),
-                              )
+                        () => !controller.isLoadingFeedback.value
+                            ? controller.isRate.value
+                                ? RateAndComment(
+                                    ignoreGestures: true,
+                                    feedback: controller.feedback.note,
+                                    passengerName: "Sung won",
+                                    rating: 3,
+                                  )
+                                : const Text("Trip currently not rated yet")
                             : const Center(child: CircularProgressIndicator()),
                       ),
                       const SizedBox(
@@ -74,19 +70,35 @@ class TripDetailView extends GetView<TripDetailController> {
                           style: BaseTextStyle.heading2(fontSize: 20)),
                       const SizedBox(height: 12),
                       Obx(
-                        () => controller.isChatLoaded.value
-                            ? ListView.builder(
-                                itemCount: controller.chatHistory?.length ?? 0,
-                                itemBuilder: (context, index) {
-                                  var message = controller.chatHistory![index];
-                                  return ChatMessageWidget(
-                                    text: message.text,
-                                    chatMessageType: message.chatMessageType,
-                                  );
-                                },
-                              )
-                            : Container(
-                                child: Text("None"),
+                        () => !controller.isLoadingChatHistory.value
+                            ? controller.isHaveChatLog.value
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 154, 147, 147),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    height: size.width,
+                                    child: ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount:
+                                          controller.chatHistory?.length ?? 0,
+                                      itemBuilder: (context, index) {
+                                        var message =
+                                            controller.chatHistory![index];
+                                        return ChatMessageWidget(
+                                          text: message.text,
+                                          chatMessageType:
+                                              message.chatMessageType,
+                                        );
+                                      },
+                                    ),
+                                  )
+                                : Container(
+                                    child: const Text("None"),
+                                  )
+                            : const Center(
+                                child: CircularProgressIndicator(),
                               ),
                       ),
                     ],

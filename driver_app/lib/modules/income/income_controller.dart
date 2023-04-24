@@ -1,4 +1,5 @@
 import 'package:driver_app/Data/models/local_entity/driver_entity.dart';
+import 'package:driver_app/Data/models/requests/trip_response.dart';
 import 'package:driver_app/Data/services/rest/driver_api_service.dart';
 import 'package:driver_app/modules/income/widgets/pick_date_bottom_sheet.dart';
 import 'package:driver_app/modules/lifecycle_controller.dart';
@@ -17,6 +18,8 @@ class IncomeController extends GetxController {
   RxInt tripOrderNumber = 0.obs;
 
   late DriverEntity driverEntity;
+
+  List<TripResponse> trips = [];
 
   @override
   void onInit() async {
@@ -43,6 +46,7 @@ class IncomeController extends GetxController {
         );
         income.value = result.totalIncome;
         tripOrderNumber.value = result.total;
+        trips = result.trips;
       } catch (e) {
         debugPrint(e.toString());
         showSnackBar("Error", e.toString());
@@ -50,8 +54,6 @@ class IncomeController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  Future<void> getRevenue() async {}
 
   Future<void> chooseDate(Rx<DateTime> time, String title,
       {bool Function(DateTime)? predicate}) async {

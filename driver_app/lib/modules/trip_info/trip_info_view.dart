@@ -30,7 +30,6 @@ class TripInfoView extends GetView<TripInfoController> {
       ),
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) {
-          debugPrint("on Scrolling");
           if (scrollNotification is ScrollEndNotification &&
               scrollNotification.metrics.extentAfter == 0) {
             controller.loadMoreTrip();
@@ -116,15 +115,15 @@ class TripInfoView extends GetView<TripInfoController> {
                               ),
                             )
                           : SizedBox(
-                              height: size.height * 0.8,
+                              height: size.height * 1,
                               child: Column(
                                 children: [
                                   Expanded(
                                     child: ListView.separated(
                                       separatorBuilder: (context, index) =>
                                           const SizedBox(height: 14),
-                                      // physics:
-                                      //     const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       itemCount: controller.bookedList.length,
                                       itemBuilder: (context, index) =>
                                           Container(
@@ -137,9 +136,9 @@ class TripInfoView extends GetView<TripInfoController> {
                                     ),
                                   ),
                                   if (controller.isLoadMore.value)
-                                    const SizedBox(
-                                      height: 50,
-                                      child: Center(
+                                    SizedBox(
+                                      height: size.height * 0.4,
+                                      child: const Center(
                                         child: CircularProgressIndicator(),
                                       ),
                                     ),
