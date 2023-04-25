@@ -36,6 +36,7 @@ class TripInfoController extends GetxController {
   Future<void> _loadinitialTrip() async {
     try {
       // bookedList.value = await DriverAPIService.tripApi.getDriverTrips();
+      if (currentPage > maxPage) return;
 
       bookedList.value = await DriverAPIService.tripApi
           .getDriverTripsPaging(pageNum: currentPage, pageSize: pageSize);
