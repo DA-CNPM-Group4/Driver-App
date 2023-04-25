@@ -28,7 +28,7 @@ class TripApiService {
     }
   }
 
-  Future<String> cancelTrip(String tripId) async {
+  Future<void> cancelTrip(String tripId) async {
     try {
       var body = {'tripId': tripId};
 
@@ -38,7 +38,7 @@ class TripApiService {
         useToken: true,
       );
       if (response.data["status"]) {
-        return response.data['data'];
+        return;
       } else {
         return Future.error(response.data['message']);
       }
