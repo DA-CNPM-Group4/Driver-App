@@ -22,8 +22,11 @@ class DriverAPIService {
       var identity = await APIHandlerImp.instance.getIdentity();
       body.AccountId = identity;
 
-      var response = await APIHandlerImp.instance
-          .post(body.toJson(), '/Info/Driver/AddInfo');
+      var response = await APIHandlerImp.instance.post(
+        body.toJson(),
+        '/Info/Driver/AddInfo',
+        useToken: true,
+      );
       if (response.data["status"]) {
         return;
       } else {
@@ -41,8 +44,11 @@ class DriverAPIService {
       var identity = await APIHandlerImp.instance.getIdentity();
       body.AccountId = identity;
 
-      var response = await APIHandlerImp.instance
-          .post(body.toJson(), '/Info/Driver/UpdateInfo');
+      var response = await APIHandlerImp.instance.post(
+        body.toJson(),
+        '/Info/Driver/UpdateInfo',
+        useToken: true,
+      );
       if (response.data["status"]) {
         return;
       } else {
@@ -58,8 +64,11 @@ class DriverAPIService {
     try {
       var identity = await APIHandlerImp.instance.getIdentity();
       var body = {'accountId': identity};
-      var response = await APIHandlerImp.instance
-          .post(body, '/Info/Driver/GetDriverInfoById');
+      var response = await APIHandlerImp.instance.post(
+        body,
+        '/Info/Driver/GetDriverInfoById',
+        useToken: true,
+      );
       if (!response.data["status"]) {
         if (response.data['data'] == null) {
           return Future.error(IBussinessException(response.data['message']));
@@ -81,8 +90,11 @@ class DriverAPIService {
       body.DriverId = identity;
       body.VehicleId = identity;
 
-      var response = await APIHandlerImp.instance
-          .post(body.toJson(), '/Info/Vehicle/RegisterVehicle');
+      var response = await APIHandlerImp.instance.post(
+        body.toJson(),
+        '/Info/Vehicle/RegisterVehicle',
+        useToken: true,
+      );
       if (response.data["status"]) {
         return;
       } else {
@@ -100,8 +112,11 @@ class DriverAPIService {
 
       var body = {"accountId": identity};
 
-      var response = await APIHandlerImp.instance
-          .post(body, '/Info/Vehicle/GetDriverVehicle');
+      var response = await APIHandlerImp.instance.post(
+        body,
+        '/Info/Vehicle/GetDriverVehicle',
+        useToken: true,
+      );
       if (response.data["status"]) {
         return VehicleEntity.fromJson(response.data['data']);
       } else {
