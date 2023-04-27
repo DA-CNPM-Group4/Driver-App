@@ -13,8 +13,6 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:integration_test/integration_test.dart';
 
-const String IPv4Address = "172.17.58.72";
-
 void main() async {
   // BackendEnviroment.checkDevelopmentMode(isUseEmulator: true);
 
@@ -34,10 +32,13 @@ void main() async {
       await _initApp(tester);
 
       // Navigate from Welcome to Login screen
-      await _navigateFromWelcomeToLogin(tester);
+      await _testNavigateFromWelcomeToLogin(tester);
 
       // Login with email and password
-      await _loginWithEmailAndPassword(tester);
+      await _testLoginWithEmailAndPassword(tester,
+          email: 'coconi2886@soombo.com',
+          phone: '123456001',
+          password: '123456');
 
       // Send a request (fake)
       sendTripRequest();
@@ -85,21 +86,26 @@ Future<void> _initApp(WidgetTester tester) async {
   );
 }
 
-Future<void> _navigateFromWelcomeToLogin(WidgetTester tester) async {
+Future<void> _testNavigateFromWelcomeToLogin(WidgetTester tester) async {
   await tester.tap(find.byKey(const Key("welcome_login_btn")));
   await tester.pumpAndSettle();
   expect(find.byKey(const Key('welcome_login_btn')), findsNothing);
   expect(find.byKey(const Key('login_email_field')), findsOneWidget);
 }
 
-Future<void> _loginWithEmailAndPassword(WidgetTester tester) async {
+Future<void> _testLoginWithEmailAndPassword(
+  WidgetTester tester, {
+  required String phone,
+  required String email,
+  required String password,
+}) async {
   await tester.tap(find.byKey(const Key('login_login_btn')));
   await tester.pumpAndSettle();
   expect(find.text("This field must be filled"), findsOneWidget);
   expect(find.text("This field is required"), findsOneWidget);
 
-  await tester.enterText(find.byKey(const Key('login_email_field')), 'changkho6310@gmail.com');
-  await tester.enterText(find.byKey(const Key("login_phone_field")), '0938267365');
+  await tester.enterText(find.byKey(const Key('login_email_field')), email);
+  await tester.enterText(find.byKey(const Key("login_phone_field")), phone);
   await tester.tap(find.byKey(const Key('login_login_btn')));
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -107,7 +113,8 @@ Future<void> _loginWithEmailAndPassword(WidgetTester tester) async {
   await tester.pumpAndSettle();
   expect(find.text("This field must be filled"), findsOneWidget);
 
-  await tester.enterText(find.byKey(const Key("password_login_password_field")), '123456');
+  await tester.enterText(
+      find.byKey(const Key("password_login_password_field")), password);
   await tester.tap(find.byKey(const Key('password_login_login_btn')));
   await tester.pumpAndSettle(const Duration(seconds: 2));
   expect(find.byKey(const Key('password_login_login_btn')), findsNothing);
@@ -192,7 +199,6 @@ Future<void> _testPickedPassengerButton({
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
-  await tester.pump(const Duration(seconds: 1));
 
   expect(
     find.byKey(const Key('confirm_order_picked_passenger')),
@@ -218,7 +224,6 @@ Future<void> _testCompletedTripButton({
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
-  await tester.pump(const Duration(seconds: 1));
 
   expect(
     find.byKey(const Key('confirm_order_complete_trip')),
@@ -239,7 +244,6 @@ Future<void> _testCancelRequestAndVerifyDialogDisappear({
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
   await tester.pump(const Duration(seconds: 1));
-  await tester.pump(const Duration(seconds: 1));
 
   await tester.tap(find.byKey(const Key('request_view_cancel_request')));
   await tester.pumpAndSettle();
@@ -252,12 +256,23 @@ Future<void> _testCancelRequestAndVerifyDialogDisappear({
 }
 
 Future<void> sendTripRequest() async {
+  Map<String, dynamic> loginResponse;
+  try {
+    loginResponse = await login();
+    if (loginResponse["accountId"] == "FAILED") {
+      return;
+    }
+  } catch (e) {
+    debugPrint("Error on login: $e");
+    return;
+  }
+
   try {
     final dio = Dio();
-    // const url = "http://$IPv4Address:8001/api/Trip/TripRequest/SendRequest";
-    const url = "https://dacnpmbe.azurewebsites.net/api/Trip/TripRequest/SendRequest";
+    const url =
+        "https://dacnpm4be.azurewebsites.net/api/Trip/TripRequest/SendRequest";
     final data = {
-      "PassengerId": "67c09099-4100-4b87-8651-fa0c25ddbf15",
+      "PassengerId": loginResponse["accountId"],
       "StaffId": "00000000-0000-0000-0000-000000000000",
       "RequestStatus": "FindingDriver",
       "PassengerNote": "Fast!!!",
@@ -277,18 +292,55 @@ Future<void> sendTripRequest() async {
 
     final headers = {
       "x-api-key": "ApplicationKey",
+      "Authorization": "Bearer ${loginResponse["accessToken"]}"
     };
 
     dio.options.headers.addAll(headers);
-    dio
-        .post(
-      url,
-      data: data,
-    )
-        .then((value) {
+    dio.post(url, data: data).then((value) {
       debugPrint(value.toString());
     });
   } on DioError catch (e) {
     debugPrint("Error sending request: $e");
+  }
+}
+
+Future<Map<String, dynamic>> login() async {
+  final dio = Dio();
+  const url = "https://dacnpm4be.azurewebsites.net/api/Authentication/Login";
+  final headers = {
+    "x-api-key": "ApplicationKey",
+  };
+
+  final data = {
+    "phone": "123124001",
+    "email": "gyqyliro@afia.pro",
+    "password": "123456"
+  };
+
+  try {
+    dio.options.headers.addAll(headers);
+    final response = await dio.post(url, data: data);
+    debugPrint(response.toString());
+    if (response.statusCode == 200) {
+      final responseData = response.data;
+      // debugPrint("responseData: $responseData");
+      // debugPrint("responseData[status]: ${responseData["status"]}");
+      // debugPrint("accountId: ${responseData["data"]["accountId"]}");
+      // debugPrint("accessToken: ${responseData["data"]["accessToken"]}");
+      if (responseData["status"]) {
+        final String accountId = responseData["data"]["accountId"];
+        final String accessToken = responseData["data"]["accessToken"];
+        return {"accountId": accountId, "accessToken": accessToken};
+      } else {
+        debugPrint("Login failed: ${responseData["message"]}");
+        return {"accountId": "FAILED", "accessToken": "FAILED"};
+      }
+    } else {
+      debugPrint("Error with response status code: ${response.statusCode}");
+      return {"accountId": "FAILED", "accessToken": "FAILED"};
+    }
+  } on DioError catch (e) {
+    debugPrint("Error sending login request: $e");
+    return {"accountId": "FAILED", "accessToken": "FAILED"};
   }
 }
