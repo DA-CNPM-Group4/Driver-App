@@ -285,7 +285,7 @@ Future<void> sendTripRequest() async {
           "227 Đ. Nguyễn Văn Cừ, Quận 5, Thành phố Hồ Chí Minh, Vietnam",
       "LatStartAddr": 10.762835,
       "LongStartAddr": 106.6824817,
-      "PassengerPhone": "123456111",
+      "PassengerPhone": "123456001",
       "Price": 45923,
       "VehicleType": "Motorbike"
     };
@@ -323,10 +323,10 @@ Future<Map<String, dynamic>> login() async {
     debugPrint(response.toString());
     if (response.statusCode == 200) {
       final responseData = response.data;
-      // debugPrint("responseData: $responseData");
-      // debugPrint("responseData[status]: ${responseData["status"]}");
-      // debugPrint("accountId: ${responseData["data"]["accountId"]}");
-      // debugPrint("accessToken: ${responseData["data"]["accessToken"]}");
+      debugPrint("responseData: $responseData");
+      debugPrint("responseData[status]: ${responseData["status"]}");
+      debugPrint("accountId: ${responseData["data"]["accountId"]}");
+      debugPrint("accessToken: ${responseData["data"]["accessToken"]}");
       if (responseData["status"]) {
         final String accountId = responseData["data"]["accountId"];
         final String accessToken = responseData["data"]["accessToken"];
